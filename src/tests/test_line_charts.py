@@ -380,7 +380,24 @@ if __name__ == "__main__":
 
     file_directory = os.path.dirname(os.path.abspath(__file__))
 
-    functions = [fig1, fig2, fig3, fig4, fig5, fig6]#, fig7, fig8, fig9, fig10, fig11, fig12, fig13, fig14, fig15]
+    functions = [
+        fig1,
+        fig2,     # TODO : legend title
+        fig3,
+        # fig4,   # TODO : broken
+        fig5,     # TODO : legend title
+        fig6,     # TODO : legend title
+        # fig7,   # TODO : broken
+        # fig8,   # TODO : broken with date
+        # fig9,   # TODO : broken
+        fig10,
+        # fig11,  # TODO : broken
+        # fig12,  # TODO : broken
+        fig13,    # TODO : interpolation not done
+        fig14,    # TODO
+        # fig15   # TODO : broken
+    ]
+    # functions = [fig1, fig5, fig10]
     NbFigures = len(functions)
 
     main_tex_content = tex_create_document()

@@ -20,9 +20,10 @@ def get_tikz_code(
     for trace in figure_data:
         if trace.type == "scatter":
             data_str.append( draw_scatter2d(trace) )
-            if 'name' in trace and trace['showlegend']:
+            if 'name' in trace and trace['showlegend'] != False:
                 data_str.append( tex_add_legendentry(trace.name) )
-            colors_set.add(convert_color(trace.line.color))
+            if trace.line.color is not None:
+                colors_set.add(convert_color(trace.line.color))
         else:
             warn(f"Trace type {trace.type} is not supported yet.")
 
@@ -38,7 +39,7 @@ def get_tikz_code(
 
     code += "\n"
     for color in colors_set:
-        code += tex_add_color(color)
+        code += tex_add_color(color[0], color[1], color[2])
     code += "\n"
 
     axis = Axis(fig.layout)

@@ -31,7 +31,7 @@ def tex_end_all_environment(stack_env):
     return code
 
 def tex_addplot(data_str, type="table", options=None):
-    code = "\\addplot "
+    code = "\\addplot+ "
     if options is not None:
         code += f"[{options}] "
     code += type + " {%\n"
@@ -39,8 +39,8 @@ def tex_addplot(data_str, type="table", options=None):
     code += "};\n"
     return code
 
-def tex_add_color(color):
-    return f"\\definecolor{{{color}}}{{HTML}}{{{color}}}\n"
+def tex_add_color(color_name, type_color, color):
+    return f"\\definecolor{{{color_name}}}{{{type_color}}}{{{color}}}\n"
 
 def tex_add_legendentry(legend):
     return f"\\addlegendentry{{{legend}}}\n"
