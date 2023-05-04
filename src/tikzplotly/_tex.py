@@ -44,3 +44,10 @@ def tex_add_color(color):
 
 def tex_add_legendentry(legend):
     return f"\\addlegendentry{{{legend}}}\n"
+
+
+def tex_create_document(document_class="article"):
+    code = f"\\documentclass{{{document_class}}}\n"
+    code += "\\usepackage{pgf, tikz}\n\\usepackage{pgfplots}\n"
+    code += "\\pgfplotsset{compat=1.16}\n\n"
+    return code

@@ -9,3 +9,6 @@
 *.pdf
 *.synctex.gz
 *.toc
+
+# Tests outputs
+src/tests/outputs/**
