@@ -41,3 +41,6 @@ def tex_addplot(data_str, type="table", options=None):
 
 def tex_add_color(color):
     return f"\\definecolor{{{color}}}{{HTML}}{{{color}}}\n"
+
+def tex_add_legendentry(legend):
+    return f"\\addlegendentry{{{legend}}}\n"
