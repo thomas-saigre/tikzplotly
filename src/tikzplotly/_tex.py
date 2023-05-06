@@ -39,15 +39,24 @@ def tex_addplot(data_str, type="table", options=None):
     code += "};\n"
     return code
 
+def tex_add_text(x, y, text, color="black"):
+    return f"\draw (axis cs:{x},{y}) node[scale=0.5, anchor=south east, text={color}, rotate=0.0]{{{text}}};\n"
+
 def tex_add_color(color_name, type_color, color):
     return f"\\definecolor{{{color_name}}}{{{type_color}}}{{{color}}}\n"
 
-def tex_add_legendentry(legend):
-    return f"\\addlegendentry{{{legend}}}\n"
+def tex_add_legendentry(legend, options=None):
+    if options is not None:
+        return f"\\addlegendentry[{options}]{{{legend}}}\n"
+    else:
+        return f"\\addlegendentry{{{legend}}}\n"
 
 
-def tex_create_document(document_class="article"):
-    code = f"\\documentclass{{{document_class}}}\n"
+def tex_create_document(document_class="article", options=None):
+    if options is not None:
+        code = f"\\documentclass[{options}]{{{document_class}}}\n"
+    else:
+        code = f"\\documentclass{{{document_class}}}\n"
     code += "\\usepackage{pgf, tikz}\n\\usepackage{pgfplots}\n"
     code += "\\pgfplotsset{compat=1.16}\n\n"
     return code

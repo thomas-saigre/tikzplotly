@@ -17,6 +17,9 @@ def get_tikz_code(
     colors_set = set()
     data_str = []
 
+    if len(figure_data) == 0:
+        warn("No data in figure.")
+
     for trace in figure_data:
         if trace.type == "scatter":
             data_str.append( draw_scatter2d(trace) )
@@ -45,6 +48,10 @@ def get_tikz_code(
     axis = Axis(fig.layout)
 
     code += tex_begin_environment("axis", stack_env, options=axis.get_options())
+
+    if fig.layout.legend.title.text is not None:
+        code += "\\addlegendimage{empty legend}\n"
+        code += tex_add_legendentry(fig.layout.legend.title.text, options="yshift=5pt")
 
     for trace_str in data_str:
         code += trace_str

@@ -382,25 +382,25 @@ if __name__ == "__main__":
 
     functions = [
         fig1,
-        fig2,     # TODO : legend title
+        fig2,
         fig3,
-        # fig4,   # TODO : broken
-        fig5,     # TODO : legend title
-        fig6,     # TODO : legend title
-        # fig7,   # TODO : broken
+        fig4,
+        fig5,
+        fig6,
+        fig7,     # plot not working for date values
         # fig8,   # TODO : broken with date
         # fig9,   # TODO : broken
-        fig10,
+        # fig10,
         # fig11,  # TODO : broken
         # fig12,  # TODO : broken
-        fig13,    # TODO : interpolation not done
-        fig14,    # TODO
+        # fig13,    # TODO : interpolation not done
+        # fig14,    # TODO
         # fig15   # TODO : broken
     ]
-    # functions = [fig1, fig5, fig10]
     NbFigures = len(functions)
 
-    main_tex_content = tex_create_document()
+    main_tex_content = tex_create_document(options="twocolumn")
+    main_tex_content += "\\usepackage[left=1cm, right=1cm, top=1cm, bottom=1cm]{geometry}"
     stack_env = []
     main_tex_content += tex_begin_environment("document", stack_env) + '\n'
 

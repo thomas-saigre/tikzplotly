@@ -1,8 +1,8 @@
 
 marker_symbol_dict = {
-    "circle": "o",
-    "square": "square",
-    "diamond": "diamond",
+    "circle": "*",
+    "square": "square*",
+    "diamond": "diamond*",
     "cross": "+",
     "x": "x",
     "triangle-up": "triangle",
@@ -13,6 +13,8 @@ marker_symbol_dict = {
     "triangle-se": "triangle",
     "triangle-sw": "triangle",
     "triangle-nw": "triangle",
+
+    "circle-open": "o",
 
 }
 
