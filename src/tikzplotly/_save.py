@@ -5,6 +5,7 @@ from ._scatter import draw_scatter2d
 from ._axis import Axis
 from ._color import *
 from warnings import warn
+import re
 
 def get_tikz_code(
         fig,
@@ -13,16 +14,18 @@ def get_tikz_code(
     ):
 
     figure_data = fig.data
-
+    figure_layout = fig.layout
     colors_set = set()
     data_str = []
+
+    axis = Axis(fig.layout, colors_set)
 
     if len(figure_data) == 0:
         warn("No data in figure.")
 
     for trace in figure_data:
         if trace.type == "scatter":
-            data_str.append( draw_scatter2d(trace) )
+            data_str.append( draw_scatter2d(trace, axis) )
             if 'name' in trace and trace['showlegend'] != False:
                 data_str.append( tex_add_legendentry(trace.name) )
             if trace.line.color is not None:
@@ -45,16 +48,18 @@ def get_tikz_code(
         code += tex_add_color(color[0], color[1], color[2])
     code += "\n"
 
-    axis = Axis(fig.layout)
 
     code += tex_begin_environment("axis", stack_env, options=axis.get_options())
 
-    if fig.layout.legend.title.text is not None:
+    if figure_layout.legend.title.text is not None and figure_layout.showlegend:
         code += "\\addlegendimage{empty legend}\n"
         code += tex_add_legendentry(fig.layout.legend.title.text, options="yshift=5pt")
 
     for trace_str in data_str:
         code += trace_str
+
+    if not figure_layout.showlegend:
+        code = re.sub(r"\\addlegendentry{.+}\n", "", code)
 
     code += tex_end_all_environment(stack_env)
 

@@ -4,9 +4,11 @@ from ._util import *
 from ._tex import *
 from ._color import *
 from ._marker import marker_symbol_to_tex
+from ._axis import Axis
+from ._data import *
 from numpy import round
 
-def draw_scatter2d(scatter):
+def draw_scatter2d(scatter, axis: Axis):
     """Draw scatter plot."""
     code = ""
 
@@ -15,6 +17,14 @@ def draw_scatter2d(scatter):
 
     mode = scatter.mode
     marker = scatter.marker
+
+
+    if data_type(scatter.x[0]) == "date":
+        axis.add_option("date coordinates in", "x")
+    
+    if mode is None:
+        # by default, plot markers and lines
+        mode = "markers+lines"
 
     if mode == "markers":
         options = f"only marks, mark={marker_symbol_to_tex(marker.symbol)}"

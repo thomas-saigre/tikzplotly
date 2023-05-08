@@ -60,6 +60,7 @@ def fig7():
     df = px.data.stocks()
     fig = px.line(df, x='date', y="GOOG")
     # fig.show()
+    return fig
 
 def fig8():
     df = px.data.stocks(indexed=True)
@@ -387,20 +388,22 @@ if __name__ == "__main__":
         fig4,
         fig5,
         fig6,
-        fig7,     # plot not working for date values
-        # fig8,   # TODO : broken with date
-        # fig9,   # TODO : broken
-        # fig10,
-        # fig11,  # TODO : broken
+        fig7,
+        fig8,
+        fig9,
+        fig10,
+        # fig11,  # TODO
         # fig12,  # TODO : broken
-        # fig13,    # TODO : interpolation not done
-        # fig14,    # TODO
-        # fig15   # TODO : broken
+        # fig13,  # TODO : interpolation not done
+        # fig14,  # TODO
+        # fig15   # TODO
     ]
     NbFigures = len(functions)
 
-    main_tex_content = tex_create_document(options="twocolumn")
-    main_tex_content += "\\usepackage[left=1cm, right=1cm, top=1cm, bottom=1cm]{geometry}"
+    main_tex_content = tex_create_document(options="twocolumn", compatibility="newest")
+    main_tex_content += "\\usepackage[left=1cm, right=1cm, top=1cm, bottom=1cm]{geometry}\n"
+    main_tex_content += "\\usetikzlibrary{pgfplots.dateplot}\n"
+    main_tex_content += "\n"
     stack_env = []
     main_tex_content += tex_begin_environment("document", stack_env) + '\n'
 
@@ -411,6 +414,7 @@ if __name__ == "__main__":
         main_tex_content += "  \\caption{Figure " + str(i+1) + "}\n"
         main_tex_content += tex_end_environment(stack_env) + '\n'
         fig = f()
+        data = fig.data
         save_path = os.path.join(file_directory, "outputs", "test_line_charts", "fig{}.tex".format(i+1))
         tikzplotly.save(save_path, fig)
 

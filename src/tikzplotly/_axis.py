@@ -1,15 +1,33 @@
+from ._color import convert_color
 class Axis():
 
-    def __init__(self, layout):
+    def __init__(self, layout, colors_set):
         self.x_label = layout.xaxis.title.text
         self.y_label = layout.yaxis.title.text
         self.title = layout.title.text
+        self.options = {}
 
-    def set_x_label(self, xlabel):
-        self.xlabel = xlabel
+        if layout.xaxis.visible is False:
+            self.x_label = None
+            self.add_option("hide x axis", None)
+        if layout.yaxis.visible is False:
+            self.y_label = None
+            self.add_option("hide y axis", None)
+
+        if layout.plot_bgcolor is not None:
+            bg_color = convert_color(layout.plot_bgcolor)
+            colors_set.add(bg_color)
+            self.add_option("axis background/.style", f"{{fill={bg_color[0]}}}")
+
+    def set_x_label(self, x_label):
+        self.x_label = x_label
     
-    def set_y_label(self, ylabel):
-        self.ylabel = ylabel
+    def set_y_label(self, y_label):
+        self.y_label = y_label
+
+    def add_option(self, option, value):
+        self.options[option] = value
+
 
     def get_options(self):
         something = False
@@ -22,6 +40,13 @@ class Axis():
             something = True
         if self.y_label is not None:
             options_str += f"ylabel={self.y_label},\n"
+            something = True
+        if len(self.options) > 0:
+            for option, value in self.options.items():
+                if value is None:
+                    options_str += f"{option},\n"
+                else:
+                    options_str += f"{option}={value},\n"
             something = True
         if something:
             return options_str[:-1]

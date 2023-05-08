@@ -43,7 +43,10 @@ def tex_add_text(x, y, text, color="black"):
     return f"\draw (axis cs:{x},{y}) node[scale=0.5, anchor=south east, text={color}, rotate=0.0]{{{text}}};\n"
 
 def tex_add_color(color_name, type_color, color):
-    return f"\\definecolor{{{color_name}}}{{{type_color}}}{{{color}}}\n"
+    if type_color is not None:
+        return f"\\definecolor{{{color_name}}}{{{type_color}}}{{{color}}}\n"
+    else:
+        return ""
 
 def tex_add_legendentry(legend, options=None):
     if options is not None:
@@ -52,11 +55,11 @@ def tex_add_legendentry(legend, options=None):
         return f"\\addlegendentry{{{legend}}}\n"
 
 
-def tex_create_document(document_class="article", options=None):
+def tex_create_document(document_class="article", options=None, compatibility="newest"):
     if options is not None:
         code = f"\\documentclass[{options}]{{{document_class}}}\n"
     else:
         code = f"\\documentclass{{{document_class}}}\n"
     code += "\\usepackage{pgf, tikz}\n\\usepackage{pgfplots}\n"
-    code += "\\pgfplotsset{compat=1.16}\n\n"
+    code += "\\pgfplotsset{compat=" + compatibility + "}\n\n"
     return code
