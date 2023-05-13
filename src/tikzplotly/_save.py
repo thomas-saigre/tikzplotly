@@ -29,7 +29,9 @@ def get_tikz_code(
             if 'name' in trace and trace['showlegend'] != False:
                 data_str.append( tex_add_legendentry(trace.name) )
             if trace.line.color is not None:
-                colors_set.add(convert_color(trace.line.color))
+                colors_set.add(convert_color(trace.line.color)[:3])
+            if trace.fillcolor is not None:
+                colors_set.add(convert_color(trace.fillcolor)[:3])
         else:
             warn(f"Trace type {trace.type} is not supported yet.")
 

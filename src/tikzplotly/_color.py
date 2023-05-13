@@ -12,21 +12,22 @@ colors = {}
 def convert_color(color):
     """Convert a color from html to tikz format."""
     if color[0] == "#":
-        return color[1:], "HTML", color[1:]
+        return color[1:], "HTML", color[1:], 1
     elif color[0:4] == "rgba":
         warn("Alpha not integrated yet, returning RGB only.")
         color = color[5:-1].replace("[", "{").replace("]", "}")
-        return hashlib.sha1(color.encode('UTF-8')).hexdigest()[:10], "RGB", color
+        color_list = color.split(",")
+        return hashlib.sha1(color.encode('UTF-8')).hexdigest()[:10], "RGB", color, float(color_list[-1])
     elif color[0:3] == "rgb":
         color = color[4:-1].replace("[", "{").replace("]", "}")
-        return hashlib.sha1(color.encode('UTF-8')).hexdigest()[:10], "RGB", color
+        return hashlib.sha1(color.encode('UTF-8')).hexdigest()[:10], "RGB", color, 1
     elif color in ["red", "green", "blue", "yellow", "orange", "purple", "brown", "black", "gray", "white"]:
-        return color, None, None
+        return color, None, None, 1
     elif color in colors:
-        return color, "RGB", colors[color]
+        return color, "RGB", colors[color], 1
     else:
         warn(f"Color {color} type is not supported yet. Returning the same color.")
-        return color
+        return color, 1
 
 
 

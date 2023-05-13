@@ -16,8 +16,12 @@ class Axis():
 
         if layout.plot_bgcolor is not None:
             bg_color = convert_color(layout.plot_bgcolor)
-            colors_set.add(bg_color)
-            self.add_option("axis background/.style", f"{{fill={bg_color[0]}}}")
+            colors_set.add(bg_color[:3])
+            opacity = bg_color[3]
+            if opacity < 1:
+                self.add_option("axis background/.style", f"{{fill={bg_color[0]}, opacity={opacity}}}")
+            else:
+                self.add_option("axis background/.style", f"{{fill={bg_color[0]}}}")
 
     def set_x_label(self, x_label):
         self.x_label = x_label

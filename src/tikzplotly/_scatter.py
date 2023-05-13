@@ -40,6 +40,14 @@ def draw_scatter2d(scatter, axis: Axis):
     if scatter.line.color is not None:
         options += f", color={convert_color(scatter.line.color)[0]}"
 
+    if scatter.fill is not None:
+        fill_color = convert_color(scatter.fillcolor)
+        opacity = fill_color[-1]
+        if opacity < 1:
+            options += f", fill={fill_color[0]}, opacity={opacity}"
+        else:
+            options += f", fill={fill_color[0]}"
+
     code += tex_addplot(data_string, type="table", options=options)
 
     if scatter.text is not None:
