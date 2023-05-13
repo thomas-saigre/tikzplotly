@@ -16,4 +16,4 @@ def data_to_string(x_data, y_data):
     data_str = ""
     for x, y in zip(x_data, y_data):
         data_str += f"{x} {y}\n"
-    return data_str
+    return data_str.replace("None", "nan")

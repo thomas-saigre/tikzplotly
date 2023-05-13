@@ -126,19 +126,19 @@ def fig11():
     fig = go.Figure()
     # Create and style traces
     fig.add_trace(go.Scatter(x=month, y=high_2014, name='High 2014',
-                            line=dict(color='firebrick', width=4)))
+                            line=dict(color='firebrick', width=1.5)))
     fig.add_trace(go.Scatter(x=month, y=low_2014, name = 'Low 2014',
-                            line=dict(color='royalblue', width=4)))
+                            line=dict(color='royalblue', width=1.5)))
     fig.add_trace(go.Scatter(x=month, y=high_2007, name='High 2007',
-                            line=dict(color='firebrick', width=4,
+                            line=dict(color='firebrick', width=1.5,
                                 dash='dash') # dash options include 'dash', 'dot', and 'dashdot'
     ))
     fig.add_trace(go.Scatter(x=month, y=low_2007, name='Low 2007',
-                            line = dict(color='royalblue', width=4, dash='dash')))
+                            line = dict(color='royalblue', width=1.5, dash='dash')))
     fig.add_trace(go.Scatter(x=month, y=high_2000, name='High 2000',
-                            line = dict(color='firebrick', width=4, dash='dot')))
+                            line = dict(color='firebrick', width=1.5, dash='dot')))
     fig.add_trace(go.Scatter(x=month, y=low_2000, name='Low 2000',
-                            line=dict(color='royalblue', width=4, dash='dot')))
+                            line=dict(color='royalblue', width=1.5, dash='dot')))
 
     # Edit the layout
     fig.update_layout(title='Average High and Low Temperatures in New York',
@@ -155,7 +155,7 @@ def fig12():
     fig.add_trace(go.Scatter(
         x=x,
         y=[10, 20, None, 15, 10, 5, 15, None, 20, 10, 10, 15, 25, 20, 10],
-        name = '<b>No</b> Gaps', # Style name/legend entry with html tags
+        name='No Gaps',
         connectgaps=True # override default to connect the gaps
     ))
     fig.add_trace(go.Scatter(
@@ -198,7 +198,7 @@ def fig14():
     labels = ['Television', 'Newspaper', 'Internet', 'Radio']
     colors = ['rgb(67,67,67)', 'rgb(115,115,115)', 'rgb(49,130,189)', 'rgb(189,189,189)']
 
-    mode_size = [8, 8, 12, 8]
+    mode_size = [4, 4, 6, 4]
     line_size = [2, 2, 4, 2]
 
     x_data = np.vstack((np.arange(2001, 2014),)*4)
@@ -392,8 +392,8 @@ if __name__ == "__main__":
         fig8,
         fig9,
         fig10,
-        # fig11,  # TODO
-        # fig12,  # TODO : broken
+        fig11,
+        fig12,
         # fig13,  # TODO : interpolation not done
         # fig14,  # TODO
         fig15
