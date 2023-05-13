@@ -43,10 +43,12 @@ def draw_scatter2d(scatter, axis: Axis):
     if scatter.fill is not None:
         fill_color = convert_color(scatter.fillcolor)
         opacity = fill_color[-1]
+        options += f", fill={fill_color[0]}"
         if opacity < 1:
-            options += f", fill={fill_color[0]}, opacity={opacity}"
-        else:
-            options += f", fill={fill_color[0]}"
+            options += f", opacity={opacity}"
+    
+    if scatter.showlegend is False:
+        options += ", forget plot"
 
     code += tex_addplot(data_string, type="table", options=options)
 

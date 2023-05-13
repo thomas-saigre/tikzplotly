@@ -60,7 +60,7 @@ def get_tikz_code(
     for trace_str in data_str:
         code += trace_str
 
-    if not figure_layout.showlegend:
+    if figure_layout.showlegend == False:
         code = re.sub(r"\\addlegendentry{.+}\n", "", code)
 
     code += tex_end_all_environment(stack_env)

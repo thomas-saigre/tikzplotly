@@ -396,7 +396,7 @@ if __name__ == "__main__":
         # fig12,  # TODO : broken
         # fig13,  # TODO : interpolation not done
         # fig14,  # TODO
-        # fig15   # TODO
+        fig15
     ]
     NbFigures = len(functions)
 
