@@ -15,14 +15,14 @@ def fig1():
     fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada')
 
     # fig.show()
-    return fig
+    return fig, "Line Plots with plotly.express"
 
 def fig2():
     df = px.data.gapminder().query("continent=='Oceania'")
     fig = px.line(df, x="year", y="lifeExp", color='country')
 
     # fig.show()
-    return fig
+    return fig, "Line Plots with column encoding color"
 
 def fig3():
     df = pd.DataFrame(dict(
@@ -33,7 +33,7 @@ def fig3():
     fig = px.line(df, x="x", y="y", title="Sorted Input") 
     
     # fig.show()
-    return fig
+    return fig, "Data Order in Line Charts : sorted input"
 
 def fig4():
     df = px.data.gapminder().query("country in ['Canada', 'Botswana']")
@@ -41,26 +41,26 @@ def fig4():
     fig.update_traces(textposition="bottom right")
     
     # fig.show()
-    return fig
+    return fig, "Connected Scatterplots"
 
 def fig5():
     df = px.data.gapminder().query("continent == 'Oceania'")
     fig = px.line(df, x='year', y='lifeExp', color='country', markers=True)
     
     # fig.show()
-    return fig
+    return fig, "Line charts with markers 1/2"
 
 def fig6():
     df = px.data.gapminder().query("continent == 'Oceania'")
     fig = px.line(df, x='year', y='lifeExp', color='country', symbol="country")
     # fig.show()
-    return fig
+    return fig, "Line charts with markers 2/2"
 
 def fig7():
     df = px.data.stocks()
     fig = px.line(df, x='date', y="GOOG")
     # fig.show()
-    return fig
+    return fig, "Line plots on Date axes"
 
 def fig8():
     df = px.data.stocks(indexed=True)
@@ -82,12 +82,12 @@ def fig8():
 
     # disable the modebar for such a small plot
     # fig.show(config=dict(displayModeBar=False))
-    return fig
+    return fig, "Sparklines with Plotly Express"
 
 def fig9():
     x = np.arange(10)
     fig = go.Figure(data=go.Scatter(x=x, y=x**2))
-    return fig
+    return fig, "Simple Line Plot"
 
 def fig10():
     np.random.seed(1)
@@ -110,7 +110,7 @@ def fig10():
                         mode='markers', name='markers'))
 
     # fig.show()
-    return fig
+    return fig, "Line Plot Modes"
 
 def fig11():
     # Add data
@@ -145,7 +145,7 @@ def fig11():
                     xaxis_title='Month',
                     yaxis_title='Temperature (degrees F)')
     # fig.show()
-    return fig
+    return fig, "Style Line Plots"
 
 def fig12():
     x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
@@ -165,7 +165,7 @@ def fig12():
     ))
 
     # fig.show()
-    return fig
+    return fig, "Connect Data Gaps"
 
 def fig13():
     x = np.array([1, 2, 3, 4, 5])
@@ -191,7 +191,7 @@ def fig13():
     fig.update_layout(legend=dict(y=0.5, traceorder='reversed', font_size=16))
 
     # fig.show()
-    return fig
+    return fig, "Interpolation with Line Plots"
 
 def fig14():
     title = 'Main Source for News'
@@ -297,7 +297,7 @@ def fig14():
     fig.update_layout(annotations=annotations)
 
     # fig.show()
-    return fig
+    return fig, "Label Lines with Annotations"
 
 def fig15():
         
@@ -370,7 +370,7 @@ def fig15():
 
     fig.update_traces(mode='lines')
     # fig.show()
-    return fig
+    return fig, "Filled Lines"
 
 
 if __name__ == "__main__":
@@ -409,14 +409,14 @@ if __name__ == "__main__":
 
     for i, f in enumerate(functions):
         print(f"Figure {i+1} / {NbFigures}")
-        main_tex_content += tex_begin_environment("figure", stack_env)
-        main_tex_content += "  \\input{fig" + str(i+1) + ".tex}\n"
-        main_tex_content += "  \\caption{Figure " + str(i+1) + "}\n"
-        main_tex_content += tex_end_environment(stack_env) + '\n'
-        fig = f()
+        fig, title = f()
         data = fig.data
         save_path = os.path.join(file_directory, "outputs", "test_line_charts", "fig{}.tex".format(i+1))
         tikzplotly.save(save_path, fig)
+        main_tex_content += tex_begin_environment("figure", stack_env)
+        main_tex_content += "  \\input{fig" + str(i+1) + ".tex}\n"
+        main_tex_content += "  \\caption{" + title + "}\n"
+        main_tex_content += tex_end_environment(stack_env) + '\n'
 
     main_tex_content += "\n" + tex_end_all_environment(stack_env)
 
