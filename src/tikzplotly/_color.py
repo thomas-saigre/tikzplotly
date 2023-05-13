@@ -10,7 +10,25 @@ def rgb_str(red, green, blue):
 colors = {}
 
 def convert_color(color):
-    """Convert a color from html to tikz format."""
+    """Convert of color to a string.
+
+    Parameters
+    ----------
+    color
+        string from plotly color palette, can be one of the following:
+        - hex string : "#______"
+        - rgb string : "rgb(__, __, __)" with values between 0 and 255
+        - rgba string : "rgba(__, __, __, __)" with values between 0 and 255 and an opacity value between 0 and 1
+        - color name : "red", "green", "blue", "yellow", "orange", "purple", "brown", "black", "gray", "white" or any other color name from https://github.com/plotly/plotly.py/blob/master/packages/python/plotly/templategen/utils/colors.py
+
+    Returns
+    -------
+        A 4-tuple containing the following:
+        - the name of the color, or a hash of the color if it is not a named color
+        - the type of the color, can be "RGB", "HTML" or None
+        - the color string
+        - the opacity value, 1 if the color is not an rgba string
+    """
     if color[0] == "#":
         return color[1:], "HTML", color[1:], 1
     elif color[0:4] == "rgba":

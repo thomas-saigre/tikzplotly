@@ -12,7 +12,21 @@ def get_tikz_code(
         tikz_options = None,
         include_disclamer = True,
     ):
+    """Get the tikz code of a figure.
 
+    Parameters
+    ----------
+    fig
+        Plotly figure
+    tikz_options, optional
+        options given to the tikzpicture environment, by default None
+    include_disclamer, optional
+        include a disclamer in the code, by default True
+
+    Returns
+    -------
+        string of tikz code
+    """
     figure_data = fig.data
     figure_layout = fig.layout
     colors_set = set()
@@ -42,7 +56,6 @@ def get_tikz_code(
     if include_disclamer:
         code += tex_comment(f"This file was created with tikzplotly version {__version__}.")
 
-    
     code += tex_begin_environment("tikzpicture", stack_env, options=tikz_options)
 
     code += "\n"

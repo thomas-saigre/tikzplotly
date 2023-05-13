@@ -10,7 +10,19 @@ from ._data import *
 from numpy import round
 
 def draw_scatter2d(scatter, axis: Axis):
-    """Draw scatter plot."""
+    """Get code for a scatter trace.
+
+    Parameters
+    ----------
+    scatter
+        scatter trace from Plotly figure
+    axis
+        axis object previously created
+
+    Returns
+    -------
+        string of tikz code for the scatter trace
+    """
     code = ""
 
     # Create a new axis if necessary
@@ -26,7 +38,7 @@ def draw_scatter2d(scatter, axis: Axis):
         axis.add_option("xticklabels", scatter_x_str)
         data_string = data_string.replace("January", "1").replace("February", "2").replace("March", "3").replace("April", "4").replace("May", "5").replace("June", "6").replace("July", "7").replace("August", "8").replace("September", "9").replace("October", "10").replace("November", "11").replace("December", "12")
         data_string = data_string.replace("january", "1").replace("february", "2").replace("march", "3").replace("april", "4").replace("may", "5").replace("june", "6").replace("july", "7").replace("august", "8").replace("september", "9").replace("october", "10").replace("november", "11").replace("december", "12")
-    
+
     if mode is None:
         # by default, plot markers and lines
         mode = "markers+lines"
@@ -64,7 +76,7 @@ def draw_scatter2d(scatter, axis: Axis):
         options += f", fill={fill_color[0]}"
         if opacity < 1:
             options += f", opacity={opacity}"
-    
+
     if scatter.showlegend is False:
         options += ", forget plot"
 
@@ -73,6 +85,5 @@ def draw_scatter2d(scatter, axis: Axis):
     if scatter.text is not None:
         for x_data, y_data, text_data in zip(scatter.x, scatter.y, scatter.text):
             code += tex_add_text(x_data, y_data, str(text_data).rstrip('.0'))
-        
 
     return code

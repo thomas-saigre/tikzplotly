@@ -30,8 +30,8 @@ def fig3():
         y = [1, 2, 3, 4]
     ))
     df = df.sort_values(by="x")
-    fig = px.line(df, x="x", y="y", title="Sorted Input") 
-    
+    fig = px.line(df, x="x", y="y", title="Sorted Input")
+
     # fig.show()
     return fig, "Data Order in Line Charts : sorted input"
 
@@ -39,14 +39,14 @@ def fig4():
     df = px.data.gapminder().query("country in ['Canada', 'Botswana']")
     fig = px.line(df, x="lifeExp", y="gdpPercap", color="country", text="year")
     fig.update_traces(textposition="bottom right")
-    
+
     # fig.show()
     return fig, "Connected Scatterplots"
 
 def fig5():
     df = px.data.gapminder().query("continent == 'Oceania'")
     fig = px.line(df, x='year', y='lifeExp', color='country', markers=True)
-    
+
     # fig.show()
     return fig, "Line charts with markers 1/2"
 
@@ -300,7 +300,6 @@ def fig14():
     return fig, "Label Lines with Annotations"
 
 def fig15():
-        
     x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     x_rev = x[::-1]
 
@@ -424,4 +423,3 @@ if __name__ == "__main__":
     print("Save main tex file : ", main_tex_path)
     with open(main_tex_path, "w") as f:
         f.write(main_tex_content)
-    
