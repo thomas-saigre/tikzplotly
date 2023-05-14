@@ -35,9 +35,9 @@ def get_tikz_code(
 
     axis = Axis(figure_layout, colors_set)
 
-    if not figure_layout.xaxis.showline:
+    if figure_layout.xaxis.showline == False:
         axis.add_option("axis x line", "none")
-    if not figure_layout.yaxis.showline:
+    if figure_layout.yaxis.showline == False:
         axis.add_option("axis y line", "none")
 
     if len(figure_data) == 0:
