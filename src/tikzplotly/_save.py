@@ -4,6 +4,7 @@ from ._tex import *
 from ._scatter import draw_scatter2d
 from ._axis import Axis
 from ._color import *
+from ._annotations import str_from_annotation
 from warnings import warn
 import re
 
@@ -32,7 +33,12 @@ def get_tikz_code(
     colors_set = set()
     data_str = []
 
-    axis = Axis(fig.layout, colors_set)
+    axis = Axis(figure_layout, colors_set)
+
+    if not figure_layout.xaxis.showline:
+        axis.add_option("axis x line", "none")
+    if not figure_layout.yaxis.showline:
+        axis.add_option("axis y line", "none")
 
     if len(figure_data) == 0:
         warn("No data in figure.")
@@ -49,6 +55,7 @@ def get_tikz_code(
         else:
             warn(f"Trace type {trace.type} is not supported yet.")
 
+    annotation_str = str_from_annotation(figure_layout.annotations, axis, colors_set)
 
     code = """"""
     stack_env = []
@@ -72,6 +79,8 @@ def get_tikz_code(
 
     for trace_str in data_str:
         code += trace_str
+
+    code += annotation_str
 
     if figure_layout.showlegend == False:
         code = re.sub(r"\\addlegendentry{.+}\n", "", code)

@@ -91,7 +91,7 @@ def tex_addplot(data_str, type="table", options=None):
     code += "};\n"
     return code
 
-def tex_add_text(x, y, text, color="black"):
+def tex_add_text(x, y, text, options=None, relative=False):
     """Create a LaTeX node command.
 
     Parameters
@@ -102,14 +102,20 @@ def tex_add_text(x, y, text, color="black"):
         y coordinate of the node
     text
         text of the node
-    color, optional
-        color of the node, by default "black"
+    options, optional
+        options given to the node command, by default None
+    relative, optional
+        boolean indicating if the coordinates are relative to the axis, by default False
 
     Returns
     -------
         LaTeX code for the node command
     """
-    return f"\draw (axis cs:{x},{y}) node[scale=0.5, anchor=south east, text={color}, rotate=0.0]{{{text}}};\n"
+    relative_text = ["", "rel "][relative]
+    if options is not None:
+        return f"\\node[{options}] at ({relative_text}axis cs:{x}, {y}) {{{tex_text(text)}}};\n"
+    else:
+        return f"\\node at (axis cs:{x},{y}) {{{tex_text(text)}}};\n"
 
 def tex_add_color(color_name, type_color, color):
     """Create a LaTeX color definition.
@@ -175,3 +181,10 @@ def tex_create_document(document_class="article", options=None, compatibility="n
     code += "\\usepackage{pgf, tikz}\n\\usepackage{pgfplots}\n"
     code += "\\pgfplotsset{compat=" + compatibility + "}\n\n"
     return code
+
+
+def tex_text(text):
+    """Convert a string to LaTeX,
+    escaping the special characters %, _, &, #, $, {, }, ~.
+    """
+    return text.replace("%", "\\%").replace("_", "\\_").replace("&", "\\&").replace("#", "\\#").replace("$", "\\$").replace("{", "\\{").replace("}", "\\}").replace("~", "\\textasciitilde ")
