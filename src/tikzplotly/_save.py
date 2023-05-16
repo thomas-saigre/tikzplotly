@@ -70,8 +70,7 @@ def get_tikz_code(
         code += tex_add_color(color[0], color[1], color[2])
     code += "\n"
 
-
-    code += tex_begin_environment("axis", stack_env, options=axis.get_options())
+    code += axis.open_environment(stack_env)
 
     if figure_layout.legend.title.text is not None and figure_layout.showlegend:
         code += "\\addlegendimage{empty legend}\n"

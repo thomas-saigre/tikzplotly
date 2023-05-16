@@ -1,4 +1,5 @@
 from ._color import convert_color
+from ._tex import tex_begin_environment
 class Axis():
 
     def __init__(self, layout, colors_set):
@@ -15,6 +16,7 @@ class Axis():
         self.y_label = layout.yaxis.title.text
         self.title = layout.title.text
         self.options = {}
+        self.environment = "axis"
 
         if layout.xaxis.visible is False:
             self.x_label = None
@@ -22,6 +24,12 @@ class Axis():
         if layout.yaxis.visible is False:
             self.y_label = None
             self.add_option("hide y axis", None)
+        
+        # Handle log axes
+        if layout.xaxis.type == "log":
+            self.add_option("xmode", "log")
+        if layout.yaxis.type == "log":
+            self.add_option("ymode", "log")
 
         if layout.plot_bgcolor is not None:
             bg_color = convert_color(layout.plot_bgcolor)
@@ -63,6 +71,16 @@ class Axis():
             value of the option, can be None
         """
         self.options[option] = value
+
+    def open_environment(self, stack_env):
+        """Open the axis environment.
+
+        Parameters
+        ----------
+        stack_env
+            stack of environments, to be filled with the axis environment
+        """
+        return tex_begin_environment(self.environment, stack_env, options=self.get_options())
 
 
     def get_options(self):
