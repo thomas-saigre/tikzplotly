@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tikzplotly"
+version = "0.1.0"
+description = "Convert plotly figures to LaTeX / tikz figures"
+readme = "README.md"
+authors = [{name = "Thomas Saigre", email = "tikzplotly@outlook.fr"}]
+license = { file = "LICENSE" }
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Multimedia :: Graphics :: Graphics Conversion",
+    "Topic :: Scientific/Engineering :: Visualization",
+]
+keywords = ["plotly", "latex", "tikz", "figure", "conversion", "graphics"]
+dependencies = [
+    "numpy",
+    "plotly"
+]
+
+[project.optional-dependencies]
+dev = ["pandas"]
+
+[project.urls]
+Code = "https://github.com/thomas-saigre/tikzplotly"
+Issues = "https://github.com/thomas-saigre/tikzplotly/issues"

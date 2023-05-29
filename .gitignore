@@ -11,4 +11,12 @@
 *.toc
 
 # Tests outputs
-src/tests/outputs/**
+tests/outputs/**
+
+
+# Virtual environment
+venv/
+*.egg-info/
+
+# Distribution / packaging
+dist/
