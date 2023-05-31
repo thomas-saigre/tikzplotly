@@ -177,11 +177,14 @@ if __name__ == "__main__":
     stack_env = []
     main_tex_content += tex_begin_environment("document", stack_env) + '\n'
 
+    if not os.path.exists(os.path.join(file_directory, "outputs", "test_area_plots")):
+        os.makedirs(os.path.join(file_directory, "outputs", "test_area_plots"))
+
     for i, f in enumerate(functions):
         print(f"Figure {i+1} / {NbFigures}")
         fig, title = f()
         data = fig.data
-        save_path = os.path.join(file_directory, "outputs", "test_line_charts", "fig{}.tex".format(i+1))
+        save_path = os.path.join(file_directory, "outputs", "test_area_plots", "fig{}.tex".format(i+1))
         tikzplotly.save(save_path, fig)
         main_tex_content += tex_begin_environment("figure", stack_env)
         main_tex_content += "  \\input{fig" + str(i+1) + ".tex}\n"
@@ -190,7 +193,7 @@ if __name__ == "__main__":
 
     main_tex_content += "\n" + tex_end_all_environment(stack_env)
 
-    main_tex_path = os.path.join(file_directory, "outputs", "test_line_charts", "main.tex")
+    main_tex_path = os.path.join(file_directory, "outputs", "test_area_plots", "main.tex")
     print("Save main tex file : ", main_tex_path)
     with open(main_tex_path, "w") as f:
         f.write(main_tex_content)
