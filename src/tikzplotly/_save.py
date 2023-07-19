@@ -49,7 +49,7 @@ def get_tikz_code(
         if trace.type == "scatter":
             data_name_macro, y_name = data_container.addData(trace.x, trace.y, trace.name)
             data_str.append( draw_scatter2d(data_name_macro, trace, y_name, axis) )
-            if 'name' in trace and trace['showlegend'] != False:
+            if trace.name and trace['showlegend'] != False:
                 data_str.append( tex_add_legendentry(trace.name) )
             if trace.line.color is not None:
                 colors_set.add(convert_color(trace.line.color)[:3])

@@ -201,7 +201,7 @@ def fig14():
     mode_size = [4, 4, 6, 4]
     line_size = [2, 2, 4, 2]
 
-    x_data = np.vstack((np.arange(2001, 2014),)*4)
+    x_data = np.vstack((np.arange(2001, 2013),)*4)
 
     y_data = np.array([
         [74, 82, 80, 74, 73, 72, 74, 70, 70, 66, 66, 69],
@@ -381,22 +381,21 @@ if __name__ == "__main__":
     file_directory = os.path.dirname(os.path.abspath(__file__))
 
     functions = [
-        fig1,
-        fig2,
-        fig3,
-        fig4,
-        fig5,
-        fig6,
-        fig7,
-        fig8,
-        fig9,
-        fig10,
-        fig11,
-        fig12,
-        fig14,
-        fig15
+        ("1", fig1),
+        ("2", fig2),
+        ("3", fig3),
+        ("4", fig4),
+        ("5", fig5),
+        ("6", fig6),
+        ("7", fig7),
+        ("8", fig8),
+        ("9", fig9),
+        ("10", fig10),
+        ("11", fig11),
+        # ("12", fig12),
+        ("14", fig14),
+        ("15", fig15)
     ]
-    NbFigures = len(functions)
 
     main_tex_content = tex_create_document(options="twocolumn", compatibility="newest")
     main_tex_content += "\\usepackage[left=1cm, right=1cm, top=1cm, bottom=1cm]{geometry}\n"
@@ -405,14 +404,14 @@ if __name__ == "__main__":
     stack_env = []
     main_tex_content += tex_begin_environment("document", stack_env) + '\n'
 
-    for i, f in enumerate(functions):
-        print(f"Figure {i+1} / {NbFigures}")
+    for i, f in functions:
+        print(f"Figure {i}")
         fig, title = f()
         data = fig.data
-        save_path = os.path.join(file_directory, "outputs", "test_line_charts", "fig{}.tex".format(i+1))
+        save_path = os.path.join(file_directory, "outputs", "test_line_charts", "fig{}.tex".format(i))
         tikzplotly.save(save_path, fig)
         main_tex_content += tex_begin_environment("figure", stack_env)
-        main_tex_content += "  \\input{fig" + str(i+1) + ".tex}\n"
+        main_tex_content += "  \\input{fig" + str(i) + ".tex}\n"
         main_tex_content += "  \\caption{" + title + "}\n"
         main_tex_content += tex_end_environment(stack_env) + '\n'
 

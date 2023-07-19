@@ -90,7 +90,7 @@ def tex_addplot(data_str, type="table", options=None, type_options=None):
         code += f"[{options}] "
     code += type
     if type_options is not None:
-        code += f"[{type_options}] "
+        code += f"[{type_options}]"
     code += " {" + data_str + "};\n"
     return code
 

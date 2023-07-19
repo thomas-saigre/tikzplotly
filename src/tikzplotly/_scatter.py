@@ -28,9 +28,6 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis):
     """
     code = ""
 
-    # Create a new axis if necessary
-    data_string = data_to_string(scatter.x, scatter.y)
-
     mode = scatter.mode
     marker = scatter.marker
 
@@ -39,8 +36,6 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis):
     if data_type(scatter.x[0]) == "month":
         scatter_x_str = "{" + ", ".join([x for x in scatter.x]) + "}"
         axis.add_option("xticklabels", scatter_x_str)
-        data_string = data_string.replace("January", "1").replace("February", "2").replace("March", "3").replace("April", "4").replace("May", "5").replace("June", "6").replace("July", "7").replace("August", "8").replace("September", "9").replace("October", "10").replace("November", "11").replace("December", "12")
-        data_string = data_string.replace("january", "1").replace("february", "2").replace("march", "3").replace("april", "4").replace("may", "5").replace("june", "6").replace("july", "7").replace("august", "8").replace("september", "9").replace("october", "10").replace("november", "11").replace("december", "12")
 
     if mode is None:
         # by default, plot markers and lines
