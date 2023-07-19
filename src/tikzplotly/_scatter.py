@@ -1,6 +1,5 @@
 from warnings import warn
 
-from ._util import *
 from ._tex import *
 from ._color import *
 from ._marker import marker_symbol_to_tex
@@ -9,13 +8,17 @@ from ._axis import Axis
 from ._data import *
 from numpy import round
 
-def draw_scatter2d(scatter, axis: Axis):
+def draw_scatter2d(data_name, scatter, y_name, axis: Axis):
     """Get code for a scatter trace.
 
     Parameters
     ----------
+    data_name
+        name of the data imported in LaTeX
     scatter
         scatter trace from Plotly figure
+    y_name
+        name of the y data imported in LaTeX
     axis
         axis object previously created
 
@@ -80,7 +83,7 @@ def draw_scatter2d(scatter, axis: Axis):
     if scatter.showlegend is False:
         options += ", forget plot"
 
-    code += tex_addplot(data_string, type="table", options=options)
+    code += tex_addplot(data_name, type="table", options=options, type_options=f"y={y_name}")
 
     if scatter.text is not None:
         for x_data, y_data, text_data in zip(scatter.x, scatter.y, scatter.text):
