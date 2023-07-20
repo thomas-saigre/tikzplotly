@@ -1,6 +1,5 @@
 from warnings import warn
 
-from ._util import *
 from ._tex import *
 from ._color import *
 from ._marker import marker_symbol_to_tex
@@ -9,13 +8,17 @@ from ._axis import Axis
 from ._data import *
 from numpy import round
 
-def draw_scatter2d(scatter, axis: Axis):
+def draw_scatter2d(data_name, scatter, y_name, axis: Axis):
     """Get code for a scatter trace.
 
     Parameters
     ----------
+    data_name
+        name of the data imported in LaTeX
     scatter
         scatter trace from Plotly figure
+    y_name
+        name of the y data imported in LaTeX
     axis
         axis object previously created
 
@@ -25,9 +28,6 @@ def draw_scatter2d(scatter, axis: Axis):
     """
     code = ""
 
-    # Create a new axis if necessary
-    data_string = data_to_string(scatter.x, scatter.y)
-
     mode = scatter.mode
     marker = scatter.marker
 
@@ -36,8 +36,6 @@ def draw_scatter2d(scatter, axis: Axis):
     if data_type(scatter.x[0]) == "month":
         scatter_x_str = "{" + ", ".join([x for x in scatter.x]) + "}"
         axis.add_option("xticklabels", scatter_x_str)
-        data_string = data_string.replace("January", "1").replace("February", "2").replace("March", "3").replace("April", "4").replace("May", "5").replace("June", "6").replace("July", "7").replace("August", "8").replace("September", "9").replace("October", "10").replace("November", "11").replace("December", "12")
-        data_string = data_string.replace("january", "1").replace("february", "2").replace("march", "3").replace("april", "4").replace("may", "5").replace("june", "6").replace("july", "7").replace("august", "8").replace("september", "9").replace("october", "10").replace("november", "11").replace("december", "12")
 
     if mode is None:
         # by default, plot markers and lines
@@ -80,7 +78,7 @@ def draw_scatter2d(scatter, axis: Axis):
     if scatter.showlegend is False:
         options += ", forget plot"
 
-    code += tex_addplot(data_string, type="table", options=options)
+    code += tex_addplot(data_name, type="table", options=options, type_options=f"y={y_name}")
 
     if scatter.text is not None:
         for x_data, y_data, text_data in zip(scatter.x, scatter.y, scatter.text):
