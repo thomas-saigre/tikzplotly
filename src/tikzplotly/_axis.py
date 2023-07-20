@@ -24,7 +24,7 @@ class Axis():
         if layout.yaxis.visible is False:
             self.y_label = None
             self.add_option("hide y axis", None)
-        
+
         # Handle log axes
         if layout.xaxis.type == "log":
             self.add_option("xmode", "log")

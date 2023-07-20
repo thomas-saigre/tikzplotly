@@ -67,7 +67,7 @@ def tex_end_all_environment(stack_env):
         code += tex_end_environment(stack_env)
     return code
 
-def tex_addplot(data_str, type="table", options=None):
+def tex_addplot(data_str, type="table", options=None, type_options=None):
     """Create a LaTeX addplot command.
 
     Parameters
@@ -78,6 +78,8 @@ def tex_addplot(data_str, type="table", options=None):
         type of data, by default "table"
     options, optional
         options given to the addplot command, by default None
+    type_options, optional
+        options given to the type of data, by default None
 
     Returns
     -------
@@ -86,9 +88,10 @@ def tex_addplot(data_str, type="table", options=None):
     code = "\\addplot+ "
     if options is not None:
         code += f"[{options}] "
-    code += type + " {%\n"
-    code += data_str
-    code += "};\n"
+    code += type
+    if type_options is not None:
+        code += f"[{type_options}]"
+    code += " {" + data_str + "};\n"
     return code
 
 def tex_add_text(x, y, text, options=None, relative=False):

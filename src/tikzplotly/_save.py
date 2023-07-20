@@ -5,6 +5,7 @@ from ._scatter import draw_scatter2d
 from ._axis import Axis
 from ._color import *
 from ._annotations import str_from_annotation
+from ._dataContainer import DataContainer
 from warnings import warn
 import re
 
@@ -34,6 +35,7 @@ def get_tikz_code(
     data_str = []
 
     axis = Axis(figure_layout, colors_set)
+    data_container = DataContainer()
 
     if figure_layout.xaxis.showline == False:
         axis.add_option("axis x line", "none")
@@ -45,8 +47,9 @@ def get_tikz_code(
 
     for trace in figure_data:
         if trace.type == "scatter":
-            data_str.append( draw_scatter2d(trace, axis) )
-            if 'name' in trace and trace['showlegend'] != False:
+            data_name_macro, y_name = data_container.addData(trace.x, trace.y, trace.name)
+            data_str.append( draw_scatter2d(data_name_macro, trace, y_name, axis) )
+            if trace.name and trace['showlegend'] != False:
                 data_str.append( tex_add_legendentry(trace.name) )
             if trace.line.color is not None:
                 colors_set.add(convert_color(trace.line.color)[:3])
@@ -62,6 +65,9 @@ def get_tikz_code(
 
     if include_disclamer:
         code += tex_comment(f"This file was created with tikzplotly version {__version__}.")
+
+    code += data_container.exportData()
+    code += "\n"
 
     code += tex_begin_environment("tikzpicture", stack_env, options=tikz_options)
 
