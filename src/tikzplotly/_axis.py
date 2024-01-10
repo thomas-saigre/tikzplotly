@@ -31,6 +31,20 @@ class Axis():
         if layout.yaxis.type == "log":
             self.add_option("ymode", "log")
 
+        # Handle range
+        # In log mode, the range is the exponent of the range : https://plotly.com/python/reference/layout/xaxis/#layout-xaxis-range
+        # For more information, refer to documentation https://plotly.com/python/reference/layout/xaxis/#layout-xaxis-autorange
+        if layout.xaxis.autorange is False or layout.xaxis.range is not None:
+            self.add_option("xmin", layout.xaxis.range[0] if layout.xaxis.type != "log" else 10**layout.xaxis.range[0])
+            self.add_option("xmax", layout.xaxis.range[1] if layout.xaxis.type != "log" else 10**layout.xaxis.range[1])
+        if layout.yaxis.autorange is False or layout.yaxis.range is not None:
+            self.add_option("ymin", layout.yaxis.range[0] if layout.yaxis.type != "log" else 10**layout.yaxis.range[0])
+            self.add_option("ymax", layout.yaxis.range[1] if layout.yaxis.type != "log" else 10**layout.yaxis.range[1])
+        if layout.xaxis.autorange == "reversed":
+            self.add_option("x dir", "reverse")
+        if layout.yaxis.autorange == "reversed":
+            self.add_option("y dir", "reverse")
+
         if layout.plot_bgcolor is not None:
             bg_color = convert_color(layout.plot_bgcolor)
             colors_set.add(bg_color[:3])
