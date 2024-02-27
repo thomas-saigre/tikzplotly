@@ -6,9 +6,10 @@ from ._marker import marker_symbol_to_tex
 from ._dash import *
 from ._axis import Axis
 from ._data import *
+from ._utils import px_to_pt
 from numpy import round
 
-def draw_scatter2d(data_name, scatter, y_name, axis: Axis):
+def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
     """Get code for a scatter trace.
 
     Parameters
@@ -21,6 +22,8 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis):
         name of the y data imported in LaTeX
     axis
         axis object previously created
+    color_set
+        set of colors used in the figure
 
     Returns
     -------
@@ -42,21 +45,40 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis):
         mode = "markers+lines"
 
     if mode == "markers":
-        options = f"only marks, mark={marker_symbol_to_tex(marker.symbol)}"
+        if marker.symbol is not None:
+            options = f"only marks, mark={marker_symbol_to_tex(marker.symbol)}"
+        else:
+            options = f"only marks"
+        mark_options = ""
         if scatter.marker.size is not None:
-            options += f", mark size={marker.size}"
+            options += f", mark size={px_to_pt(marker.size)}"
         if scatter.marker.color is not None:
-            options += f", mark options={{solid, fill={convert_color(scatter.marker.color)[0]}, color={convert_color(scatter.marker.color)[0]}}}"
+            color_set.add(convert_color(scatter.marker.color)[:3])
+            mark_options += f"solid, fill={convert_color(scatter.marker.color)[0]}"
+        if (line:=scatter.marker.line) is not None:
+            if line.color is not None:
+                color_set.add(convert_color(line.color)[:3])
+                mark_options += f", draw={convert_color(line.color)[0]}"
+            if line.width is not None:
+                mark_options += f", line width={px_to_pt(line.width)}"
+        if (opacity:=scatter.opacity) is not None:
+            options += f", opacity={round(opacity, 2)}"
+        if (opacity:=scatter.marker.opacity) is not None:
+            mark_options += f", opacity={round(opacity, 2)}"
+
+        if mark_options != "":
+            options += f", mark options={{{mark_options}}}"
+
     elif mode == "lines":
         options = f"mark=none"
-    elif "lines" in mode and "markers" in mode:
+    elif "lines" in mode and "markers" in mode and marker.symbol is not None:
         options = f"mark={marker_symbol_to_tex(marker.symbol)}"
     else:
         warn(f"Mode {mode} is not supported yet.")
         options = ""
 
     if scatter.line.width is not None:
-        options += f", line width={scatter.line.width}"
+        options += f", line width={px_to_pt(scatter.line.width)}"
     if scatter.line.dash is not None:
         options += ", " + DASH_PATTERN[scatter.line.dash]
     if scatter.connectgaps in [False, None] and None in scatter.x:

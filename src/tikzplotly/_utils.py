@@ -1,5 +1,6 @@
 import re
 import warnings
+from math import floor
 
 rep_digit = {'0': 'Z', '1': 'O', '2': 'T', '3': 'Th', '4': 'F', '5': 'Fi', '6': 'S', '7': 'Se', '8': 'E', '9': 'N'}
 rep_digit = dict((re.escape(k), v) for k, v in rep_digit.items())
@@ -67,3 +68,20 @@ def sanitize_TeX_char(ch):
         warnings.warn(f"Character {ch} has been replaced by \"x{ord(ch):x}\" in output file")
         return f"x{ord(ch):x}"
     return ch
+
+def px_to_pt(px):
+    """Convert size in pixel to a size in point
+
+    Parameters
+    ----------
+    px
+        size in pixel
+
+    Returns
+    -------
+    float
+        size in point
+    """
+    pt = px * .75
+    if floor(pt) == pt: return int(pt)
+    else: return pt

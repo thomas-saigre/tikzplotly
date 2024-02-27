@@ -29,19 +29,22 @@ def convert_color(color):
         - the color string
         - the opacity value, 1 if the color is not an rgba string
     """
+    if color is None:
+        return None, None, None, 1
     if color[0] == "#":
         return color[1:], "HTML", color[1:], 1
     elif color[0:4] == "rgba":
-        color = color[5:-1].replace("[", "{").replace("]", "}")
-        color_list = color.split(",")
-        return hashlib.sha1(color.encode('UTF-8')).hexdigest()[:10], "RGB", color, float(color_list[-1])
+        warn(f"Opacity of color {color} is not supported yet. Returning the same color.")
+        rgb_color = color.split("(")[1].split(",")[:-1]
+        print(f"rgb({rgb_color[0]},{rgb_color[1]},{rgb_color[2]})")
+        return convert_color(f"rgb({rgb_color[0]},{rgb_color[1]},{rgb_color[2]})")
     elif color[0:3] == "rgb":
         color = color[4:-1].replace("[", "{").replace("]", "}")
         return hashlib.sha1(color.encode('UTF-8')).hexdigest()[:10], "RGB", color, 1
     elif color in ["red", "green", "blue", "yellow", "orange", "purple", "brown", "black", "gray", "white"]:
         return color, None, None, 1
-    elif color in colors:
-        return color, "RGB", colors[color], 1
+    elif color.lower() in colors:
+        return color.lower(), "RGB", colors[color.lower()], 1
     else:
         warn(f"Color {color} type is not supported yet. Returning the same color.")
         return color, 1
@@ -709,10 +712,15 @@ colors["darkseagreen3"] = DARKSEAGREEN3
 colors["darkseagreen4"] = DARKSEAGREEN4
 colors["darkslateblue"] = DARKSLATEBLUE
 colors["darkslategray"] = DARKSLATEGRAY
+colors["darkslategrey"] = DARKSLATEGRAY
 colors["darkslategray1"] = DARKSLATEGRAY1
+colors["darkslategrey1"] = DARKSLATEGRAY
 colors["darkslategray2"] = DARKSLATEGRAY2
+colors["darkslategrey2"] = DARKSLATEGRAY
 colors["darkslategray3"] = DARKSLATEGRAY3
+colors["darkslategrey3"] = DARKSLATEGRAY
 colors["darkslategray4"] = DARKSLATEGRAY4
+colors["darkslategrey4"] = DARKSLATEGRAY
 colors["darkturquoise"] = DARKTURQUOISE
 colors["darkviolet"] = DARKVIOLET
 colors["deeppink1"] = DEEPPINK1
