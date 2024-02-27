@@ -1,5 +1,5 @@
 import re
-from ._utils import replace_all_digits
+from ._utils import replace_all_digits, sanitize_text
 from ._data import post_treat_data
 
 class Data:
@@ -63,7 +63,7 @@ class DataContainer:
         data_to_add = Data(f"data{len(self.data)}", x)
         y_label = data_to_add.addYData(y, y_label)
         self.data.append(data_to_add)
-        return data_to_add.macro_name, y_label
+        return data_to_add.macro_name, sanitize_text(y_label)
 
 
     def exportData(self):
@@ -77,11 +77,11 @@ class DataContainer:
 
         for data in self.data:
             export_string += "\\pgfplotstableread{"
-            export_string += f"{data.name} {' '.join([label for label in data.y_label])}\n"
+            export_string += f"{sanitize_text(data.name)} {' '.join([sanitize_text(label) for label in data.y_label])}\n"
             for i in range(len(data.x)):
                 export_string += f"{data.x[i]} {' '.join([str(y[i]) for y in data.y_data])}\n"
 
-            export_string += "}" + data.macro_name + "\n"
+            export_string += "}" + sanitize_text(data.macro_name) + "\n"
 
         return post_treat_data(export_string)
 

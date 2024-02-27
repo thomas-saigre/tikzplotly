@@ -1,5 +1,6 @@
 from ._color import convert_color
 from ._tex import tex_begin_environment
+from ._utils import sanitize_TeX_text
 class Axis():
 
     def __init__(self, layout, colors_set):
@@ -107,13 +108,13 @@ class Axis():
         content = False
         options_str = ""
         if self.title is not None:
-            options_str += f"title={self.title},\n"
+            options_str += f"title={sanitize_TeX_text(self.title)},\n"
             content = True
         if self.x_label is not None:
-            options_str += f"xlabel={self.x_label},\n"
+            options_str += f"xlabel={sanitize_TeX_text(self.x_label)},\n"
             content = True
         if self.y_label is not None:
-            options_str += f"ylabel={self.y_label},\n"
+            options_str += f"ylabel={sanitize_TeX_text(self.y_label)},\n"
             content = True
         if len(self.options) > 0:
             for option, value in self.options.items():

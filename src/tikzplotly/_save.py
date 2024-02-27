@@ -6,6 +6,7 @@ from ._axis import Axis
 from ._color import *
 from ._annotations import str_from_annotation
 from ._dataContainer import DataContainer
+from ._utils import sanitize_TeX_text
 from warnings import warn
 import re
 
@@ -48,9 +49,9 @@ def get_tikz_code(
     for trace in figure_data:
         if trace.type == "scatter":
             data_name_macro, y_name = data_container.addData(trace.x, trace.y, trace.name)
-            data_str.append( draw_scatter2d(data_name_macro, trace, y_name, axis) )
+            data_str.append( draw_scatter2d(data_name_macro, trace, y_name, axis, colors_set) )
             if trace.name and trace['showlegend'] != False:
-                data_str.append( tex_add_legendentry(trace.name) )
+                data_str.append( tex_add_legendentry(sanitize_TeX_text(trace.name)) )
             if trace.line.color is not None:
                 colors_set.add(convert_color(trace.line.color)[:3])
             if trace.fillcolor is not None:
@@ -80,7 +81,7 @@ def get_tikz_code(
 
     if figure_layout.legend.title.text is not None and figure_layout.showlegend:
         code += "\\addlegendimage{empty legend}\n"
-        code += tex_add_legendentry(fig.layout.legend.title.text, options="yshift=5pt")
+        code += tex_add_legendentry(sanitize_TeX_text(fig.layout.legend.title.text), options="yshift=5pt")
 
     for trace_str in data_str:
         code += trace_str
