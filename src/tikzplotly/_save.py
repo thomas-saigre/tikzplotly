@@ -38,7 +38,7 @@ def get_tikz_code(
     colors_set = set()
     data_str = []
 
-    axis = Axis(figure_layout, colors_set, axis_options)
+    axis = Axis(figure_layout, colors_set, axis_options=axis_options)
     data_container = DataContainer()
 
     if figure_layout.xaxis.showline == False:
