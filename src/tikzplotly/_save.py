@@ -13,6 +13,7 @@ import re
 def get_tikz_code(
         fig,
         tikz_options = None,
+        axis_options = None,
         include_disclamer = True,
     ):
     """Get the tikz code of a figure.
@@ -23,6 +24,8 @@ def get_tikz_code(
         Plotly figure
     tikz_options, optional
         options given to the tikzpicture environment, by default None
+    axis_options, optional
+        options given to the axis environment, by default None
     include_disclamer, optional
         include a disclamer in the code, by default True
 
@@ -35,7 +38,7 @@ def get_tikz_code(
     colors_set = set()
     data_str = []
 
-    axis = Axis(figure_layout, colors_set)
+    axis = Axis(figure_layout, colors_set, axis_options)
     data_container = DataContainer()
 
     if figure_layout.xaxis.showline == False:

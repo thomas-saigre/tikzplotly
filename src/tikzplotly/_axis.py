@@ -3,7 +3,7 @@ from ._tex import tex_begin_environment
 from ._utils import sanitize_TeX_text
 class Axis():
 
-    def __init__(self, layout, colors_set):
+    def __init__(self, layout, colors_set, axis_options=None):
         """Initialize an Axis.
 
         Parameters
@@ -12,11 +12,23 @@ class Axis():
             layout of the figure
         colors_set
             set of colors used in the figure, to be filled with the colors of the axis
+        axis_options
+            options given to the axis environment, by default None. Can be a dict ({option: value}) or a string ("option1=value1, option2=value2").
         """
         self.x_label = layout.xaxis.title.text
         self.y_label = layout.yaxis.title.text
         self.title = layout.title.text
         self.options = {}
+        if isinstance(axis_options, dict):
+            self.options = axis_options
+        elif isinstance(axis_options, str):
+            for option in axis_options.split(","):
+                option = option.strip()
+                if "=" in option:
+                    key, value = option.split("=")
+                    self.options[key] = value
+                else:
+                    self.options[option] = None
         self.environment = "axis"
 
         if layout.xaxis.visible is False:
