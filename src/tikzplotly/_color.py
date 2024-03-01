@@ -33,18 +33,23 @@ def convert_color(color):
         return None, None, None, 1
     if color[0] == "#":
         return color[1:], "HTML", color[1:], 1
+
     elif color[0:4] == "rgba":
-        warn(f"Opacity of color {color} is not supported yet. Returning the same color.")
-        rgb_color = color.split("(")[1].split(",")[:-1]
-        print(f"rgb({rgb_color[0]},{rgb_color[1]},{rgb_color[2]})")
-        return convert_color(f"rgb({rgb_color[0]},{rgb_color[1]},{rgb_color[2]})")
+        sp = color.split("(")[1].split(",")
+        rgb_color = sp[:-1]
+        rgb_color = convert_color(f"rgb({rgb_color[0]},{rgb_color[1]},{rgb_color[2]})")[:-1]
+        return rgb_color + (float(sp[-1][:-1]),)
+
     elif color[0:3] == "rgb":
         color = color[4:-1].replace("[", "{").replace("]", "}")
         return hashlib.sha1(color.encode('UTF-8')).hexdigest()[:10], "RGB", color, 1
+
     elif color in ["red", "green", "blue", "yellow", "orange", "purple", "brown", "black", "gray", "white"]:
         return color, None, None, 1
+
     elif color.lower() in colors:
         return color.lower(), "RGB", colors[color.lower()], 1
+
     else:
         warn(f"Color {color} type is not supported yet. Returning the same color.")
         return color, 1
