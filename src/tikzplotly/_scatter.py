@@ -6,7 +6,7 @@ from ._marker import marker_symbol_to_tex
 from ._dash import *
 from ._axis import Axis
 from ._data import *
-from ._utils import px_to_pt
+from ._utils import px_to_pt, option_dict_to_str
 from numpy import round
 
 def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
@@ -44,62 +44,82 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
         # by default, plot markers and lines
         mode = "markers+lines"
 
+    options_dict = {}
+    mark_option_dict = {}
+
     if mode == "markers":
         if marker.symbol is not None:
-            options = f"only marks, mark={marker_symbol_to_tex(marker.symbol)}"
+            symbol, symbol_options = marker_symbol_to_tex(marker.symbol)
+            options_dict["mark"] = symbol
+            options_dict["only marks"] = None
+            if symbol_options is not None:
+                mark_option_dict[symbol_options[0]] = symbol_options[1]
         else:
-            options = f"only marks"
+            options_dict["only marks"] = None
+
         mark_options = ""
         if scatter.marker.size is not None:
-            options += f", mark size={px_to_pt(marker.size)}"
+            options_dict["mark size"] = px_to_pt(marker.size)
+
         if scatter.marker.color is not None:
             color_set.add(convert_color(scatter.marker.color)[:3])
-            mark_options += f"solid, fill={convert_color(scatter.marker.color)[0]}"
+            mark_option_dict["solid"] = None
+            mark_option_dict["fill"] = convert_color(scatter.marker.color)[0]
+
         if (line:=scatter.marker.line) is not None:
             if line.color is not None:
                 color_set.add(convert_color(line.color)[:3])
-                mark_options += f", draw={convert_color(line.color)[0]}"
+                mark_option_dict["draw"] = convert_color(line.color)[0]
             if line.width is not None:
-                mark_options += f", line width={px_to_pt(line.width)}"
-        if (opacity:=scatter.opacity) is not None:
-            options += f", opacity={round(opacity, 2)}"
-        if (opacity:=scatter.marker.opacity) is not None:
-            mark_options += f", opacity={round(opacity, 2)}"
+                mark_option_dict["line width"] = px_to_pt(line.width)
 
-        if mark_options != "":
-            options += f", mark options={{{mark_options}}}"
+        if (opacity:=scatter.opacity) is not None:
+            options_dict["opacity"] = round(opacity, 2)
+        if (opacity:=scatter.marker.opacity) is not None:
+            mark_option_dict["opacity"] = round(opacity, 2)
+
+        if mark_option_dict != {}:
+            mark_options = option_dict_to_str(mark_option_dict)
+            options_dict["mark options"] = f"{{{mark_options}}}"
 
     elif mode == "lines":
-        options = f"mark=none"
-    elif "lines" in mode and "markers" in mode and marker.symbol is not None:
-        options = f"mark={marker_symbol_to_tex(marker.symbol)}"
+        options_dict["mark"] = "none"
+
+    elif "lines" in mode and "markers" in mode:
+        if marker.symbol is not None:
+            symbol, symbol_options = marker_symbol_to_tex(marker.symbol)
+            options_dict["mark"] = symbol
+            if symbol_options is not None:
+                mark_option_dict[symbol_options[0]] = symbol_options[1]
+
     else:
-        warn(f"Mode {mode} is not supported yet.")
-        options = ""
+        warn(f"Scatter : Mode {mode} is not supported yet.")
 
     if scatter.line.width is not None:
-        options += f", line width={px_to_pt(scatter.line.width)}"
+        options_dict["line width"] = px_to_pt(scatter.line.width)
     if scatter.line.dash is not None:
-        options += ", " + DASH_PATTERN[scatter.line.dash]
+        options_dict[DASH_PATTERN[scatter.line.dash]] = None
     if scatter.connectgaps in [False, None] and None in scatter.x:
-        options += ", unbounded coords=jump"
+        options_dict["unbounded coords"] = "jump"
 
 
     if scatter.line.color is not None:
-        options += f", color={convert_color(scatter.line.color)[0]}"
+        options_dict["color"] = convert_color(scatter.line.color)[0]
         if "mark" in mode:
-            options += f", mark options={{solid, draw={convert_color(scatter.line.color)[0]}}}"
+            mark_option_dict["draw"] = convert_color(scatter.line.color)[0]
+            mark_option_dict["solid"] = None
 
     if scatter.fill is not None:
         fill_color = convert_color(scatter.fillcolor)
         opacity = fill_color[-1]
-        options += f", fill={fill_color[0]}"
+        options_dict["fill"] = fill_color[0]
         if opacity < 1:
-            options += f", opacity={opacity}"
+            options_dict["fill opacity"] = opacity
 
     if scatter.showlegend is False:
-        options += ", forget plot"
+        options_dict["forget plot"] = None
 
+    options = option_dict_to_str(options_dict)
     code += tex_addplot(data_name, type="table", options=options, type_options=f"y={y_name}")
 
     if scatter.text is not None:

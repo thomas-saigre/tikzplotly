@@ -85,3 +85,29 @@ def px_to_pt(px):
     pt = px * .75
     if floor(pt) == pt: return int(pt)
     else: return pt
+
+
+def option_dict_to_str(options_dict, sep=" "):
+    """Convert a dictionary of options to a string of options for TikZ.
+
+    Parameters
+    ----------
+    options_dict
+        dictionary of options
+    sep, optional
+        separator between options, by default " "
+
+    Returns
+    -------
+    string
+        string of options for TikZ
+    """
+    options = ""
+    for key, value in options_dict.items():
+        if value is None:
+            options += f"{key},{sep}"
+        else:
+            options += f"{key}={value},{sep}"
+    if options == "":
+        return None
+    return options.strip()[:-1]

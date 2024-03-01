@@ -1,6 +1,6 @@
 from ._color import convert_color
 from ._tex import tex_begin_environment
-from ._utils import sanitize_TeX_text
+from ._utils import sanitize_TeX_text, option_dict_to_str
 class Axis():
 
     def __init__(self, layout, colors_set, axis_options=None):
@@ -117,25 +117,11 @@ class Axis():
         -------
             string of all options with their values
         """
-        content = False
-        options_str = ""
         if self.title is not None:
-            options_str += f"title={sanitize_TeX_text(self.title)},\n"
-            content = True
+            self.options["title"] = sanitize_TeX_text(self.title)
         if self.x_label is not None:
-            options_str += f"xlabel={sanitize_TeX_text(self.x_label)},\n"
-            content = True
+            self.options["xlabel"] = sanitize_TeX_text(self.x_label)
         if self.y_label is not None:
-            options_str += f"ylabel={sanitize_TeX_text(self.y_label)},\n"
-            content = True
-        if len(self.options) > 0:
-            for option, value in self.options.items():
-                if value is None:
-                    options_str += f"{option},\n"
-                else:
-                    options_str += f"{option}={value},\n"
-            content = True
-        if content:
-            return options_str[:-1]
-        else:
-            return None
+            self.options["ylabel"] = sanitize_TeX_text(self.y_label)
+        options_str = option_dict_to_str(self.options, sep="\n")
+        return options_str
