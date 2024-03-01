@@ -131,6 +131,100 @@ def fig3():
 
     return fig, "Opacity"
 
+def fig3bis():
+    x = np.random.uniform(low=3, high=6, size=(500,))
+    y = np.random.uniform(low=3, high=6, size=(500,))
+
+    # Build figure
+    fig = go.Figure()
+
+    # Add scatter trace with medium sized markers
+    fig.add_trace(
+        go.Scatter(
+            mode='markers',
+            x=x,
+            y=y,
+            marker=dict(
+                color='LightSkyBlue',
+                size=20,
+                opacity=0.5,
+                line=dict(
+                    color='MediumPurple',
+                    width=2
+                )
+            ),
+            showlegend=False
+        )
+    )
+
+
+    # Add trace with large markers
+    fig.add_trace(
+        go.Scatter(
+            mode='markers',
+            x=[2, 2],
+            y=[4.25, 4.75],
+            marker=dict(
+                color='LightSkyBlue',
+                size=80,
+                opacity=0.5,
+                line=dict(
+                    color='MediumPurple',
+                    width=8
+                )
+            ),
+            showlegend=False
+        )
+    )
+
+    return fig, "Marker Opacity"
+
+def fig3ter():
+    x = np.random.uniform(low=3, high=6, size=(500,))
+    y = np.random.uniform(low=3, high=6, size=(500,))
+
+
+    # Build figure
+    fig = go.Figure()
+
+    # Add scatter trace with medium sized markers
+    fig.add_trace(
+        go.Scatter(
+            mode='markers',
+            x=x,
+            y=y,
+            marker=dict(
+                color='rgba(135, 206, 250, 0.5)',
+                size=20,
+                line=dict(
+                    color='MediumPurple',
+                    width=2
+                )
+            ),
+            showlegend=False
+        )
+    )
+
+
+    # Add trace with large markers
+    fig.add_trace(
+        go.Scatter(
+            mode='markers',
+            x=[2, 2],
+            y=[4.25, 4.75],
+            marker=dict(
+                color='rgba(135, 206, 250, 0.5)',
+                size=80,
+                line=dict(
+                    color='MediumPurple',
+                    width=8
+                )
+            ),
+            showlegend=False
+        )
+    )
+    return fig, "Color opacity"
+
 def fig4():
     warn("This example is not exactly the one online, but has been changed as this kind of data is not yet supported.")
     raw_symbols = SymbolValidator().values
@@ -189,6 +283,57 @@ def fig5():
 
     return fig, "Using a custom marker "
 
+def fig6():
+    df = px.data.iris()
+    fig = px.scatter(df, x="sepal_width", y="sepal_length", color="species")
+
+    fig.update_traces(
+        marker=dict(
+            size=8,
+            symbol="diamond-open",
+            line=dict(
+                width=2,
+    #             color="DarkSlateGrey" Line colors don't apply to open markers
+            )
+        ),
+        selector=dict(mode="markers"),
+    )
+    return fig, "Open Marker Colors"
+
+
+def fig7():
+    df = px.data.iris()
+    fig = px.scatter(df, x="sepal_width", y="sepal_length", color="species")
+
+    fig.update_traces(
+        marker=dict(
+            size=12, symbol="triangle-up", angle=45, line=dict(width=2, color="DarkSlateGrey")
+        ),
+        selector=dict(mode="markers"),
+    )
+    return fig, "Setting marker angle"
+
+def fig8():
+    df = px.data.gapminder()
+    fig = go.Figure()
+
+    for x in df.loc[df.continent.isin(["Europe"])].country.unique()[:5]:
+        fil = df.loc[(df.country.str.contains(x))]
+        fig.add_trace(
+            go.Scatter(
+                x=fil["year"],
+                y=fil["pop"],
+                mode="lines+markers",
+                marker=dict(
+                    symbol="arrow",
+                    size=15,
+                    angleref="previous",
+                ),
+                name=x,
+            )
+        )
+    return fig, "Setting Angle Reference"
+
 
 
 if __name__ == "__main__":
@@ -204,8 +349,12 @@ if __name__ == "__main__":
         ("1", fig1),
         ("2", fig2),
         ("3", fig3),
-        # ("4", fig4),
-        ("5", fig5)
+        ("3bis", fig3bis),
+        # ("3ter", fig3ter),
+        ("5", fig5),
+        ("6", fig6),
+        ("7", fig7),
+        # ("8", fig8),      # angle reference not supported yet
     ]
 
     main_tex_content = tex_create_document(options="twocolumn", compatibility="newest")
@@ -241,5 +390,3 @@ if __name__ == "__main__":
     tex_markers += tex_end_all_environment(stack_env)
     with open(os.path.join(file_directory, "outputs", "test_markers", "markers.tex"), "w") as f:
         f.write(tex_markers)
-
-        ##TODO : add [height=35cm,ymajorgrids] to axis environment
