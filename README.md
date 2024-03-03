@@ -93,6 +93,7 @@ To correctly compile the document, you will need to add the following packages t
 * This module is in development and new features are added bit by bit, when needed. If you have a feature request, please open an issue with the plotly figure you want to convert and the desired output.
 You can also submit a pull request with the desired feature !
 * Some feature can result in different output between the plotly figure and the tikz figure, for instance the size of markers.
+* More details in [doc/NB.md](doc/NB.md).
 
 
 ## References
