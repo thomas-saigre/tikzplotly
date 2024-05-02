@@ -11,7 +11,7 @@
 *.toc
 
 # Tests outputs
-tests/outputs/**
+src/tests/outputs/**
 
 
 # Virtual environment

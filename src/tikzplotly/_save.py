@@ -110,5 +110,8 @@ def save(filepath: str | Path, *args, encoding: str | None = None, **kwargs):
         Additional arguments are passed to the backend.
     """
     code = get_tikz_code(*args, **kwargs)
+    directory = Path(filepath).parent
+    if not directory.exists():
+        directory.mkdir(parents=True)
     with open(filepath, "w") as fd:
         fd.write(code)
