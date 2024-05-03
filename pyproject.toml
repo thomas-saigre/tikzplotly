@@ -25,7 +25,8 @@ classifiers = [
 keywords = ["plotly", "latex", "tikz", "figure", "conversion", "graphics"]
 dependencies = [
     "numpy",
-    "plotly"
+    "plotly",
+    "PIL"
 ]
 
 [project.optional-dependencies]
