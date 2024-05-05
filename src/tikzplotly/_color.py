@@ -54,7 +54,20 @@ def convert_color(color):
         warn(f"Color {color} type is not supported yet. Returning the same color.")
         return color, 1
 
+def hex2rgb(hex_color):
+    """Convert a hex color to a RGB color.
 
+    Parameters
+    ----------
+    hex_color
+        hex color string
+
+    Returns
+    -------
+        RGB color string
+    """
+    hex_color = hex_color.lstrip("#")
+    return str(int(hex_color[:2], 16)) + ", " + str(int(hex_color[2:4], 16)) + ", " + str(int(hex_color[4:], 16))
 
 ALICEBLUE = rgb_str(240, 248, 255)
 ANTIQUEWHITE = rgb_str(250, 235, 215)

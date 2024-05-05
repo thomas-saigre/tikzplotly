@@ -65,7 +65,7 @@ def get_tikz_code(
                 colors_set.add(convert_color(trace.fillcolor)[:3])
 
         elif trace.type == "heatmap":
-            data_str.append( draw_heatmap(trace, fig, img_name) )
+            data_str.append( draw_heatmap(trace, fig, img_name, axis) )
 
         else:
             warn(f"Trace type {trace.type} is not supported yet.")
