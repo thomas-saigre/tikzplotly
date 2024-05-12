@@ -66,7 +66,7 @@ def fig6():
                         [20, 1, 60],
                         [30, 60, 1]]))
     # fig.show()
-    return fig, "Basic Heatmap with plotly.graph_objects"
+    return fig, "Basic Heatmap with plotly.graph\\_objects"
 
 def fig7():
     fig = go.Figure(data=go.Heatmap(
@@ -152,19 +152,12 @@ def fig9():
     # fig.show()
     return fig, "Heatmap with Datetime Axis"
 
-def fig10():
-    fig = go.Figure(data=go.Heatmap(
-                    z=[[1, 20, 30],
-                      [20, 1, 60],
-                      [30, 60, 1]],
-                    text=[['one', 'twenty', 'thirty'],
-                          ['twenty', 'one', 'sixty'],
-                          ['thirty', 'sixty', 'one']],
-                    texttemplate="%{text}",
-                    textfont={"size":20}))
 
+def fig11():    # from @JasonGross, see issue https://github.com/thomas-saigre/tikzplotly/issues/6
+    data = np.random.rand(10,10)
+    fig = px.imshow(data, color_continuous_scale='Viridis', title='Heatmap Example with Plotly Express')
     # fig.show()
-    return fig, "Text on Heatmap Points"
+    return fig, "Heatmap Example with Plotly Express"
 
 if __name__ == "__main__":
 
@@ -180,11 +173,11 @@ if __name__ == "__main__":
         # ("3", fig3),          # texttemplate not supported
         ("4", fig4),
         ("5", fig5),
-        # ("6", fig6)            # TODO
-        # ("7", fig7),           # TODO
-        # ("8", fig8)            # TODO
-        # ("9", fig9)            # TODO
-        # ("10", fig10)          # TODO
+        ("6", fig6),
+        ("7", fig7),
+        # ("8", fig8),          # Not supported
+        ("9", fig9),
+        ("11", fig11)
 
     ]
 

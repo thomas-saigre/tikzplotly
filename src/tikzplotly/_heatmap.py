@@ -50,7 +50,7 @@ def resize_image(img, nb_row, nb_col):
     block_size = (img.width // nb_col, img.height // nb_row)
 
     if block_size[0] != img.width / nb_col or block_size[1] != img.height / nb_row:
-        warn("png image has not been reduced")
+        warn("png image has not been reduced, see https://github.com/thomas-saigre/tikzplotly/issues/6#issuecomment-2106180586")
         return img
 
     for i in range(nb_row):
@@ -87,7 +87,10 @@ def draw_heatmap(data, fig, img_name, axis: Axis):
     # We create a new figure with only the data, and export it as a png
     fig_copy = deepcopy(fig)
     fig_copy.update_layout(coloraxis_showscale=False, coloraxis_colorbar=None, xaxis_visible=False, yaxis_visible=False)
-    fig_copy.update_traces(showscale=False)
+    try:
+        fig_copy.update_traces(showscale=False)
+    except ValueError as e:
+        pass
 
     if data.texttemplate is not None:
         warn("Text template is not supported yet.")
@@ -126,8 +129,10 @@ def draw_heatmap(data, fig, img_name, axis: Axis):
     elif data.showscale is not False:
         warn("No colorscale found, using default")
         axis.add_option("colormap", get_tikz_colorscale(DEFAULT_COLORSCALE))
-    axis.add_option("point meta max", figure_data.max())
-    axis.add_option("point meta min", figure_data.min())
+
+    tmp = np.where(figure_data == None, np.nan, figure_data)
+    axis.add_option("point meta max", tmp.max())
+    axis.add_option("point meta min", tmp.min())
     axis.add_option("xmin", xmin)
     axis.add_option("xmax", xmax)
     axis.add_option("ymin", ymax)
