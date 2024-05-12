@@ -69,6 +69,9 @@ def hex2rgb(hex_color):
     hex_color = hex_color.lstrip("#")
     return str(int(hex_color[:2], 16)) + ", " + str(int(hex_color[2:4], 16)) + ", " + str(int(hex_color[4:], 16))
 
+DEFAULT_COLORSCALE = ((0.0, '#0d0887'), (0.1111111111111111, '#46039f'), (0.2222222222222222, '#7201a8'), (0.3333333333333333, '#9c179e'), (0.4444444444444444, '#bd3786'), (0.5555555555555556, '#d8576b'), (0.6666666666666666, '#ed7953'), (0.7777777777777778, '#fb9f3a'), (0.8888888888888888, '#fdca26'), (1.0, '#f0f921'))
+
+
 ALICEBLUE = rgb_str(240, 248, 255)
 ANTIQUEWHITE = rgb_str(250, 235, 215)
 ANTIQUEWHITE1 = rgb_str(255, 239, 219)

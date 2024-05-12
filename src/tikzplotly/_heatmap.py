@@ -5,7 +5,8 @@ from PIL import Image
 from warnings import warn
 from ._tex import tex_addplot, get_tikz_colorscale
 from ._axis import Axis
-from ._color import hex2rgb
+from ._color import DEFAULT_COLORSCALE
+from ._utils import get_ticks_str
 
 def crop_image(img_data):
     """Crops an image to the smallest bounding box that contains all non-white pixels.
@@ -47,8 +48,10 @@ def resize_image(img, nb_row, nb_col):
     """
     resized_image = Image.new("RGBA", size = (nb_col, nb_row))
     block_size = (img.width // nb_col, img.height // nb_row)
-    assert block_size[0] == img.width / nb_col, "The image must be divisible by the number of rows and columns"
-    assert block_size[1] == img.height / nb_row, "The image must be divisible by the number of rows and columns"
+
+    if block_size[0] != img.width / nb_col or block_size[1] != img.height / nb_row:
+        warn("png image has not been reduced")
+        return img
 
     for i in range(nb_row):
         for j in range(nb_col):
@@ -79,58 +82,50 @@ def draw_heatmap(data, fig, img_name, axis: Axis):
 
     code = ""
 
-    figure_data = data.z
+    figure_data = np.array(data.z)
 
     # We create a new figure with only the data, and export it as a png
     fig_copy = deepcopy(fig)
     fig_copy.update_layout(coloraxis_showscale=False, coloraxis_colorbar=None, xaxis_visible=False, yaxis_visible=False)
-    fig_copy.show()
+    fig_copy.update_traces(showscale=False)
+
+    if data.texttemplate is not None:
+        warn("Text template is not supported yet.")
+        fig_copy.update_traces(texttemplate=None)
+    fig_copy.update_layout(title=None)
 
     img_bytes = fig_copy.to_image(format="png")  # The image created by plotly keeps places around the heatmap
     cropped_image = crop_image(Image.open(io.BytesIO(img_bytes)))   # so we crop all the white around the figure
-    cropped_image.save("debug:cropped.png")
-    resized_image = resize_image(cropped_image, *np.array(figure_data).shape)  # and we resize it so each square is a 1px x 1px square
-
+    resized_image = resize_image(cropped_image, *figure_data.shape)  # and we resize it so each square is a 1px x 1px square
     resized_image.save(img_name)
+
 
     xmin = -0.5
     xmax = -0.5 + figure_data.shape[1]
     ymin = -0.5 + figure_data.shape[0]
     ymax = -0.5         # NB : the axis is reversed
 
-    print(figure_data.shape)
-    print(xmin, xmax, ymin, ymax)
 
     if not (fig.layout.coloraxis.showscale == False):   # If the value is True or None
         axis.add_option("colorbar", None)
 
     if (x := data.x) is not None:
-        xtick = "{"
-        xticklabels = "{"
-        for i, val in enumerate(x):
-            xtick += str(i) + ","
-            xticklabels += str(val) + ","
-        xtick = xtick[:-1] + "}"
-        xticklabels = xticklabels[:-1] + "}"
+        xtick, xticklabels = get_ticks_str(x, fig.layout.xaxis.nticks)
         axis.add_option("xtick", xtick)
         axis.add_option("xticklabels", xticklabels)
 
     if (y := data.y) is not None:
-        ytick = "{"
-        yticklabels = "{"
-        for i, val in enumerate(y):
-            ytick += str(i) + ","
-            yticklabels += str(val) + ","
-        ytick = ytick[:-1] + "}"
-        yticklabels = yticklabels[:-1] + "}"
+        ytick, yticklabels = get_ticks_str(y, fig.layout.yaxis.nticks)
         axis.add_option("ytick", ytick)
         axis.add_option("yticklabels", yticklabels)
 
-    if data.texttemplate is not None:
-        warn("Text template is not supported yet.")
-
-    if (colorscale := fig.layout.coloraxis.colorscale) is not None:
+    if (colorscale := data.colorscale) is not None:
         axis.add_option("colormap", get_tikz_colorscale(colorscale))
+    elif (colorscale := fig.layout.coloraxis.colorscale) is not None:
+        axis.add_option("colormap", get_tikz_colorscale(colorscale))
+    elif data.showscale is not False:
+        warn("No colorscale found, using default")
+        axis.add_option("colormap", get_tikz_colorscale(DEFAULT_COLORSCALE))
     axis.add_option("point meta max", figure_data.max())
     axis.add_option("point meta min", figure_data.min())
     axis.add_option("xmin", xmin)

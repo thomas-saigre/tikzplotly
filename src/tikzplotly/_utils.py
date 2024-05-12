@@ -1,6 +1,7 @@
 import re
 import warnings
 from math import floor
+import numpy as np
 
 rep_digit = {'0': 'Z', '1': 'O', '2': 'T', '3': 'Th', '4': 'F', '5': 'Fi', '6': 'S', '7': 'Se', '8': 'E', '9': 'N'}
 rep_digit = dict((re.escape(k), v) for k, v in rep_digit.items())
@@ -111,3 +112,21 @@ def option_dict_to_str(options_dict, sep=" "):
     if options == "":
         return None
     return options.strip()[:-1]
+
+def get_ticks_str(data, nticks):
+    indices = np.arange(len(data))
+    if nticks is not None:
+        data_ = data[::len(data)//(nticks-1)]
+        data = np.append(data_, [data[-1]])
+        indices_ = indices[::len(indices)//(nticks-1)]
+        indices = np.append(indices_, [indices[-1]])
+
+    ticks = "{"
+    ticklabels = "{"
+    for i, val in zip(indices, data):
+        ticks += str(i) + ","
+        ticklabels += str(val) + ","
+    ticks = ticks[:-1] + "}"
+    ticklabels = ticklabels[:-1] + "}"
+
+    return ticks, ticklabels
