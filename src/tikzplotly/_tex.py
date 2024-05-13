@@ -1,3 +1,4 @@
+from ._color import hex2rgb
 
 def tex_comment(text):
     """Create a LaTeX comment.
@@ -191,3 +192,12 @@ def tex_text(text):
     escaping the special characters %, _, &, #, $, {, }, ~.
     """
     return text.replace("%", "\\%").replace("_", "\\_").replace("&", "\\&").replace("#", "\\#").replace("$", "\\$").replace("{", "\\{").replace("}", "\\}").replace("~", "\\textasciitilde ")
+
+def get_tikz_colorscale(colorscale, name="mycolor"):
+
+    code = "{" + str(name) + "}{\n"
+    for dist, color in colorscale:
+        rgb_color = hex2rgb(color)
+        code += f"  rgb255({dist}cm)=({rgb_color})".replace(" ", "") + ";\n"
+    code += "}"
+    return code

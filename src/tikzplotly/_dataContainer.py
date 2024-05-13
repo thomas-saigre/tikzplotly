@@ -51,6 +51,8 @@ class DataContainer:
             tuple (macro_name, y_label), where macro_name is the name of the data in LaTeX and y_label the name of the y data in LaTeX
         """
         for data in self.data:
+            if len(data.x) != len(x):
+                continue
             are_equals = data.x == x
             if type(are_equals) == bool:
                 if are_equals:

@@ -2,6 +2,7 @@ from pathlib import Path
 from .__about__ import __version__
 from ._tex import *
 from ._scatter import draw_scatter2d
+from ._heatmap import draw_heatmap
 from ._axis import Axis
 from ._color import *
 from ._annotations import str_from_annotation
@@ -15,6 +16,7 @@ def get_tikz_code(
         tikz_options = None,
         axis_options = None,
         include_disclamer = True,
+        img_name = "heatmap.png",
     ):
     """Get the tikz code of a figure.
 
@@ -28,6 +30,8 @@ def get_tikz_code(
         options given to the axis environment, by default None
     include_disclamer, optional
         include a disclamer in the code, by default True
+    img_name, optional
+        name of the PNG file for heatmap, by default "heatmap.png"
 
     Returns
     -------
@@ -59,6 +63,10 @@ def get_tikz_code(
                 colors_set.add(convert_color(trace.line.color)[:3])
             if trace.fillcolor is not None:
                 colors_set.add(convert_color(trace.fillcolor)[:3])
+
+        elif trace.type == "heatmap":
+            data_str.append( draw_heatmap(trace, fig, img_name, axis) )
+
         else:
             warn(f"Trace type {trace.type} is not supported yet.")
 
@@ -110,5 +118,8 @@ def save(filepath: str | Path, *args, encoding: str | None = None, **kwargs):
         Additional arguments are passed to the backend.
     """
     code = get_tikz_code(*args, **kwargs)
+    directory = Path(filepath).parent
+    if not directory.exists():
+        directory.mkdir(parents=True)
     with open(filepath, "w") as fd:
         fd.write(code)
