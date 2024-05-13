@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tikzplotly"
-version = "0.1.4-patch"
+version = "0.1.5"
 description = "Convert plotly figures to LaTeX / tikz figures"
 readme = "README.md"
 authors = [{name = "Thomas Saigre", email = "tikzplotly@outlook.fr"}]
