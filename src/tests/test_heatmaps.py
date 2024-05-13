@@ -178,7 +178,6 @@ if __name__ == "__main__":
         # ("8", fig8),          # Not supported
         ("9", fig9),
         ("11", fig11)
-
     ]
 
     main_tex_content = tex_create_document(options="twocolumn", compatibility="newest")
@@ -190,7 +189,6 @@ if __name__ == "__main__":
     for i, f in functions:
         print(f"Figure {i}")
         fig, title = f()
-        data = fig.data
         save_path = os.path.join(file_directory, "outputs", "test_heatmap", "fig{}.tex".format(i))
         tikzplotly.save(save_path, fig, img_name=os.path.join(file_directory, "outputs", "test_heatmap", "fig{}.png".format(i)))
         main_tex_content += tex_begin_environment("figure", stack_env)

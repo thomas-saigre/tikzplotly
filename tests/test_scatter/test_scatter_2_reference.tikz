@@ -1,0 +1,68 @@
+\pgfplotstableread{data0 Botswana
+47.622 851.2411407
+49.618 918.2325349
+51.52 983.6539764
+53.298 1214.709294
+56.024 2263.6111140000007
+59.319 3214.857818
+61.484 4551.14215
+63.622 6205.88385
+62.745 7954.111645
+52.556 8647.142313
+46.63399999999999 11003.60508
+50.728 12569.85177
+}\dataZ
+\pgfplotstableread{data1 Canada
+68.75 11367.16112
+69.96 12489.95006
+71.3 13462.48555
+72.13 16076.58803
+72.88 18970.57086
+74.21 22090.88306
+75.76 22898.79214
+76.86 26626.51503
+77.95 26342.88426
+78.61 28954.92589
+79.77 33328.96507
+80.653 36319.23501
+}\dataO
+
+\begin{tikzpicture}
+
+\definecolor{636efa}{HTML}{636efa}
+\definecolor{EF553B}{HTML}{EF553B}
+
+\begin{axis}[
+xlabel=lifeExp,
+ylabel=gdpPercap
+]
+\addplot+ [mark=*, solid, color=636efa] table[y=Botswana] {\dataZ};
+\node at (axis cs:47.622,851.2411407) {1952};
+\node at (axis cs:49.618,918.2325349) {1957};
+\node at (axis cs:51.52,983.6539764) {1962};
+\node at (axis cs:53.298,1214.709294) {1967};
+\node at (axis cs:56.024,2263.6111140000007) {1972};
+\node at (axis cs:59.319,3214.857818) {1977};
+\node at (axis cs:61.484,4551.14215) {1982};
+\node at (axis cs:63.622,6205.88385) {1987};
+\node at (axis cs:62.745,7954.111645) {1992};
+\node at (axis cs:52.556,8647.142313) {1997};
+\node at (axis cs:46.63399999999999,11003.60508) {2002};
+\node at (axis cs:50.728,12569.85177) {2007};
+\addlegendentry{Botswana}
+\addplot+ [mark=*, solid, color=EF553B] table[y=Canada] {\dataO};
+\node at (axis cs:68.75,11367.16112) {1952};
+\node at (axis cs:69.96,12489.95006) {1957};
+\node at (axis cs:71.3,13462.48555) {1962};
+\node at (axis cs:72.13,16076.58803) {1967};
+\node at (axis cs:72.88,18970.57086) {1972};
+\node at (axis cs:74.21,22090.88306) {1977};
+\node at (axis cs:75.76,22898.79214) {1982};
+\node at (axis cs:76.86,26626.51503) {1987};
+\node at (axis cs:77.95,26342.88426) {1992};
+\node at (axis cs:78.61,28954.92589) {1997};
+\node at (axis cs:79.77,33328.96507) {2002};
+\node at (axis cs:80.653,36319.23501) {2007};
+\addlegendentry{Canada}
+\end{axis}
+\end{tikzpicture}

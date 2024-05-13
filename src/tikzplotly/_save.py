@@ -84,7 +84,9 @@ def get_tikz_code(
     code += tex_begin_environment("tikzpicture", stack_env, options=tikz_options)
 
     code += "\n"
-    for color in colors_set:
+    color_list = list(colors_set)
+    color_list.sort()
+    for color in color_list:
         code += tex_add_color(color[0], color[1], color[2])
     code += "\n"
 
