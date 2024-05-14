@@ -1,0 +1,53 @@
+\pgfplotstableread{data0 Television Newspaper Internet Radio
+2001 74 45 13 18
+2002 82 42 14 21
+2003 80 50 20 18
+2004 74 46 24 21
+2005 73 36 20 16
+2006 72 36 24 14
+2007 74 34 24 13
+2008 70 35 40 18
+2009 70 32 35 17
+2010 66 31 41 16
+2011 66 31 43 19
+2012 69 28 50 23
+}\dataZ
+\pgfplotstableread{data1 y0 y1 y2 y3
+2001 74 45 13 18
+2012 69 28 50 23
+}\dataO
+
+\begin{tikzpicture}
+
+\definecolor{4bb96e9250}{RGB}{150,150,150}
+\definecolor{6cb9a1c7d2}{RGB}{37,37,37}
+\definecolor{6fb95895bc}{RGB}{67,67,67}
+\definecolor{8b7c4ec1c1}{RGB}{49,130,189}
+\definecolor{9b5dacb44d}{RGB}{115,115,115}
+\definecolor{9f6fd82da0}{RGB}{189,189,189}
+
+\begin{axis}[
+axis background/.style={fill=white},
+axis y line=none,
+clip=false
+]
+\addplot+ [mark=none, line width=1.5, color=6fb95895bc] table[y=Television] {\dataZ};
+\addplot+ [only marks, mark size=3, mark options={solid, fill=6fb95895bc}] table[y=y0] {\dataO};
+\addplot+ [mark=none, line width=1.5, color=9b5dacb44d] table[y=Newspaper] {\dataZ};
+\addplot+ [only marks, mark size=3, mark options={solid, fill=9b5dacb44d}] table[y=y1] {\dataO};
+\addplot+ [mark=none, line width=3, color=8b7c4ec1c1] table[y=Internet] {\dataZ};
+\addplot+ [only marks, mark size=4.5, mark options={solid, fill=8b7c4ec1c1}] table[y=y2] {\dataO};
+\addplot+ [mark=none, line width=1.5, color=9f6fd82da0] table[y=Radio] {\dataZ};
+\addplot+ [only marks, mark size=3, mark options={solid, fill=9f6fd82da0}] table[y=y3] {\dataO};
+\node[anchor= east] at (axis cs:\pgfkeysvalueof{/pgfplots/xmin} + 0.05*\pgfkeysvalueof{/pgfplots/xmax}-0.05*\pgfkeysvalueof{/pgfplots/xmin}, 74) {Television 74\%};
+\node[anchor= west] at (axis cs:\pgfkeysvalueof{/pgfplots/xmin} + 0.95*\pgfkeysvalueof{/pgfplots/xmax}-0.95*\pgfkeysvalueof{/pgfplots/xmin}, 69) {69\%};
+\node[anchor= east] at (axis cs:\pgfkeysvalueof{/pgfplots/xmin} + 0.05*\pgfkeysvalueof{/pgfplots/xmax}-0.05*\pgfkeysvalueof{/pgfplots/xmin}, 45) {Newspaper 45\%};
+\node[anchor= west] at (axis cs:\pgfkeysvalueof{/pgfplots/xmin} + 0.95*\pgfkeysvalueof{/pgfplots/xmax}-0.95*\pgfkeysvalueof{/pgfplots/xmin}, 28) {28\%};
+\node[anchor= east] at (axis cs:\pgfkeysvalueof{/pgfplots/xmin} + 0.05*\pgfkeysvalueof{/pgfplots/xmax}-0.05*\pgfkeysvalueof{/pgfplots/xmin}, 13) {Internet 13\%};
+\node[anchor= west] at (axis cs:\pgfkeysvalueof{/pgfplots/xmin} + 0.95*\pgfkeysvalueof{/pgfplots/xmax}-0.95*\pgfkeysvalueof{/pgfplots/xmin}, 50) {50\%};
+\node[anchor= east] at (axis cs:\pgfkeysvalueof{/pgfplots/xmin} + 0.05*\pgfkeysvalueof{/pgfplots/xmax}-0.05*\pgfkeysvalueof{/pgfplots/xmin}, 18) {Radio 18\%};
+\node[anchor= west] at (axis cs:\pgfkeysvalueof{/pgfplots/xmin} + 0.95*\pgfkeysvalueof{/pgfplots/xmax}-0.95*\pgfkeysvalueof{/pgfplots/xmin}, 23) {23\%};
+\node[anchor=south west, color=6cb9a1c7d2] at (rel axis cs:0.0, 1.05) {Main Source for News};
+\node[anchor=north, color=4bb96e9250] at (rel axis cs:0.5, -0.1) {Source: PewResearch Center \& Storytelling with data};
+\end{axis}
+\end{tikzpicture}

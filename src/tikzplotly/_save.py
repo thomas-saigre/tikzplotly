@@ -78,8 +78,9 @@ def get_tikz_code(
     if include_disclamer:
         code += tex_comment(f"This file was created with tikzplotly version {__version__}.")
 
-    code += data_container.exportData()
-    code += "\n"
+    if len(data_container.data) > 0:
+        code += data_container.exportData()
+        code += "\n"
 
     code += tex_begin_environment("tikzpicture", stack_env, options=tikz_options)
 

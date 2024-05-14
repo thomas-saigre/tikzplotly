@@ -15,7 +15,6 @@ def _unidiff_output(expected, actual):
 def assert_equality(fig, target_file, **kwargs):
     tikz_code = tikzplotly.get_tikz_code(fig, include_disclamer=False, **kwargs)
 
-
-    with open(this_dir / target_file, encoding="utf-8") as f:
+    with open(target_file, encoding="utf-8") as f:
         reference = f.read()
     assert reference == tikz_code, target_file + "\n" + _unidiff_output(reference, tikz_code)

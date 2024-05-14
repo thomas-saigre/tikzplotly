@@ -1,7 +1,6 @@
 # From https://plotly.com/python/marker-style/
 import plotly
 import plotly.express as px
-import pandas as pd
 import plotly.graph_objects as go
 import numpy as np
 import tikzplotly
