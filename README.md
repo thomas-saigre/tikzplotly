@@ -4,6 +4,9 @@
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/tikzplotly.svg?style=flat-square)](https://pypi.org/pypi/tikzplotly/)
 
 [![Issue](https://img.shields.io/github/issues-raw/thomas-saigre/tikzplotly?style=flat-square)](https://github.com/thomas-saigre/tikzplotly/issues)
+[![codecov](https://img.shields.io/codecov/c/github/thomas-saigre/tikzplotly.svg?style=flat-square)](https://codecov.io/gh/thomas-saigre/tikzplotly)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/thomas-saigre/tikzplotly/ci.yml?style=flat-square)
+
 
 # Tikzplotly
 
