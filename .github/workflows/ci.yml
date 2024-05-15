@@ -13,11 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up Python
-        uses: actions/setup-python@v2
-      - name: Run pre-commit
-        uses: pre-commit/action@v2.0.3
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
 
   build:
     runs-on: ${{ matrix.os }}
@@ -26,10 +26,10 @@ jobs:
         os: [ubuntu-latest, windows-latest, macOS-latest]
         python-version: ["3.7", "3.8", "3.9", "3.10"]
     steps:
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       # - name: Install system dependencies
       #   run: sudo apt-get install -y texlive-latex-base texlive-latex-extra context python3-tk
       - name: Test with tox
