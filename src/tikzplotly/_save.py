@@ -110,7 +110,7 @@ def get_tikz_code(
     return code
 
 
-def save(filepath: str | Path, *args, encoding: str | None = None, **kwargs):
+def save(filepath, *args, **kwargs):
     """Save a figure to a file or a stream.
 
     Parameters
