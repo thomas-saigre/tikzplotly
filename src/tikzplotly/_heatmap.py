@@ -131,8 +131,8 @@ def draw_heatmap(data, fig, img_name, axis: Axis):
         axis.add_option("colormap", get_tikz_colorscale(DEFAULT_COLORSCALE))
 
     tmp = np.where(figure_data == None, np.nan, figure_data)
-    axis.add_option("point meta max", tmp.max())
-    axis.add_option("point meta min", tmp.min())
+    axis.add_option("point meta max", np.nanmax(tmp))
+    axis.add_option("point meta min", np.nanmin(tmp))
     axis.add_option("xmin", xmin)
     axis.add_option("xmax", xmax)
     axis.add_option("ymin", ymax)

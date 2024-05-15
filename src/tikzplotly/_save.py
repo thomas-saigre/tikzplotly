@@ -78,13 +78,16 @@ def get_tikz_code(
     if include_disclamer:
         code += tex_comment(f"This file was created with tikzplotly version {__version__}.")
 
-    code += data_container.exportData()
-    code += "\n"
+    if len(data_container.data) > 0:
+        code += data_container.exportData()
+        code += "\n"
 
     code += tex_begin_environment("tikzpicture", stack_env, options=tikz_options)
 
     code += "\n"
-    for color in colors_set:
+    color_list = list(colors_set)
+    color_list.sort()
+    for color in color_list:
         code += tex_add_color(color[0], color[1], color[2])
     code += "\n"
 
@@ -107,7 +110,7 @@ def get_tikz_code(
     return code
 
 
-def save(filepath: str | Path, *args, encoding: str | None = None, **kwargs):
+def save(filepath, *args, **kwargs):
     """Save a figure to a file or a stream.
 
     Parameters

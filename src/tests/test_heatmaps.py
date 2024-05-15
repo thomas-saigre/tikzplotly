@@ -6,11 +6,9 @@ from tikzplotly._tex import tex_create_document, tex_begin_environment, tex_end_
 
 import plotly
 import plotly.express as px
-import pandas as pd
 import plotly.graph_objects as go
 import numpy as np
 import datetime
-import numpy as np
 np.random.seed(1)
 
 def fig1():
@@ -168,17 +166,16 @@ if __name__ == "__main__":
     file_directory = os.path.dirname(os.path.abspath(__file__))
 
     functions = [
-        ("1", fig1),
-        ("2", fig2),
-        # ("3", fig3),          # texttemplate not supported
-        ("4", fig4),
-        ("5", fig5),
-        ("6", fig6),
+        # ("1", fig1),
+        # ("2", fig2),
+        # # ("3", fig3),          # texttemplate not supported
+        # ("4", fig4),
+        # ("5", fig5),
+        # ("6", fig6),
         ("7", fig7),
-        # ("8", fig8),          # Not supported
-        ("9", fig9),
-        ("11", fig11)
-
+        # # ("8", fig8),          # Not supported
+        # ("9", fig9),
+        # ("11", fig11)
     ]
 
     main_tex_content = tex_create_document(options="twocolumn", compatibility="newest")
@@ -190,7 +187,6 @@ if __name__ == "__main__":
     for i, f in functions:
         print(f"Figure {i}")
         fig, title = f()
-        data = fig.data
         save_path = os.path.join(file_directory, "outputs", "test_heatmap", "fig{}.tex".format(i))
         tikzplotly.save(save_path, fig, img_name=os.path.join(file_directory, "outputs", "test_heatmap", "fig{}.png".format(i)))
         main_tex_content += tex_begin_environment("figure", stack_env)

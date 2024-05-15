@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tikzplotly"
-version = "0.1.5"
+version = "0.1.6"
 description = "Convert plotly figures to LaTeX / tikz figures"
 readme = "README.md"
 authors = [{name = "Thomas Saigre", email = "tikzplotly@outlook.fr"}]
@@ -13,7 +13,6 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",

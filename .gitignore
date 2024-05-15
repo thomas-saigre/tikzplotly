@@ -20,3 +20,8 @@ venv/
 
 # Distribution / packaging
 dist/
+
+# Tox
+.tox/
+.coverage
+coverage.xml
