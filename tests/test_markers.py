@@ -19,6 +19,19 @@ def plot_1():
                   selector=dict(mode='markers'))
     return fig
 
+def plot_1_bis():
+
+    df = px.data.iris()
+    fig = px.scatter(df, x="sepal_width", y="sepal_length", color="species")
+
+    fig.update_traces(marker=dict(size=12,
+                              symbol = "1",
+                              line=dict(width=2,
+                                        color='DarkSlateGrey')),
+                  selector=dict(mode='markers'))
+    return fig
+
+
 def plot_2():
     np.random.seed(1)
     x = np.random.uniform(low=3, high=6, size=(500,))
@@ -81,6 +94,9 @@ def plot_3():
 
 def test_1():
     assert_equality(plot_1(), os.path.join(this_dir, test_name, test_name + "_1_reference.tex"))
+
+def test_1_bis():
+    assert_equality(plot_1_bis(), os.path.join(this_dir, test_name, test_name + "_1_bis_reference.tex"))
 
 def test_2():
     assert_equality(plot_2(), os.path.join(this_dir, test_name, test_name + "_2_reference.tex"))
