@@ -54,6 +54,18 @@ def get_tikz_code(
         warn("No data in figure.")
 
     for trace in figure_data:
+
+        # Handle the case where x or y is None
+        if trace.x is None and trace.y is None:
+            warn("Adding empty trace.")
+            data_str.append( "\\addplot coordinates {};\n" )
+            continue
+        else:
+            if trace.x is None:
+                trace.x = list(range(len(trace.y)))
+            if trace.y is None:
+                trace.y = list(range(len(trace.x)))
+
         if trace.type == "scatter":
             data_name_macro, y_name = data_container.addData(trace.x, trace.y, trace.name)
             data_str.append( draw_scatter2d(data_name_macro, trace, y_name, axis, colors_set) )
