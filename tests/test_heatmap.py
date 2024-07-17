@@ -51,6 +51,12 @@ def plot_4():
 
     return fig
 
+def plot_5():
+    fig = px.imshow([[1, 20, 30],
+                    [20, 1, 60],
+                    [30, 60, 1]])
+    fig.data[0].z = None
+    return fig
 
 def test_1():
     assert_equality(plot_1(), os.path.join(this_dir, test_name, test_name + "_1_reference.tex"), img_name="/tmp/tikzplotly/fig1.png")
@@ -63,3 +69,6 @@ def test_3():
 
 def test_4():
     assert_equality(plot_4(), os.path.join(this_dir, test_name, test_name + "_4_reference.tex"), img_name="/tmp/tikzplotly/fig4.png")
+
+def test_5():
+    assert_equality(plot_5(), os.path.join(this_dir, test_name, test_name + "_5_reference.tex"))
