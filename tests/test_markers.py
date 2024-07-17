@@ -11,6 +11,9 @@ test_name = "test_markers"
 
 def plot_1(symbol):
 
+    if symbol == "_____":   # invalid symbol, for plotly, we still need to pass a valid one
+        symbol = "circle"
+
     df = px.data.iris()
     fig = px.scatter(df, x="sepal_width", y="sepal_length", color="species")
 
@@ -81,7 +84,7 @@ def plot_3():
 
     return fig
 
-@pytest.mark.parametrize("symbol", ["circle", 0, "0"])
+@pytest.mark.parametrize("symbol", ["circle", 0, "0", "_____"])
 def test_1(symbol):
     assert_equality(plot_1(symbol), os.path.join(this_dir, test_name, test_name + "_1_reference.tex"))
 
