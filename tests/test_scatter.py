@@ -4,6 +4,7 @@ import numpy as np
 import os
 from .helpers import assert_equality
 import pathlib
+import pytest
 
 this_dir = pathlib.Path(__file__).resolve().parent
 test_name = "test_scatter"
@@ -136,6 +137,12 @@ def plot_5():
     fig = px.line(df, x='date', y="GOOG")
     return fig
 
+def plot_6(x=True, y=True):
+    fig = px.scatter(x=[0, 1, 2, 3, 4], y=[0, 1, 4, 9, 16])
+    if x: fig.data[0].x = None
+    if y: fig.data[0].y = None
+    return fig
+
 def test_1():
     assert_equality(plot_1(), os.path.join(this_dir, test_name, test_name + "_1_reference.tex"))
 
@@ -150,3 +157,7 @@ def test_4():
 
 def test_5():
     assert_equality(plot_5(), os.path.join(this_dir, test_name, test_name + "_5_reference.tex"))
+
+@pytest.mark.parametrize("x, y", [(True, True), (True, False), (False, True)])
+def test_6(x, y):
+    assert_equality(plot_6(x, y), os.path.join(this_dir, test_name, test_name + f"_6_{x}_{y}_reference.tex"))
