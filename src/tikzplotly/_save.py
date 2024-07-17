@@ -54,7 +54,19 @@ def get_tikz_code(
         warn("No data in figure.")
 
     for trace in figure_data:
+
         if trace.type == "scatter":
+            # Handle the case where x or y is empty
+            if trace.x is None and trace.y is None:
+                warn("Adding empty trace.")
+                data_str.append( "\\addplot coordinates {};\n" )
+                continue
+            else:
+                if trace.x is None:
+                    trace.x = list(range(len(trace.y)))
+                if trace.y is None:
+                    trace.y = list(range(len(trace.x)))
+
             data_name_macro, y_name = data_container.addData(trace.x, trace.y, trace.name)
             data_str.append( draw_scatter2d(data_name_macro, trace, y_name, axis, colors_set) )
             if trace.name and trace['showlegend'] != False:
@@ -65,6 +77,11 @@ def get_tikz_code(
                 colors_set.add(convert_color(trace.fillcolor)[:3])
 
         elif trace.type == "heatmap":
+            # Handle the case where x, y or z is empty
+            if trace.z is None:
+                warn("Adding empty trace.")
+                data_str.append( "\\addplot coordinates {};\n" )
+                continue
             data_str.append( draw_heatmap(trace, fig, img_name, axis) )
 
         else:
