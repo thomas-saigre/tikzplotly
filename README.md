@@ -1,4 +1,4 @@
-![logo-tikzplotly](https://raw.githubusercontent.com/thomas-saigre/tikzplotly/main/docs/img/logo.svg "Tikzplotly")
+![logo-tikzplotly](https://raw.githubusercontent.com/thomas-saigre/tikzplotly/main/docs/assets/logo.svg "Tikzplotly")
 
 
 [![PyPi Version](https://img.shields.io/pypi/v/tikzplotly.svg?style=flat-square)](https://pypi.org/project/tikzplotly)
