@@ -31,6 +31,8 @@ class Axis():
                     self.options[option] = None
         self.environment = "axis"
 
+        self.xticks = None
+
         if layout.xaxis.visible is False:
             self.x_label = None
             self.add_option("hide x axis", None)

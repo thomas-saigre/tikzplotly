@@ -113,7 +113,26 @@ def option_dict_to_str(options_dict, sep=" "):
         return None
     return options.strip()[:-1]
 
-def get_ticks_str(data, nticks):
+def get_ticks_str(data, nticks=None):
+    """Get the ticks and ticklabels for the axis.
+
+    Parameters
+    ----------
+    data
+        data to be plotted
+    nticks
+        number of ticks
+
+    Returns
+    -------
+    tuple
+        ticks and ticklabels
+
+    Examples
+    --------
+    >>> get_ticks_str(["Sun", "Sat", "Thur", "Fri"])
+    ({0,1,2,3}, {"Sun", "Sat", "Thur", "Fri"})
+    """
     indices = np.arange(len(data))
     if nticks is not None:
         data_ = data[::len(data)//(nticks-1)]

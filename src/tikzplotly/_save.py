@@ -3,11 +3,12 @@ from .__about__ import __version__
 from ._tex import *
 from ._scatter import draw_scatter2d
 from ._heatmap import draw_heatmap
+from ._histogram import draw_histogram
 from ._axis import Axis
 from ._color import *
 from ._annotations import str_from_annotation
 from ._dataContainer import DataContainer
-from ._utils import sanitize_TeX_text
+from ._utils import sanitize_TeX_text, get_ticks_str
 from warnings import warn
 import re
 
@@ -49,6 +50,11 @@ def get_tikz_code(
         axis.add_option("axis x line", "none")
     if figure_layout.yaxis.showline == False:
         axis.add_option("axis y line", "none")
+    if figure_layout.xaxis.categoryorder == "array":
+        axis.xticks = figure_layout.xaxis.categoryarray
+        ticks, ticklabels = get_ticks_str(figure_layout.xaxis.categoryarray)
+        axis.add_option("xtick", ticks)
+        axis.add_option("xticklabels", ticklabels)
 
     if len(figure_data) == 0:
         warn("No data in figure.")
@@ -83,6 +89,10 @@ def get_tikz_code(
                 data_str.append( "\\addplot coordinates {};\n" )
                 continue
             data_str.append( draw_heatmap(trace, fig, img_name, axis) )
+
+        elif trace.type == "histogram":
+
+            data_str.append( draw_histogram(trace, axis, colors_set) )
 
         else:
             warn(f"Trace type {trace.type} is not supported yet.")
