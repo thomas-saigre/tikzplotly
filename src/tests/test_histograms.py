@@ -41,6 +41,56 @@ def fig5():
     # fig.show()
     return fig, "Histograms on Categorical Data"
 
+def fig6():
+    df = px.data.tips()
+    fig = px.histogram(df, x="total_bill", histnorm='probability density')
+    # fig.show()
+    return fig, "Type of normalization"
+
+def fig7():
+    df = px.data.tips()
+    fig = px.histogram(df, x="total_bill",
+                    title='Histogram of bills',
+                    labels={'total_bill':'total bill'}, # can specify one label per df column
+                    opacity=0.8,
+                    log_y=True, # represent bars with log scale
+                    color_discrete_sequence=['indianred'] # color of histogram bars
+                    )
+    # fig.show()
+    return fig, "Aspect of the histogram plot"
+
+def fig8():
+    df = px.data.tips()
+    fig = px.histogram(df, x="total_bill", color="sex")
+    # fig.show()
+    return fig, "Several histograms for different values of one column"
+
+def fig9():
+    df = px.data.tips()
+    fig = px.histogram(df, x="total_bill", color="sex", marginal="rug", # can be `box`, `violin`
+                       hover_data=df.columns)
+    return fig, "Histograms with pattern shapes"
+
+def fig10():
+    df = px.data.tips()
+    fig = px.histogram(df, x="total_bill", y="tip", histfunc="avg", nbins=8, text_auto=True)
+    return fig, "Adding text labels"
+
+def fig11():
+    np.random.seed(1)
+    x = np.random.randn(500)
+    fig = go.Figure(data=[go.Histogram(x=x)])
+    return fig, "Basic Histogram"
+
+def fig12():
+    x = np.random.randn(500)
+    fig = go.Figure(data=[go.Histogram(x=x, histnorm='probability')])
+    return fig, "Normalized Histogram"
+
+def fig13():
+    y = np.random.randn(500)
+    fig = go.Figure(data=[go.Histogram(y=y)])
+    return fig, "Horizontal Histogram"
 
 if __name__ == "__main__":
 
@@ -55,8 +105,16 @@ if __name__ == "__main__":
         ("1", fig1),
         ("2", fig2),
         ("3", fig3),
-        ("4", fig4),
+        # ("4", fig4),
         ("5", fig5),
+        ("6", fig6),
+        ("7", fig7),
+        ("8", fig8),
+        # ("9", fig9), # Trace type box is not yet supported
+        # ("10", fig10),  # Text template is not supported yet.
+        ("11", fig11),
+        ("12", fig12),
+        ("13", fig13),
     ]
 
     main_tex_content = tex_create_document(options="twocolumn", compatibility="newest")

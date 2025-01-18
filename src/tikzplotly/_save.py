@@ -93,6 +93,8 @@ def get_tikz_code(
         elif trace.type == "histogram":
 
             data_str.append( draw_histogram(trace, axis, colors_set) )
+            if trace.name and trace['showlegend'] != False:
+                data_str.append( tex_add_legendentry(sanitize_TeX_text(trace.name)) )
 
         else:
             warn(f"Trace type {trace.type} is not supported yet.")
@@ -111,12 +113,12 @@ def get_tikz_code(
 
     code += tex_begin_environment("tikzpicture", stack_env, options=tikz_options)
 
-    code += "\n"
+    if bool(colors_set): code += "\n"
     color_list = list(colors_set)
     color_list.sort()
     for color in color_list:
         code += tex_add_color(color[0], color[1], color[2])
-    code += "\n"
+    if bool(colors_set): code += "\n"
 
     code += axis.open_environment(stack_env)
 
