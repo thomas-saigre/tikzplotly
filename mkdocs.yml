@@ -44,9 +44,19 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+  - attr_list
+  - md_in_html
+  - pymdownx.blocks.caption
 
 
 extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/thomas-saigre/tikzplotly
+
+nav:
+  - Home: index.md
+  - Tilzplotly:
+    - "Supported plots": plot/supported.md
+    - "Other features" : plot/features.md
+    - "NB": plot/NB.md

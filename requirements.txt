@@ -1,2 +1,8 @@
+numpy
+plotly
+pillow
+kaleido
+tox
+pandas
 mkdocs-material
 mkdocs-git-revision-date-localized-plugin

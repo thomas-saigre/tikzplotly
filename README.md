@@ -1,3 +1,10 @@
+---
+title: Tikzplotly
+subtitle: Convert plotly figures to tikz code
+hide:
+    - navigation
+---
+
 ![logo-tikzplotly](https://raw.githubusercontent.com/thomas-saigre/tikzplotly/main/docs/assets/logo.svg "Tikzplotly")
 
 
