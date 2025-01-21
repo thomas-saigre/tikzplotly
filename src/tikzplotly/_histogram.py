@@ -56,17 +56,21 @@ def draw_histogram(trace, axis: Axis, colors_set, row_sep="\\\\"):
 
     code = ""
 
+    plot_options = {"hist": None}
+    type_options = {"row sep": row_sep, "y index": 0}
+    hist_options = {}
+
     if trace.x is not None:
         data_str = formalize_data(trace.x, axis, row_sep=row_sep)
         axis.add_option("ybar", None)
     elif trace.y is not None:
         data_str = formalize_data(trace.y, axis, row_sep=row_sep)
         axis.add_option("ybar", None)
-        warn("Horizontal histograms seem to be not supported in pgfplots. Vertical histograms will be plotted instead.")
+        axis.add_option("x filter/.expression", "rawy")
+        axis.add_option("y filter/.expression", "rawx")
+        hist_options["handler/.style"] = "{xbar interval}"
 
-    plot_options = {"hist": None}
-    type_options = {"row sep": row_sep, "y index": 0}
-    hist_options = {}
+
 
     if trace.nbinsx is not None:
         hist_options["bins"] = trace.nbinsx
