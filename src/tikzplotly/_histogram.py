@@ -61,7 +61,8 @@ def draw_histogram(trace, axis: Axis, colors_set, row_sep="\\\\"):
         axis.add_option("ybar", None)
     elif trace.y is not None:
         data_str = formalize_data(trace.y, axis, row_sep=row_sep)
-        axis.add_option("xbar", None)
+        axis.add_option("ybar", None)
+        warn("Horizontal histograms seem to be not supported in pgfplots. Vertical histograms will be plotted instead.")
 
     plot_options = {"hist": None}
     type_options = {"row sep": row_sep, "y index": 0}
@@ -82,22 +83,32 @@ def draw_histogram(trace, axis: Axis, colors_set, row_sep="\\\\"):
     elif trace.histnorm == "probability density":
         hist_options["density"] = None
 
+    if trace.cumulative.enabled:
+        hist_options["cumulative"] = None
+
     if bool(hist_options):
         plot_options["hist"] = f"{{{option_dict_to_str(hist_options)}}}"
+
+    if trace.texttemplate is not None:
+        warn("Text template is not supported yet.")
 
     if (m := trace.marker) is not None:
 
         if (c := m.color) is not None:
             colors_set.add(convert_color(c))
             plot_options["fill"] = convert_color(c)[0]
+            plot_options["color"] = convert_color(c)[0]
 
         if m.line is not None:
             if m.line.color is not None:
                 colors_set.add(m.line.color)
-                plot_options["draw"] = convert_color(m.line.color)
+                plot_options["color"] = convert_color(m.line.color)
 
         if m.opacity is not None:
             plot_options["opacity"] = m.opacity
+
+    if (o := trace.opacity) is not None:
+        plot_options["opacity"] = o
 
     if (f := trace.histfunc) is not None:
         if f != "count":
