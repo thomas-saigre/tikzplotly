@@ -1,6 +1,8 @@
 from ._color import convert_color
 from ._tex import tex_begin_environment
 from ._utils import sanitize_TeX_text, option_dict_to_str, get_ticks_str
+from warnings import warn
+
 class Axis():
 
     def __init__(self, layout, colors_set, axis_options=None):
@@ -142,6 +144,9 @@ class Axis():
             ticks, ticklabels = get_ticks_str(self.layout.xaxis.categoryarray)
             self.add_option("xtick", ticks)
             self.add_option("xticklabels", ticklabels)
+
+        if self.layout.xaxis.categoryorder != "trace" or self.layout.yaxis.categoryorder != "trace" or self.layout.xaxis.categoryorder != "total descending":
+            warn("The categoryorder option is not supported (yet 🤞) for the axis environment.")
 
     def treat_background_layout(self, colors_set):
         if self.layout.plot_bgcolor is not None:
