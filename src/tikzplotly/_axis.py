@@ -1,6 +1,6 @@
 from ._color import convert_color
 from ._tex import tex_begin_environment
-from ._utils import sanitize_TeX_text, option_dict_to_str
+from ._utils import sanitize_TeX_text, option_dict_to_str, get_ticks_str
 class Axis():
 
     def __init__(self, layout, colors_set, axis_options=None):
@@ -15,9 +15,8 @@ class Axis():
         axis_options
             options given to the axis environment, by default None. Can be a dict ({option: value}) or a string ("option1=value1, option2=value2").
         """
-        self.x_label = layout.xaxis.title.text
-        self.y_label = layout.yaxis.title.text
-        self.title = layout.title.text
+        self.layout = layout
+
         self.options = {}
         if isinstance(axis_options, dict):
             self.options = axis_options
@@ -33,41 +32,12 @@ class Axis():
 
         self.xticks = None
 
-        if layout.xaxis.visible is False:
-            self.x_label = None
-            self.add_option("hide x axis", None)
-        if layout.yaxis.visible is False:
-            self.y_label = None
-            self.add_option("hide y axis", None)
+        self.treat_axis_layout()
+        self.treat_background_layout(colors_set)
+        self.treat_bar_layout()
 
-        # Handle log axes
-        if layout.xaxis.type == "log":
-            self.add_option("xmode", "log")
-        if layout.yaxis.type == "log":
-            self.add_option("ymode", "log")
 
-        # Handle range
-        # In log mode, the range is the exponent of the range : https://plotly.com/python/reference/layout/xaxis/#layout-xaxis-range
-        # For more information, refer to documentation https://plotly.com/python/reference/layout/xaxis/#layout-xaxis-autorange
-        if layout.xaxis.autorange is False or layout.xaxis.range is not None:
-            self.add_option("xmin", layout.xaxis.range[0] if layout.xaxis.type != "log" else 10**layout.xaxis.range[0])
-            self.add_option("xmax", layout.xaxis.range[1] if layout.xaxis.type != "log" else 10**layout.xaxis.range[1])
-        if layout.yaxis.autorange is False or layout.yaxis.range is not None:
-            self.add_option("ymin", layout.yaxis.range[0] if layout.yaxis.type != "log" else 10**layout.yaxis.range[0])
-            self.add_option("ymax", layout.yaxis.range[1] if layout.yaxis.type != "log" else 10**layout.yaxis.range[1])
-        if layout.xaxis.autorange == "reversed":
-            self.add_option("x dir", "reverse")
-        if layout.yaxis.autorange == "reversed":
-            self.add_option("y dir", "reverse")
 
-        if layout.plot_bgcolor is not None:
-            bg_color = convert_color(layout.plot_bgcolor)
-            colors_set.add(bg_color[:3])
-            opacity = bg_color[3]
-            if opacity < 1:
-                self.add_option("axis background/.style", f"{{fill={bg_color[0]}, opacity={opacity}}}")
-            else:
-                self.add_option("axis background/.style", f"{{fill={bg_color[0]}}}")
 
     def set_x_label(self, x_label):
         """Set the x label.
@@ -127,3 +97,63 @@ class Axis():
             self.options["ylabel"] = sanitize_TeX_text(self.y_label)
         options_str = option_dict_to_str(self.options, sep="\n")
         return options_str
+
+
+    def treat_axis_layout(self):
+        """Treat the layout of the axis."""
+
+        self.x_label = self.layout.xaxis.title.text
+        self.y_label = self.layout.yaxis.title.text
+        self.title = self.layout.title.text
+
+        if self.layout.xaxis.visible is False:
+            self.x_label = None
+            self.add_option("hide x axis", None)
+        if self.layout.yaxis.visible is False:
+            self.y_label = None
+            self.add_option("hide y axis", None)
+
+        # Handle log axes
+        if self.layout.xaxis.type == "log":
+            self.add_option("xmode", "log")
+        if self.layout.yaxis.type == "log":
+            self.add_option("ymode", "log")
+
+        # Handle range
+        # In log mode, the range is the exponent of the range : https://plotly.com/python/reference/layout/xaxis/#layout-xaxis-range
+        # For more information, refer to documentation https://plotly.com/python/reference/layout/xaxis/#layout-xaxis-autorange
+        if self.layout.xaxis.autorange is False or self.layout.xaxis.range is not None:
+            self.add_option("xmin", self.layout.xaxis.range[0] if self.layout.xaxis.type != "log" else 10**layout.xaxis.range[0])
+            self.add_option("xmax", self.layout.xaxis.range[1] if self.layout.xaxis.type != "log" else 10**layout.xaxis.range[1])
+        if self.layout.yaxis.autorange is False or self.layout.yaxis.range is not None:
+            self.add_option("ymin", self.layout.yaxis.range[0] if self.layout.yaxis.type != "log" else 10**layout.yaxis.range[0])
+            self.add_option("ymax", self.layout.yaxis.range[1] if self.layout.yaxis.type != "log" else 10**layout.yaxis.range[1])
+        if self.layout.xaxis.autorange == "reversed":
+            self.add_option("x dir", "reverse")
+        if self.layout.yaxis.autorange == "reversed":
+            self.add_option("y dir", "reverse")
+
+        if self.layout.xaxis.showline == False:
+            self.add_option("axis x line", "none")
+        if self.layout.yaxis.showline == False:
+            self.add_option("axis y line", "none")
+        if self.layout.xaxis.categoryorder == "array":
+            self.xticks = self.layout.xaxis.categoryarray
+            ticks, ticklabels = get_ticks_str(self.layout.xaxis.categoryarray)
+            self.add_option("xtick", ticks)
+            self.add_option("xticklabels", ticklabels)
+
+    def treat_background_layout(self, colors_set):
+        if self.layout.plot_bgcolor is not None:
+            bg_color = convert_color(self.layout.plot_bgcolor)
+            colors_set.add(bg_color[:3])
+            opacity = bg_color[3]
+            if opacity < 1:
+                self.add_option("axis background/.style", f"{{fill={bg_color[0]}, opacity={opacity}}}")
+            else:
+                self.add_option("axis background/.style", f"{{fill={bg_color[0]}}}")
+
+    def treat_bar_layout(self):
+        if (barmode := self.layout.barmode) is not None:
+            if barmode == "stack":
+                self.add_option("ybar stacked", None)

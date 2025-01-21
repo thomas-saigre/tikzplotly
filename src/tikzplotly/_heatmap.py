@@ -140,6 +140,6 @@ def draw_heatmap(data, fig, img_name, axis: Axis):
     axis.add_option("tick align", "outside")
     axis.add_option("tick pos", "left")
 
-    code += tex_addplot(img_name, type="graphics", type_options=f"includegraphics cmd=\pgfimage,xmin={xmin}, xmax={xmax}, ymin={ymin}, ymax={ymax}")
+    code += tex_addplot(img_name, type="graphics", type_options=f"includegraphics cmd=\\pgfimage,xmin={xmin}, xmax={xmax}, ymin={ymin}, ymax={ymax}")
 
     return code

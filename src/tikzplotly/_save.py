@@ -8,7 +8,7 @@ from ._axis import Axis
 from ._color import *
 from ._annotations import str_from_annotation
 from ._dataContainer import DataContainer
-from ._utils import sanitize_TeX_text, get_ticks_str
+from ._utils import sanitize_TeX_text
 from warnings import warn
 import re
 
@@ -45,16 +45,6 @@ def get_tikz_code(
 
     axis = Axis(figure_layout, colors_set, axis_options=axis_options)
     data_container = DataContainer()
-
-    if figure_layout.xaxis.showline == False:
-        axis.add_option("axis x line", "none")
-    if figure_layout.yaxis.showline == False:
-        axis.add_option("axis y line", "none")
-    if figure_layout.xaxis.categoryorder == "array":
-        axis.xticks = figure_layout.xaxis.categoryarray
-        ticks, ticklabels = get_ticks_str(figure_layout.xaxis.categoryarray)
-        axis.add_option("xtick", ticks)
-        axis.add_option("xticklabels", ticklabels)
 
     if len(figure_data) == 0:
         warn("No data in figure.")
