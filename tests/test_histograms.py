@@ -23,7 +23,7 @@ def plot_2():
 
 def plot_3():
     df = px.data.tips()
-    fig = px.histogram(df, x="day", category_orders=dict(day=["Thur", "Fri", "Sat", "Sun"]))
+    fig = px.histogram(df, x="day", category_orders=dict(day=["Thur", "Fri", "Sat", "Sun"]), opacity=0.8)
     return fig
 
 def plot_4(histnorm):
@@ -38,6 +38,18 @@ def plot_5():
     fig = go.Figure(data=[go.Histogram(x=x, cumulative_enabled=True)])
     return fig
 
+def plot_6():
+    np.random.seed(0)
+    x0 = np.random.randn(100)
+    x1 = np.random.randn(100)
+
+    fig = go.Figure()
+    fig.add_trace(go.Histogram(x=x0))
+    fig.add_trace(go.Histogram(x=x1))
+
+    fig.update_layout(barmode='stack')
+    return fig
+
 def test_1():
     assert_equality(plot_1(), os.path.join(this_dir, test_name, test_name + "_1_reference.tex"))
 
@@ -50,3 +62,9 @@ def test_3():
 @pytest.mark.parametrize("histnorm", ["percent", "probability", "density", "probability density"])
 def test_4(histnorm):
     assert_equality(plot_4(histnorm), os.path.join(this_dir, test_name, test_name + "_4_reference.tex"))
+
+def test_5():
+    assert_equality(plot_5(), os.path.join(this_dir, test_name, test_name + "_5_reference.tex"))
+
+def test_6():
+    assert_equality(plot_6(), os.path.join(this_dir, test_name, test_name + "_6_reference.tex"))
