@@ -125,11 +125,11 @@ class Axis():
         # In log mode, the range is the exponent of the range : https://plotly.com/python/reference/layout/xaxis/#layout-xaxis-range
         # For more information, refer to documentation https://plotly.com/python/reference/layout/xaxis/#layout-xaxis-autorange
         if self.layout.xaxis.autorange is False or self.layout.xaxis.range is not None:
-            self.add_option("xmin", self.layout.xaxis.range[0] if self.layout.xaxis.type != "log" else 10**layout.xaxis.range[0])
-            self.add_option("xmax", self.layout.xaxis.range[1] if self.layout.xaxis.type != "log" else 10**layout.xaxis.range[1])
+            self.add_option("xmin", self.layout.xaxis.range[0] if self.layout.xaxis.type != "log" else 10**self.layout.xaxis.range[0])
+            self.add_option("xmax", self.layout.xaxis.range[1] if self.layout.xaxis.type != "log" else 10**self.layout.xaxis.range[1])
         if self.layout.yaxis.autorange is False or self.layout.yaxis.range is not None:
-            self.add_option("ymin", self.layout.yaxis.range[0] if self.layout.yaxis.type != "log" else 10**layout.yaxis.range[0])
-            self.add_option("ymax", self.layout.yaxis.range[1] if self.layout.yaxis.type != "log" else 10**layout.yaxis.range[1])
+            self.add_option("ymin", self.layout.yaxis.range[0] if self.layout.yaxis.type != "log" else 10**self.layout.yaxis.range[0])
+            self.add_option("ymax", self.layout.yaxis.range[1] if self.layout.yaxis.type != "log" else 10**self.layout.yaxis.range[1])
         if self.layout.xaxis.autorange == "reversed":
             self.add_option("x dir", "reverse")
         if self.layout.yaxis.autorange == "reversed":
@@ -147,6 +147,22 @@ class Axis():
 
         if self.layout.xaxis.categoryorder != "trace" or self.layout.yaxis.categoryorder != "trace" or self.layout.xaxis.categoryorder != "total descending":
             warn("The categoryorder option is not supported (yet 🤞) for the axis environment.")
+
+        if self.layout.xaxis.showgrid:
+            self.add_option("xmajorgrids", None)
+        if self.layout.yaxis.showgrid:
+            self.add_option("ymajorgrids", None)
+        if self.layout.xaxis.ticklen is not None:
+            self.add_option("tickwidth", self.layout.xaxis.ticklen)
+        if self.layout.yaxis.ticklen is not None:
+            self.add_option("tickwidth", self.layout.yaxis.ticklen)
+
+        if (m := self.layout.xaxis.minor) is not None:
+            if m.showgrid:
+                self.add_option("xminorgrids", None)
+            if m.ticklen is not None:
+                self.add_option("subtickwidth", m.ticklen)
+
 
     def treat_background_layout(self, colors_set):
         if self.layout.plot_bgcolor is not None:

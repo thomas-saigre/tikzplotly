@@ -175,6 +175,14 @@ def plot_7():
                     yaxis_title='Temperature (degrees F)')
     return fig
 
+def plot_8():
+    df = px.data.gapminder().query("year == 2007")
+    fig = px.scatter(df, x="gdpPercap", y="lifeExp", hover_name="country",
+                    log_x=True, range_x=[1,100000], range_y=[0,100])
+    fig.update_xaxes(showgrid=True, minor=dict(ticks="inside", ticklen=6, showgrid=True))
+    fig.update_yaxes(showgrid=True)
+    return fig
+
 
 def test_1():
     assert_equality(plot_1(), os.path.join(this_dir, test_name, test_name + "_1_reference.tex"))
@@ -197,3 +205,6 @@ def test_6(x, y):
 
 def test_7():
     assert_equality(plot_7(), os.path.join(this_dir, test_name, test_name + "_7_reference.tex"))
+
+def test_8():
+    assert_equality(plot_8(), os.path.join(this_dir, test_name, test_name + "_8_reference.tex"))
