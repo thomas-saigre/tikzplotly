@@ -41,10 +41,36 @@ def replace_all_mounts(text):
     return pattern_mounts.sub(lambda m: rep_mounts[re.escape(m.group(0))], text)
 
 
-def sanitize_text(text: str):
-    return "".join(map(sanitize_char, text))
+def sanitize_text(text: str, keep_space=False):
+    """
+    Sanitize the input text by removing or replacing unwanted characters.
 
-def sanitize_char(ch):
+    Parameters
+    ----------
+    text (str): The input text to be sanitized.
+    keep_space (bool, optional): If True, spaces will be preserved in the sanitized text.
+                                 If False, spaces will be removed. Defaults to False.
+
+    Returns
+    -------
+    str: The sanitized text.
+    """
+    return "".join(sanitize_char(ch, keep_space=keep_space) for ch in text)
+
+def sanitize_char(ch, keep_space=False):
+    """
+    Sanitize a character by converting it to a hexadecimal representation if it is a special character, non-ASCII, or non-printable.
+
+    Parameters
+    ----------
+    ch (str): The character to sanitize.
+    keep_space (bool, optional): If True, spaces will be kept as is. Defaults to False.
+
+    Returns
+    -------
+    str: The sanitized character or its hexadecimal representation.
+    """
+    if keep_space and ch == " ": return " "
     if ch in "[]{}= ": return f"x{ord(ch):x}"
     # if not ascii, return hex
     if ord(ch) > 127: return f"x{ord(ch):x}"

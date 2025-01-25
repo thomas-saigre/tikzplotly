@@ -43,15 +43,30 @@ def formalize_data(data, axis:Axis, row_sep="\\\\"):
     return data_str
 
 def draw_histogram(trace, axis: Axis, colors_set, row_sep="\\\\"):
-    """Draw a heatmap, and return the tikz code.
+    """
+    Draw a histogram and return the TikZ code.
 
     Parameters
     ----------
-    TODO
+    trace : plotly.graph_objs._histogram.Histogram
+        The histogram trace object containing data and style information.
+    axis : Axis
+        The axis object to which the histogram will be added.
+    colors_set : set
+        A set to keep track of colors used in the plot.
+    row_sep : str, optional
+        The row separator for the data table in TikZ, by default "\\\\"
 
     Returns
     -------
-        string of tikz code for the scatter trace
+    str
+        A string containing the TikZ code for the histogram.
+
+    Notes
+    -----
+    - The function currently does not support 'percent', 'probability', and 'density' normalization for histograms.
+    - Text templates are not supported.
+    - Only 'count' aggregation function is supported; other functions need pre-treatment of data.
     """
 
     code = ""

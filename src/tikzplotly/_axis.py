@@ -104,8 +104,8 @@ class Axis():
     def treat_axis_layout(self):
         """Treat the layout of the axis."""
 
-        self.x_label = self.layout.xaxis.title.text
-        self.y_label = self.layout.yaxis.title.text
+        self.set_x_label(self.layout.xaxis.title.text)
+        self.set_y_label(self.layout.yaxis.title.text)
         self.title = self.layout.title.text
 
         if self.layout.xaxis.visible is False:
