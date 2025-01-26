@@ -183,6 +183,15 @@ def plot_8():
     fig.update_yaxes(showgrid=True)
     return fig
 
+def plot_9():
+    np.random.seed(0)
+    x = np.random.lognormal(mean=0.0, sigma=1.0, size=50)
+    y = np.random.lognormal(mean=0.0, sigma=1.0, size=50)
+    fig = px.scatter(x=x, y=y, labels={'x':'log(x)', 'y':'log(y)'})
+    fig.update_xaxes(type="log", visible=False)
+    fig.update_yaxes(type="log", visible=False)
+    return fig
+
 
 def test_1():
     assert_equality(plot_1(), os.path.join(this_dir, test_name, test_name + "_1_reference.tex"))
@@ -208,3 +217,6 @@ def test_7():
 
 def test_8():
     assert_equality(plot_8(), os.path.join(this_dir, test_name, test_name + "_8_reference.tex"))
+
+def test_9():
+    assert_equality(plot_9(), os.path.join(this_dir, test_name, test_name + "_9_reference.tex"))

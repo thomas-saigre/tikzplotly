@@ -118,16 +118,8 @@ def draw_histogram(trace, axis: Axis, colors_set, row_sep="\\\\"):
             plot_options["fill"] = convert_color(c)[0]
             plot_options["color"] = convert_color(c)[0]
 
-        if m.line is not None:
-            if m.line.color is not None:
-                colors_set.add(m.line.color)
-                plot_options["color"] = convert_color(m.line.color)
-
         if m.opacity is not None:
             plot_options["opacity"] = m.opacity
-
-    if (o := trace.opacity) is not None:
-        plot_options["opacity"] = o
 
     if (f := trace.histfunc) is not None:
         if f != "count":

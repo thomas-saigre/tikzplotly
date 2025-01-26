@@ -50,6 +50,16 @@ def plot_6():
     fig.update_layout(barmode='stack')
     return fig
 
+def plot_7():
+    df = px.data.tips()
+    fig = px.histogram(df, x="total_bill", y="tip", histfunc="avg", nbins=8, text_auto=True)
+    return fig
+
+def plot_8():
+    df = px.data.tips()
+    fig = px.histogram(df, x="total_bill", color="sex")
+    return fig
+
 def test_1():
     assert_equality(plot_1(), os.path.join(this_dir, test_name, test_name + "_1_reference.tex"))
 
@@ -68,3 +78,9 @@ def test_5():
 
 def test_6():
     assert_equality(plot_6(), os.path.join(this_dir, test_name, test_name + "_6_reference.tex"))
+
+def test_7():
+    assert_equality(plot_7(), os.path.join(this_dir, test_name, test_name + "_7_reference.tex"))
+
+def test_8():
+    assert_equality(plot_8(), os.path.join(this_dir, test_name, test_name + "_8_reference.tex"))
