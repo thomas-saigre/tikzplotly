@@ -1,0 +1,15 @@
+\begin{tikzpicture}
+
+\definecolor{636efa}{HTML}{636efa}
+
+\begin{axis}[
+xtick={0,1,2,3},
+xticklabels={B,C,D,A},
+ybar,
+xlabel=x,
+ylabel=count
+]
+\addplot+ [hist, fill=636efa, color=636efa] table[row sep=\\, y index=0] {data\\
+0\\ 1\\ 1\\ 0\\ 0\\ 1\\ 0\\ 1\\ 2\\ 3\\ 1\\ 0\\ 0\\ 2\\ 3\\ 3\\ 3\\ 1\\ 1\\ 1\\ };
+\end{axis}
+\end{tikzpicture}

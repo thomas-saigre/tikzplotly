@@ -3,6 +3,7 @@ from .__about__ import __version__
 from ._tex import *
 from ._scatter import draw_scatter2d
 from ._heatmap import draw_heatmap
+from ._histogram import draw_histogram
 from ._axis import Axis
 from ._color import *
 from ._annotations import str_from_annotation
@@ -45,11 +46,6 @@ def get_tikz_code(
     axis = Axis(figure_layout, colors_set, axis_options=axis_options)
     data_container = DataContainer()
 
-    if figure_layout.xaxis.showline == False:
-        axis.add_option("axis x line", "none")
-    if figure_layout.yaxis.showline == False:
-        axis.add_option("axis y line", "none")
-
     if len(figure_data) == 0:
         warn("No data in figure.")
 
@@ -84,6 +80,12 @@ def get_tikz_code(
                 continue
             data_str.append( draw_heatmap(trace, fig, img_name, axis) )
 
+        elif trace.type == "histogram":
+
+            data_str.append( draw_histogram(trace, axis, colors_set) )
+            if trace.name and trace['showlegend'] != False:
+                data_str.append( tex_add_legendentry(sanitize_TeX_text(trace.name)) )
+
         else:
             warn(f"Trace type {trace.type} is not supported yet.")
 
@@ -101,12 +103,12 @@ def get_tikz_code(
 
     code += tex_begin_environment("tikzpicture", stack_env, options=tikz_options)
 
-    code += "\n"
+    if bool(colors_set): code += "\n"
     color_list = list(colors_set)
     color_list.sort()
     for color in color_list:
         code += tex_add_color(color[0], color[1], color[2])
-    code += "\n"
+    if bool(colors_set): code += "\n"
 
     code += axis.open_environment(stack_env)
 

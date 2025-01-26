@@ -42,3 +42,10 @@ def assert_equality(fig, target_file, tolerance=1e-9, **kwargs):
 
     assert reference_non_floats == tikz_non_floats, target_file + "\n" + _unidiff_output(reference, tikz_code)
 
+def compare_two_files(path1, path2):
+    with open(path1, encoding="utf-8") as f:
+        content1 = f.read()
+    with open(path2, encoding="utf-8") as f:
+        content2 = f.read()
+
+    assert content1 == content2, _unidiff_output(content1, content2)

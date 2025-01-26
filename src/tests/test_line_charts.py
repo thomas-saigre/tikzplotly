@@ -371,6 +371,28 @@ def fig15():
     # fig.show()
     return fig, "Filled Lines"
 
+# https://plotly.com/python/log-plot/
+
+def fig16():
+    df = px.data.gapminder().query("year == 2007")
+    fig = px.scatter(df, x="gdpPercap", y="lifeExp", hover_name="country", log_x=True)
+    return fig, "Log Scale"
+
+def fig17():
+    df = px.data.gapminder().query("year == 2007")
+
+    fig = px.scatter(df, x="gdpPercap", y="lifeExp", hover_name="country",
+                    log_x=True, range_x=[1,100000], range_y=[0,100])
+    return fig, "Log scale with range"
+
+def fig18():
+    df = px.data.gapminder().query("year == 2007")
+
+    fig = px.scatter(df, x="gdpPercap", y="lifeExp", hover_name="country",
+                    log_x=True, range_x=[1,100000], range_y=[0,100])
+
+    fig.update_xaxes(minor=dict(ticks="inside", ticklen=6, showgrid=True))
+    return fig, "Log scale with range and minor ticks"
 
 if __name__ == "__main__":
 
@@ -394,7 +416,10 @@ if __name__ == "__main__":
         ("11", fig11),
         # ("12", fig12),
         ("14", fig14),
-        ("15", fig15)
+        ("15", fig15),
+        ("16", fig16),
+        ("17", fig17),
+        ("18", fig18),
     ]
 
     main_tex_content = tex_create_document(options="twocolumn", compatibility="newest")

@@ -25,7 +25,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macOS-latest]
-        python-version: ["3.8", "3.9", "3.10"]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
     steps:
       - uses: actions/setup-python@v3
         with:
@@ -38,6 +38,6 @@ jobs:
           pip install tox
           tox -- --cov tikzplotly --cov-report xml --cov-report term
       - uses: codecov/codecov-action@v4.0.1
-        if: ${{ matrix.python-version == '3.10' && matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.python-version == '3.13' && matrix.os == 'ubuntu-latest' }}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
