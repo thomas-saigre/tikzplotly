@@ -187,6 +187,33 @@ def tex_create_document(document_class="article", options=None, compatibility="n
     code += "\\pgfplotsset{compat=" + compatibility + "}\n\n"
     return code
 
+# Pushed by error, not used yet
+# def tex_add_fill_pattern(name, pattern, color, options=None):
+#     """Create a LaTeX fill pattern.
+
+#     Parameters
+#     ----------
+#     pattern
+#         pattern name
+#     color
+#         color string
+#     options, optional
+#         options given to the pattern, by default None
+
+#     Returns
+#     -------
+#         LaTeX code for the fill pattern
+#     """
+#     print("pattern: ", pattern)
+#     code = f"\\addplot[color={color}]\n"
+#     code += "fill between[of={name} and axis"
+#     if options is not None:
+#         code += f",{options}"
+#     code += f"];\n"
+#     return code
+
+
+
 
 def tex_text(text):
     """Convert a string to LaTeX,

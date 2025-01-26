@@ -199,6 +199,7 @@ def plot_10():
     fig.update_yaxes(autorange="reversed")
     return fig
 
+
 def test_1():
     assert_equality(plot_1(), os.path.join(this_dir, test_name, test_name + "_1_reference.tex"))
 

@@ -166,16 +166,16 @@ if __name__ == "__main__":
     file_directory = os.path.dirname(os.path.abspath(__file__))
 
     functions = [
-        # ("1", fig1),
-        # ("2", fig2),
-        # # ("3", fig3),          # texttemplate not supported
-        # ("4", fig4),
-        # ("5", fig5),
-        # ("6", fig6),
+        ("1", fig1),
+        ("2", fig2),
+        # ("3", fig3),          # texttemplate not supported
+        ("4", fig4),
+        ("5", fig5),
+        ("6", fig6),
         ("7", fig7),
-        # # ("8", fig8),          # Not supported
-        # ("9", fig9),
-        # ("11", fig11)
+        # ("8", fig8),          # Not supported
+        ("9", fig9),
+        ("11", fig11)
     ]
 
     main_tex_content = tex_create_document(options="twocolumn", compatibility="newest")

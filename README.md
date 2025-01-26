@@ -1,8 +1,19 @@
-![logo-tikzplotly](https://raw.githubusercontent.com/thomas-saigre/tikzplotly/main/doc/img/logo.svg "Tikzplotly")
+---
+title: Tikzplotly
+subtitle: Convert plotly figures to tikz code
+hide:
+    - navigation
+---
+
+![logo-tikzplotly](https://raw.githubusercontent.com/thomas-saigre/tikzplotly/main/docs/assets/logo.svg "Tikzplotly")
+
 
 [![PyPi Version](https://img.shields.io/pypi/v/tikzplotly.svg?style=flat-square)](https://pypi.org/project/tikzplotly)
+[![PyPi Downloads](https://img.shields.io/pypi/dm/tikzplotly.svg?style=flat-square)](https://pypi.org/project/tikzplotly)
+[![PyPi License](https://img.shields.io/pypi/l/tikzplotly.svg?style=flat-square)](https://pypi.org/project/tikzplotly)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/tikzplotly.svg?style=flat-square)](https://pypi.org/pypi/tikzplotly/)
 
+[![GitHub release](https://img.shields.io/github/release/thomas-saigre/tikzplotly.svg?style=flat-square)](https://github.com/thomas-saigre/tikzplotly/releases)
 [![Issue](https://img.shields.io/github/issues-raw/thomas-saigre/tikzplotly?style=flat-square)](https://github.com/thomas-saigre/tikzplotly/issues)
 [![codecov](https://img.shields.io/codecov/c/github/thomas-saigre/tikzplotly.svg?style=flat-square)](https://codecov.io/gh/thomas-saigre/tikzplotly)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/thomas-saigre/tikzplotly/ci.yml?style=flat-square)
@@ -95,8 +106,7 @@ To correctly compile the document, you will need to add the following packages t
 
 * This module is in development and new features are added bit by bit, when needed. If you have a feature request, please open an issue with the plotly figure you want to convert and the desired output.
 You can also submit a pull request with the desired feature !
-* Some feature can result in different output between the plotly figure and the tikz figure, for instance the size of markers.
-* More details in [doc/NB.md](doc/NB.md).
+* Some feature can result in different output between the plotly figure and the tikz figure, for instance the size of markers, more details can be found in the documentation.
 
 
 ## References

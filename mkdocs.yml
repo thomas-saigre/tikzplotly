@@ -1,0 +1,74 @@
+site_name: tikzplotly
+site_description: Documentation for the tikzplotly package
+repo_url: "https://github.com/thomas-saigre/tikzplotly/"
+
+theme:
+  name: material
+  logo: assets/logo.svg
+
+  palette:
+    # scheme: slate
+    # primary: blue
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.instant
+    - navigation.top
+
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search
+  - git-revision-date-localized:
+      enable_creation_date: false
+
+extra_css:
+  - css/extra.css
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - md_in_html
+  - pymdownx.blocks.caption
+  - admonition
+  - pymdownx.details
+
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/thomas-saigre/tikzplotly
+
+nav:
+  - Home: index.md
+  - Tilzplotly:
+    - "Usage": plot/usage.md
+    - "Supported plots": plot/supported.md
+    - "Other features" : plot/features.md
+    - "General comments": plot/NB.md
+  - Contributing:
+    - Contributing guide: develop/contributing.md
+    - Tests: develop/tests.md
