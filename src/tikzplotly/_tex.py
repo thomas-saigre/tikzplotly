@@ -1,4 +1,5 @@
 from ._color import hex2rgb
+from ._utils import sanitize_text
 
 def tex_comment(text):
     """Create a LaTeX comment.
@@ -191,7 +192,8 @@ def tex_text(text):
     """Convert a string to LaTeX,
     escaping the special characters %, _, &, #, $, {, }, ~.
     """
-    return text.replace("%", "\\%").replace("_", "\\_").replace("&", "\\&").replace("#", "\\#").replace("$", "\\$").replace("{", "\\{").replace("}", "\\}").replace("~", "\\textasciitilde ")
+    text_san = sanitize_text(text, keep_space=True)
+    return text_san.replace("%", "\\%").replace("_", "\\_").replace("&", "\\&").replace("#", "\\#").replace("$", "\\$").replace("{", "\\{").replace("}", "\\}").replace("~", "\\textasciitilde ")
 
 def get_tikz_colorscale(colorscale, name="mycolor"):
 

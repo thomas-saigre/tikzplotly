@@ -1,0 +1,32 @@
+\pgfplotstableread{data0 Australia New_Zealand
+1952 69.12 69.39
+1957 70.33 70.26
+1962 70.93 71.24
+1967 71.1 71.52
+1972 71.93 71.89
+1977 73.49 72.22
+1982 74.74 73.84
+1987 76.32 74.32
+1992 77.56 76.33
+1997 78.83 77.55
+2002 80.37 79.11
+2007 81.235 80.204
+}\dataZ
+
+\begin{tikzpicture}
+
+\definecolor{636efa}{HTML}{636efa}
+\definecolor{EF553B}{HTML}{EF553B}
+
+\begin{axis}[
+x dir=reverse,
+y dir=reverse,
+xlabel=year,
+ylabel=lifeExp
+]
+\addplot+ [mark=*, solid, color=636efa] table[y=Australia] {\dataZ};
+\addlegendentry{Australia}
+\addplot+ [mark=*, solid, color=EF553B] table[y=New_Zealand] {\dataZ};
+\addlegendentry{New Zealand}
+\end{axis}
+\end{tikzpicture}
