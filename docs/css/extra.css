@@ -1,0 +1,5 @@
+/* Justify only the main content text */
+.md-content p,
+.md-content li {
+    text-align: justify;
+}
