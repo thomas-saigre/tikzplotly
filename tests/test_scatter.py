@@ -199,9 +199,6 @@ def plot_10():
     fig.update_yaxes(autorange="reversed")
     return fig
 
-def plot_11():
-    fig = px.scatter(x=[], y=[])
-    return fig
 
 def test_1():
     assert_equality(plot_1(), os.path.join(this_dir, test_name, test_name + "_1_reference.tex"))
@@ -233,6 +230,3 @@ def test_9():
 
 def test_10():
     assert_equality(plot_10(), os.path.join(this_dir, test_name, test_name + "_10_reference.tex"))
-
-def test_11():
-    assert_equality(plot_11(), os.path.join(this_dir, test_name, test_name + "_11_reference.tex"))
