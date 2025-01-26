@@ -14,7 +14,7 @@ def test_tikzplotly(axis_options):
     if axis_options == "dict":
         tikzplotly.save("/tmp/tikzplotly/test_tikzplotly_dict.tex", fig, axis_options={"xlabel": "x", "ylabel": "y"})
     elif axis_options == "str":
-        tikzplotly.save("/tmp/tikzplotly/test_tikzplotly_str.tex", fig, axis_options="xlabel=x, ylabel=y")
+        tikzplotly.save("/tmp/tikzplotly/test_tikzplotly_str.tex", fig, axis_options="xlabel=x, ylabel=y, xmajorgrids")
     else:
         tikzplotly.save("/tmp/tikzplotly/test_tikzplotly_none.tex", fig)
 

@@ -60,6 +60,12 @@ def plot_8():
     fig = px.histogram(df, x="total_bill", color="sex")
     return fig
 
+def plot_9():
+    np.random.seed(0)
+    x_data = np.random.choice(["A", "B", "C", "D"], size=20, p=[0.4, 0.2, 0.3, 0.1])
+    fig = px.histogram(x=x_data)
+    return fig
+
 def test_1():
     assert_equality(plot_1(), os.path.join(this_dir, test_name, test_name + "_1_reference.tex"))
 
@@ -84,3 +90,6 @@ def test_7():
 
 def test_8():
     assert_equality(plot_8(), os.path.join(this_dir, test_name, test_name + "_8_reference.tex"))
+
+def test_9():
+    assert_equality(plot_9(), os.path.join(this_dir, test_name, test_name + "_9_reference.tex"))

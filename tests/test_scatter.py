@@ -62,7 +62,7 @@ def plot_4():
 
     fig.update_layout(
         xaxis=dict(
-            showline=True,
+            showline=False,
             showgrid=False,
             showticklabels=True,
             linecolor='rgb(204, 204, 204)',
@@ -179,8 +179,8 @@ def plot_8():
     df = px.data.gapminder().query("year == 2007")
     fig = px.scatter(df, x="gdpPercap", y="lifeExp", hover_name="country",
                     log_x=True, range_x=[1,100000], range_y=[0,100])
-    fig.update_xaxes(showgrid=True, minor=dict(ticks="inside", ticklen=6, showgrid=True))
-    fig.update_yaxes(showgrid=True)
+    fig.update_xaxes(showgrid=True, minor=dict(ticks="inside", ticklen=6, showgrid=True), ticklen=6)
+    fig.update_yaxes(showgrid=True, ticklen=6)
     return fig
 
 def plot_9():
@@ -192,6 +192,12 @@ def plot_9():
     fig.update_yaxes(type="log", visible=False)
     return fig
 
+def plot_10():
+    df = px.data.gapminder().query("continent == 'Oceania'")
+    fig = px.line(df, x='year', y='lifeExp', color='country', markers=True)
+    fig.update_xaxes(autorange="reversed")
+    fig.update_yaxes(autorange="reversed")
+    return fig
 
 def test_1():
     assert_equality(plot_1(), os.path.join(this_dir, test_name, test_name + "_1_reference.tex"))
@@ -220,3 +226,6 @@ def test_8():
 
 def test_9():
     assert_equality(plot_9(), os.path.join(this_dir, test_name, test_name + "_9_reference.tex"))
+
+def test_10():
+    assert_equality(plot_10(), os.path.join(this_dir, test_name, test_name + "_10_reference.tex"))
