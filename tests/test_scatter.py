@@ -143,6 +143,10 @@ def plot_6(x=True, y=True):
     if y: fig.data[0].y = None
     return fig
 
+def plot_7():
+    fig = px.scatter(x=[], y=[])
+    return fig
+
 def test_1():
     assert_equality(plot_1(), os.path.join(this_dir, test_name, test_name + "_1_reference.tex"))
 
@@ -161,3 +165,6 @@ def test_5():
 @pytest.mark.parametrize("x, y", [(True, True), (True, False), (False, True)])
 def test_6(x, y):
     assert_equality(plot_6(x, y), os.path.join(this_dir, test_name, test_name + f"_6_{x}_{y}_reference.tex"))
+
+def test_7():
+    assert_equality(plot_7(), os.path.join(this_dir, test_name, test_name + "_7_reference.tex"))
