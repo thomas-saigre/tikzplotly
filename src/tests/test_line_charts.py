@@ -394,6 +394,22 @@ def fig18():
     fig.update_xaxes(minor=dict(ticks="inside", ticklen=6, showgrid=True))
     return fig, "Log scale with range and minor ticks"
 
+def fig19():
+    df = pd.DataFrame(dict(
+        x = ["A", "B", "C", "D"],
+        y = [1, 2, 3, 4],
+    ))
+    fig = px.line(df, x="x", y="y", title="symbolic x coords")
+    return fig, "Line Charts with symbolic x coords"
+
+def fig20():
+    df = pd.DataFrame(dict(
+        x = [1, 2, 3, 4],
+        y = ["A", "B", "C", "D"],
+    ))
+    fig = px.line(df, x="x", y="y", title="symbolic y coords")
+    return fig, "Line Charts with symbolic y coords"
+
 if __name__ == "__main__":
 
     print("Tikzploty : ", tikzplotly.__version__)
@@ -420,6 +436,8 @@ if __name__ == "__main__":
         ("16", fig16),
         ("17", fig17),
         ("18", fig18),
+        ("19", fig19),
+        ("20", fig20),
     ]
 
     main_tex_content = tex_create_document(options="twocolumn", compatibility="newest")

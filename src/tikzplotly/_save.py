@@ -89,6 +89,35 @@ def get_tikz_code(
         else:
             warn(f"Trace type {trace.type} is not supported yet.")
 
+    # Detect if we have symbolic x values
+    symbolic_x_vals = []
+    for data_obj in data_container.data:
+        # If all x-values in this data object are strings, consider them symbolic
+        if all(isinstance(v, str) for v in data_obj.x):
+            for v in data_obj.x:
+                if v not in symbolic_x_vals:
+                    symbolic_x_vals.append(v)
+
+    # Detect if we have symbolic y values
+    symbolic_y_vals = []
+    for data_obj in data_container.data:
+        for y_column in data_obj.y_data:
+            # If all y-values in this data object are strings, consider them symbolic
+            if all(isinstance(v, str) for v in y_column):
+                for val in y_column:
+                    if val not in symbolic_y_vals:
+                        symbolic_y_vals.append(val)
+
+    # If we found symbolic x-values, tell pgfplots to treat them as symbolic
+    if symbolic_x_vals:
+        axis.add_option("symbolic x coords", "{" + ",".join(symbolic_x_vals) + "}")
+        axis.add_option("xtick", "data")
+
+    # If we found symbolic y-values, treat them similarly
+    if symbolic_y_vals:
+        axis.add_option("symbolic y coords", "{" + ",".join(symbolic_y_vals) + "}")
+        axis.add_option("ytick", "data")
+
     annotation_str = str_from_annotation(figure_layout.annotations, axis, colors_set)
 
     code = """"""
