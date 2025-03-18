@@ -1,6 +1,6 @@
 import re
 from ._utils import replace_all_digits, sanitize_text
-from ._data import post_treat_data
+from ._data import treat_data, post_treat_data
 
 class Data:
 
@@ -81,7 +81,8 @@ class DataContainer:
             export_string += "\\pgfplotstableread{"
             export_string += f"{sanitize_text(data.name)} {' '.join([sanitize_text(label) for label in data.y_label])}\n"
             for i in range(len(data.x)):
-                export_string += f"{data.x[i]} {' '.join([str(y[i]) for y in data.y_data])}\n"
+                x_val = treat_data(data.x[i])
+                export_string += f"{x_val} {' '.join([str(y[i]) for y in data.y_data])}\n"
 
             export_string += "}" + sanitize_text(data.macro_name) + "\n"
 

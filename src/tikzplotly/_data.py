@@ -29,6 +29,13 @@ def data_type(data):
     else:
         return None
 
+def treat_data(data_str): 
+    if not isinstance(data_str, str):
+        return data_str
+    if data_str.find(' ') !=- 1: # Add curly braces if there space in string
+        data_str = "{" + data_str + "}"
+        return data_str
+    return data_str
 
 def post_treat_data(data_str):
     data_str = replace_all_mounts(data_str)
