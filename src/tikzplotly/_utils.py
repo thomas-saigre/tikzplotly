@@ -80,7 +80,8 @@ def sanitize_char(ch, keep_space=False):
 
 def sanitize_TeX_text(text: str):
     s = "".join(map(sanitize_TeX_char, text))
-    if '[' in s or ']' in s:
+    special_chars = "[], "
+    if any(c in s for c in special_chars):
         return "{" + s + "}"
     return s
 
