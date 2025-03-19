@@ -19,6 +19,8 @@ def get_polar_coord(trace, axis: Axis, data_container: DataContainer):
     theta = [t if t is not None else '' for t in trace.theta]
     r = [val if val is not None else 'nan' for val in trace.r]
 
+    thetaunit = getattr(trace, "thetaunit", "degrees")
+
     if all(isinstance(t, str) for t in theta):
         symbolic_theta = list(dict.fromkeys(theta))
         numeric_theta = [symbolic_theta.index(t) * (360 / len(symbolic_theta)) for t in theta]
@@ -27,8 +29,11 @@ def get_polar_coord(trace, axis: Axis, data_container: DataContainer):
         axis.add_option("xtick", f"{{{','.join(str(i*(360/len(symbolic_theta))) for i in range(len(symbolic_theta)))}}}")
         axis.add_option("xticklabels", "{" + ",".join(symbolic_theta) + "}")
     else:
-        symbolic_theta = None
-        numeric_theta = theta
+        symbolic_theta = None        
+        if thetaunit == "radians":
+            numeric_theta = [t * (180 / 3.141592653589793) for t in theta]
+        else:
+            numeric_theta = theta 
 
     data_name_macro, r_col_name = data_container.addData(numeric_theta, r, trace.name)
     theta_col_name = data_container.data[-1].name
