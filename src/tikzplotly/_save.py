@@ -5,6 +5,7 @@ from ._scatter import draw_scatter2d
 from ._heatmap import draw_heatmap
 from ._histogram import draw_histogram
 from ._bar import draw_bar
+from ._polar import get_polar_coord, draw_scatterpolar
 from ._axis import Axis
 from ._color import *
 from ._annotations import str_from_annotation
@@ -134,6 +135,14 @@ def get_tikz_code(
             # Build the bar code
             bar_code = draw_bar(data_name_macro, x_col_name, val_col_name, trace, axis, colors_set)
             data_str.append(bar_code)
+
+            if trace.name and trace['showlegend'] != False:
+                data_str.append(tex_add_legendentry(sanitize_TeX_text(trace.name)))
+
+        elif trace.type == "scatterpolar":
+            data_name_macro, theta_col_name, r_col_name = get_polar_coord(trace, axis, data_container)
+            polar_code = draw_scatterpolar(data_name_macro, theta_col_name, r_col_name, trace, axis, colors_set)
+            data_str.append(polar_code)
 
             if trace.name and trace['showlegend'] != False:
                 data_str.append(tex_add_legendentry(sanitize_TeX_text(trace.name)))
