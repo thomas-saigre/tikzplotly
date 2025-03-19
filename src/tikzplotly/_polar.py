@@ -6,15 +6,23 @@ from ._dataContainer import DataContainer
 from warnings import warn
 
 def get_polar_coord(trace, axis: Axis, data_container: DataContainer):
-    # rotation
     polar_layout = getattr(axis.layout, 'polar', None)
     if polar_layout:
         angularaxis = getattr(polar_layout, 'angularaxis', None)
         if angularaxis:
+            # rotation
             rotation = getattr(angularaxis, 'rotation', None)
-            if rotation is not None and rotation != 0:
+            if rotation is None:
+                rotation = 0
+            else:
                 axis.add_option("rotate", rotation)
                 axis.add_option("xticklabel style", f"{{anchor=\\tick-{rotation}}}")
+                axis.add_option("yticklabel style", f"{{anchor=\\tick-{rotation}-90}}")
+
+            # direction
+            direction = getattr(angularaxis, "direction", "counterclockwise")
+            if direction == "clockwise":
+                axis.add_option("y dir", "reverse")
 
     theta = [t if t is not None else '' for t in trace.theta]
     r = [val if val is not None else 'nan' for val in trace.r]
