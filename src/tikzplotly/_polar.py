@@ -68,11 +68,10 @@ def draw_scatterpolar(data_name_macro, theta_col_name, r_col_name, trace, axis: 
 
     mode = trace.mode if trace.mode else "lines"
 
-    if "markers" in mode:
-        plot_options["only marks"] = None
-
-    if "lines" in mode:
+    if not "markers" in mode:
         plot_options["no markers"] = None
+    elif not "lines" in mode:
+        plot_options["only marks"] = None
 
     # Marker style
     if trace.marker is not None:
