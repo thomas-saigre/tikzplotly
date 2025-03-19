@@ -94,6 +94,12 @@ def draw_scatterpolar(data_name_macro, theta_col_name, r_col_name, trace, axis: 
         if line.width is not None:
             plot_options["line width"] = line.width
 
+     # Fill
+    if trace.fill is not None:
+        if trace.fill == 'toself':
+            plot_options["fill"] = ".!50"
+            plot_options["opacity"] = 0.6
+
     # axis options for polar plot
     axis.environment = "polaraxis"
 
