@@ -141,6 +141,12 @@ def get_tikz_code(
 
         elif trace.type == "scatterpolar":
             data_name_macro, theta_col_name, r_col_name = get_polar_coord(trace, axis, data_container)
+           
+            if all(isinstance(v, str) for v in trace.r):
+                unique_r_vals = list(dict.fromkeys(trace.r))
+                axis.add_option("symbolic y coords", "{" + ",".join(unique_r_vals) + "}")
+                axis.add_option("ytick", "data")
+           
             polar_code = draw_scatterpolar(data_name_macro, theta_col_name, r_col_name, trace, axis, colors_set)
             data_str.append(polar_code)
 
