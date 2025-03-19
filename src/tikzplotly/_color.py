@@ -60,8 +60,8 @@ def convert_color(color):
 
     else:
         warn(f"Color {color} type is not supported yet. Returning the same color.")
-        return color, 1
-
+        return color, None, None, 1
+    
 def hex2rgb(hex_color):
     """Convert a hex color to a RGB color.
 
