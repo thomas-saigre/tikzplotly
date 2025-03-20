@@ -9,6 +9,7 @@ import numpy as np
 def get_polar_coord(trace, axis: Axis, data_container: DataContainer):
     polar_layout = getattr(axis.layout, 'polar')
     if polar_layout:
+        # Angular Axis
         angularaxis = getattr(polar_layout, 'angularaxis')
         if angularaxis:
             # Rotation
@@ -28,20 +29,37 @@ def get_polar_coord(trace, axis: Axis, data_container: DataContainer):
             
             # Period
             period = getattr(angularaxis, "period")
-
+            
             # Category
-            categoryarray = getattr(angularaxis, 'categoryarray')
+            angular_categoryorder = getattr(angularaxis, 'categoryorder', 'trace')
+            angular_categoryarray = getattr(angularaxis, 'categoryarray', None)
+
+        # Radial Axis
+        radialaxis = getattr(polar_layout, 'radialaxis')
+        if radialaxis:
+            # Category
+            radial_categoryorder = getattr(radialaxis, 'categoryorder', 'trace')
+            radial_categoryarray = getattr(radialaxis, 'categoryarray', None)
 
     theta = [t if t is not None else '' for t in trace.theta]
     r = [val if val is not None else 'nan' for val in trace.r]
 
     thetaunit = getattr(trace, "thetaunit", "degrees")
 
+    # Angular Axis
     if all(isinstance(t, str) for t in theta):
-        if categoryarray is not None:
-            symbolic_theta = list(categoryarray)
+        if angular_categoryarray is not None:
+            symbolic_theta = list(angular_categoryarray)
         else:
             symbolic_theta = list(dict.fromkeys(theta))
+
+        if angular_categoryorder is not None:
+            if angular_categoryorder == "category ascending":
+                symbolic_theta = sorted(set(symbolic_theta))
+            elif angular_categoryorder == "category descending":
+                symbolic_theta = sorted(set(symbolic_theta), reverse=True)
+            else:
+                warn(f"Polar: Angular category order {angular_categoryorder} is not supported yet.")
 
         n_theta = len(symbolic_theta)
         if period is not None:
@@ -58,6 +76,23 @@ def get_polar_coord(trace, axis: Axis, data_container: DataContainer):
             numeric_theta = [t * (180 / 3.141592653589793) for t in theta]
         else:
             numeric_theta = theta 
+
+    # Radial Axis
+    if all(isinstance(v, str) for v in r):
+        if radial_categoryarray is not None:
+            symbolic_r = list(radial_categoryarray)
+        else:
+            symbolic_r = list(dict.fromkeys(r))
+        if radial_categoryorder is not None:
+            if radial_categoryorder == "category ascending":
+                symbolic_r = sorted(set(symbolic_r))
+            elif radial_categoryorder == "category descending":
+                symbolic_r = sorted(set(symbolic_r), reverse=True)
+            else:
+                warn(f"Polar: Radial category order {radial_categoryorder} is not supported yet.")
+
+        axis.add_option("symbolic y coords", "{" + ",".join(symbolic_r) + "}")
+        axis.add_option("ytick", "data")
 
     data_name_macro, r_col_name = data_container.addData(numeric_theta, r, trace.name)
     theta_col_name = data_container.data[-1].name
@@ -113,7 +148,7 @@ def draw_scatterpolar(data_name_macro, theta_col_name, r_col_name, trace, axis: 
             plot_options["mark options"] = "{" + option_dict_to_str(mark_opts) + "}"
         if marker.size is not None:
             if isinstance(marker.size, np.ndarray):
-                warn(f"Individual marker sizes in a trace are not supported yet.")
+                warn(f"Polar: Individual marker sizes in a trace are not supported yet.")
             else:
                 plot_options["mark size"] = marker.size/4
 
