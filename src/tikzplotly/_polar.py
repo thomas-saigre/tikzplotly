@@ -37,6 +37,11 @@ def get_polar_coord(trace, axis: Axis, data_container: DataContainer):
         # Radial Axis
         radialaxis = getattr(polar_layout, 'radialaxis')
         if radialaxis:
+            # Type
+            radial_axis_type = getattr(radialaxis, 'type', None)
+            if radial_axis_type is not None and radial_axis_type not in ['-', 'linear', 'category']:
+                warn(f"Polar: Radial axis type {radial_axis_type} is not supported yet.")
+
             # Category
             radial_categoryorder = getattr(radialaxis, 'categoryorder', 'trace')
             radial_categoryarray = getattr(radialaxis, 'categoryarray', None)
