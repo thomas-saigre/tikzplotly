@@ -29,14 +29,20 @@ def get_polar_coord(trace, axis: Axis, data_container: DataContainer):
             # Period
             period = getattr(angularaxis, "period")
 
+            # Category
+            categoryarray = getattr(angularaxis, 'categoryarray')
+
     theta = [t if t is not None else '' for t in trace.theta]
     r = [val if val is not None else 'nan' for val in trace.r]
 
     thetaunit = getattr(trace, "thetaunit", "degrees")
 
     if all(isinstance(t, str) for t in theta):
-        symbolic_theta = list(dict.fromkeys(theta))
-        
+        if categoryarray is not None:
+            symbolic_theta = list(categoryarray)
+        else:
+            symbolic_theta = list(dict.fromkeys(theta))
+
         n_theta = len(symbolic_theta)
         if period is not None:
             n_theta = max(period, n_theta)
