@@ -10,19 +10,20 @@ def get_polar_coord(trace, axis: Axis, data_container: DataContainer):
     if polar_layout:
         angularaxis = getattr(polar_layout, 'angularaxis', None)
         if angularaxis:
-            # rotation
+            # Rotation
             rotation = getattr(angularaxis, 'rotation', None)
             if rotation is None:
                 rotation = 0
             else:
                 axis.add_option("rotate", rotation)
-                axis.add_option("xticklabel style", f"{{anchor=\\tick-{rotation}}}")
+                axis.add_option("xticklabel style", f"{{anchor=\\tick+{rotation}+180}}")
                 axis.add_option("yticklabel style", f"{{anchor=\\tick-{rotation}-90}}")
 
-            # direction
+            # Direction
             direction = getattr(angularaxis, "direction", "counterclockwise")
             if direction == "clockwise":
                 axis.add_option("y dir", "reverse")
+                axis.add_option("xticklabel style", f"{{anchor={rotation}-\\tick+180}}")
 
     theta = [t if t is not None else '' for t in trace.theta]
     r = [val if val is not None else 'nan' for val in trace.r]
@@ -106,13 +107,13 @@ def draw_scatterpolar(data_name_macro, theta_col_name, r_col_name, trace, axis: 
         if line.width is not None:
             plot_options["line width"] = line.width
 
-     # Fill
+    # Fill
     if trace.fill is not None:
         if trace.fill == 'toself':
             plot_options["fill"] = ".!50"
             plot_options["opacity"] = 0.6
 
-    # axis options for polar plot
+    # Axis options for polar plot
     axis.environment = "polaraxis"
 
     # Construct TikZ addplot
