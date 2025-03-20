@@ -139,7 +139,7 @@ def get_tikz_code(
             if trace.name and trace['showlegend'] != False:
                 data_str.append(tex_add_legendentry(sanitize_TeX_text(trace.name)))
 
-        elif trace.type == "scatterpolar":
+        elif trace.type == "scatterpolar" or trace.type == "scatterpolargl":
             data_name_macro, theta_col_name, r_col_name = get_polar_coord(trace, axis, data_container)
            
             if all(isinstance(v, str) for v in trace.r):
