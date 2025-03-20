@@ -4,14 +4,15 @@ from ._tex import tex_addplot
 from ._color import convert_color
 from ._dataContainer import DataContainer
 from warnings import warn
+import numpy as np
 
 def get_polar_coord(trace, axis: Axis, data_container: DataContainer):
-    polar_layout = getattr(axis.layout, 'polar', None)
+    polar_layout = getattr(axis.layout, 'polar')
     if polar_layout:
-        angularaxis = getattr(polar_layout, 'angularaxis', None)
+        angularaxis = getattr(polar_layout, 'angularaxis')
         if angularaxis:
             # Rotation
-            rotation = getattr(angularaxis, 'rotation', None)
+            rotation = getattr(angularaxis, 'rotation')
             if rotation is None:
                 rotation = 0
             else:
@@ -24,6 +25,9 @@ def get_polar_coord(trace, axis: Axis, data_container: DataContainer):
             if direction == "clockwise":
                 axis.add_option("y dir", "reverse")
                 axis.add_option("xticklabel style", f"{{anchor={rotation}-\\tick+180}}")
+            
+            # Period
+            period = getattr(angularaxis, "period")
 
     theta = [t if t is not None else '' for t in trace.theta]
     r = [val if val is not None else 'nan' for val in trace.r]
@@ -32,10 +36,15 @@ def get_polar_coord(trace, axis: Axis, data_container: DataContainer):
 
     if all(isinstance(t, str) for t in theta):
         symbolic_theta = list(dict.fromkeys(theta))
-        numeric_theta = [symbolic_theta.index(t) * (360 / len(symbolic_theta)) for t in theta]
+        
+        n_theta = len(symbolic_theta)
+        if period is not None:
+            n_theta = max(period, n_theta)
+
+        numeric_theta = [symbolic_theta.index(t) * (360 / n_theta) for t in theta]
 
         axis.environment = "polaraxis"
-        axis.add_option("xtick", f"{{{','.join(str(i*(360/len(symbolic_theta))) for i in range(len(symbolic_theta)))}}}")
+        axis.add_option("xtick", f"{{{','.join(str( i * (360 / n_theta)) for i in range(n_theta))}}}")
         axis.add_option("xticklabels", "{" + ",".join(symbolic_theta) + "}")
     else:
         symbolic_theta = None        
@@ -95,7 +104,12 @@ def draw_scatterpolar(data_name_macro, theta_col_name, r_col_name, trace, axis: 
             plot_options["color"] = col[0]
             mark_opts = {"solid": None, "fill": col[0]}
             colors_set.add(col[:3])
-            # plot_options["mark options"] = "{" + option_dict_to_str(mark_option_dict=mark_opts) + "}"
+            plot_options["mark options"] = "{" + option_dict_to_str(mark_opts) + "}"
+        if marker.size is not None:
+            if isinstance(marker.size, np.ndarray):
+                warn(f"Individual marker sizes in a trace are not supported yet.")
+            else:
+                plot_options["mark size"] = marker.size/4
 
     # Line style
     if trace.line is not None:
