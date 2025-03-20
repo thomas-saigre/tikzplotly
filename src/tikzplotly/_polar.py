@@ -41,6 +41,12 @@ def get_polar_coord(trace, axis: Axis, data_container: DataContainer):
             radial_categoryorder = getattr(radialaxis, 'categoryorder', 'trace')
             radial_categoryarray = getattr(radialaxis, 'categoryarray', None)
 
+        # Sector
+        sector = getattr(polar_layout, 'sector')
+        if sector and len(sector) > 1:
+            axis.add_option("xmin", sector[0])
+            axis.add_option("xmax", sector[1])
+
     theta = [t if t is not None else '' for t in trace.theta]
     r = [val if val is not None else 'nan' for val in trace.r]
 
