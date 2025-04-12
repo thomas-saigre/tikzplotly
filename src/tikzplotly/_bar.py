@@ -2,10 +2,12 @@ from ._axis import Axis
 from ._utils import option_dict_to_str
 from ._tex import tex_addplot
 from ._color import convert_color
+from ._utils import sanitize_TeX_text
 from warnings import warn
 
-def draw_bar(data_name_macro, x_col_name, y_col_name, trace, axis: Axis, colors_set, row_sep="\\\\"):
-    """
+
+def draw_bar(data_name_macro, x_col_name, y_col_name, trace, axis: Axis, colors_set, row_sep="\\"):
+    r"""
     Draw a bar chart (vertical or horizontal) referencing the data table
     created by DataContainer.addData(...).
 
@@ -25,16 +27,16 @@ def draw_bar(data_name_macro, x_col_name, y_col_name, trace, axis: Axis, colors_
     axis : Axis
         The axis object to which the bar chart will be added.
     colors_set : set
-        A set to keep track of colors used in the plot (for \\definecolor).
+        A set to keep track of colors used in the plot (for \definecolor).
     row_sep : str, optional
-        The row separator for the data table in TikZ, by default "\\\\"
+        The row separator for the data table in TikZ, by default "\\"
     """
     code = ""
     plot_options = {}
-    type_options = {"row sep": row_sep}
+    type_options = {}
+    # type_options = {"row sep": row_sep}
 
-    orientation = getattr(trace, "orientation", None)
-    barmode = getattr(trace, "barmode", None)
+    orientation = getattr(trace, "orientation", "v")  # default vertical
     stack = " stacked" if axis.layout.barmode in ("stack", "relative") else ""
 
     if orientation == "h":
@@ -42,11 +44,23 @@ def draw_bar(data_name_macro, x_col_name, y_col_name, trace, axis: Axis, colors_
         axis.add_option("xbar" + stack, None)
         type_options["x"] = y_col_name
         type_options["y"] = x_col_name
+        categories = trace.y
     else:
         plot_options["ybar"] = None
         axis.add_option("ybar" + stack, None)
         type_options["x"] = x_col_name
         type_options["y"] = y_col_name
+        categories = trace.x
+
+    # Handle symbolic coords
+    if all(isinstance(value, str) for value in categories):
+        symbolic = sanitize_TeX_text(",".join(categories))
+        if orientation == "h":
+            axis.add_option("symbolic y coords", "{" + symbolic + "}")
+            axis.add_option("ytick", "data")
+        else:
+            axis.add_option("symbolic x coords", "{" + symbolic + "}")
+            axis.add_option("xtick", "data")
 
     # Handle marker style (color, opacity, line)
     if trace.marker is not None:

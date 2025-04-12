@@ -12,6 +12,8 @@ from ._annotations import str_from_annotation
 from ._dataContainer import DataContainer
 from ._utils import sanitize_TeX_text
 from warnings import warn
+from collections import defaultdict
+import numpy as np
 import re
 
 def get_tikz_code(
@@ -100,39 +102,13 @@ def get_tikz_code(
                 data_str.append( tex_add_legendentry(sanitize_TeX_text(trace.name)) )
 
         elif trace.type == "bar":
-            orientation = getattr(trace, "orientation", None)
-            if orientation == "h":
-                cat_list = trace.y
-                val_list = trace.x
-            else:
-                cat_list = trace.x
-                val_list = trace.y
-
-            # If x or y is empty
-            if trace.x is None and trace.y is None:
-                warn("Adding empty bar trace.")
-                data_str.append("\\addplot coordinates {};\n")
-                continue
-            else:
-                if trace.x is None:
-                    trace.x = list(range(len(trace.y)))
-                if trace.y is None:
-                    trace.y = list(range(len(trace.x)))
+            orientation = getattr(trace, "orientation", "v")
+            cat_list = trace.y if orientation == "h" else trace.x
+            val_list = trace.x if orientation == "h" else trace.y
 
             data_name_macro, val_col_name = data_container.addData(cat_list, val_list, trace.name)
-            x_col_name = data_container.data[-1].name  # 'data0
+            x_col_name = data_container.data[-1].name
 
-            if all(isinstance(value, str) for value in cat_list):
-                if orientation == "h":
-                    # Categories go on the y-axis
-                    axis.add_option("symbolic y coords", sanitize_TeX_text(",".join(cat_list)))
-                    axis.add_option("ytick", "data")
-                else:
-                    # Categories go on the x-axis
-                    axis.add_option("symbolic x coords", sanitize_TeX_text(",".join(cat_list)))
-                    axis.add_option("xtick", "data")
-
-            # Build the bar code
             bar_code = draw_bar(data_name_macro, x_col_name, val_col_name, trace, axis, colors_set)
             data_str.append(bar_code)
 
