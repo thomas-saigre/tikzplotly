@@ -11,7 +11,7 @@ import os
 from warnings import warn
 from tikzplotly._tex import tex_create_document, tex_begin_environment, tex_end_environment, tex_end_all_environment
 
-def fig1():
+def fig_vertical1():
 
     data_canada = px.data.gapminder().query("country == 'Canada'")
     fig = px.bar(data_canada, x='year', y='pop')
@@ -21,7 +21,7 @@ def fig1():
 
     return fig, "Bar chart with Plotly Express"
 
-def fig2():
+def fig_vertical2():
 
     long_df = px.data.medals_long()
 
@@ -32,7 +32,7 @@ def fig2():
 
     return fig, "Bar charts with Long Format Data"
 
-def fig3():
+def fig_vertical3():
 
     wide_df = px.data.medals_wide()
 
@@ -43,7 +43,7 @@ def fig3():
 
     return fig, "Bar charts with Wide Format Data"
 
-def fig5():
+def fig_vertical5():
 
     df = px.data.gapminder().query("country == 'Canada'")
     fig = px.bar(df, x='year', y='pop',
@@ -55,7 +55,7 @@ def fig5():
 
     return fig, "Colored Bars"
 
-def fig5bis():
+def fig_vertical6():
 
     df = px.data.gapminder().query("continent == 'Oceania'")
     fig = px.bar(df, x='year', y='pop',
@@ -67,7 +67,7 @@ def fig5bis():
     
     return fig, "Colored Bars"
 
-def fig6():
+def fig_vertical7():
 
     df = px.data.tips()
     fig = px.bar(df, x="sex", y="total_bill", color='time')
@@ -77,7 +77,7 @@ def fig6():
 
     return fig, "Stacked vs Grouped Bars"
 
-def fig6bis():
+def fig_vertical8():
 
     df = px.data.tips()
     fig = px.bar(df, x="sex", y="total_bill",
@@ -89,7 +89,7 @@ def fig6bis():
 
     return fig, "Stacked vs Grouped Bars"
 
-def fig7():
+def fig_vertical9():
 
     df = px.data.tips()
     fig = px.histogram(df, x="sex", y="total_bill",
@@ -101,7 +101,7 @@ def fig7():
 
     return fig, "Aggregating into Single Colored Bars"
 
-def fig7bis():
+def fig_vertical10():
 
     df = px.data.tips()
     fig = px.histogram(df, x="sex", y="total_bill",
@@ -114,7 +114,7 @@ def fig7bis():
 
     return fig, "Aggregating into Single Colored Bars"
 
-def fig8():
+def fig_vertical11():
 
     df = px.data.medals_long()
 
@@ -125,7 +125,7 @@ def fig8():
 
     return fig, "Bar Charts with Text"
 
-def fig8bis():
+def fig_vertical12():
 
     df = px.data.medals_long()
 
@@ -136,7 +136,7 @@ def fig8bis():
 
     return fig, "Bar Charts with Text"
 
-def fig8ter():
+def fig_vertical13():
 
     df = px.data.gapminder().query("continent == 'Europe' and year == 2007 and pop > 2.e6")
     fig = px.bar(df, y='pop', x='country', text_auto='.2s',
@@ -147,7 +147,7 @@ def fig8ter():
 
     return fig, "Bar Charts with Text"
 
-def fig8quater():
+def fig_vertical14():
 
     df = px.data.gapminder().query("continent == 'Europe' and year == 2007 and pop > 2.e6")
     fig = px.bar(df, y='pop', x='country', text_auto='.2s',
@@ -159,7 +159,7 @@ def fig8quater():
 
     return fig, "Bar Charts with Text"
 
-def fig9():
+def fig_vertical15():
 
     df = px.data.medals_long()
 
@@ -171,7 +171,7 @@ def fig9():
 
     return fig, "Pattern fills"
 
-def fig10():
+def fig_vertical16():
     animals=['giraffes', 'orangutans', 'monkeys']
 
     fig = go.Figure([go.Bar(x=animals, y=[20, 14, 23])])
@@ -181,7 +181,7 @@ def fig10():
 
     return fig, "Basic Bar Charts with plotly graph objects"
 
-def fig11():
+def fig_vertical17():
     animals=['giraffes', 'orangutans', 'monkeys']
 
     fig = go.Figure(data=[
@@ -196,7 +196,7 @@ def fig11():
 
     return fig, "Grouped Bar Chart"
 
-def fig12():
+def fig_vertical18():
     animals=['giraffes', 'orangutans', 'monkeys']
 
     fig = go.Figure(data=[
@@ -211,7 +211,7 @@ def fig12():
 
     return fig, "Stacked Bar Chart"
 
-def fig13():
+def fig_vertical19():
     x = [1, 2, 3, 4]
 
     fig = go.Figure()
@@ -228,54 +228,6 @@ def fig13():
     return fig, "Bar Chart with Relative Barmode"
 
 
-def figa():
-    """
-    Creates a simple vertical grouped bar chart with categorical x-values.
-    We have two series of data, each with 7 categories.
-    """
-    categories = ["04bits", "08bits", "16bits", "24bits", "32bits", "48bits", "64bits"]
-    fmax_chisel = [1147, 277, 256, 220, 207, 186, 179]
-    fmax_sv     = [375, 270, 235, 212, 205, 192, 190]
-    
-    df = pd.DataFrame({
-        "Category": categories,
-        "ALU1": fmax_chisel,
-        "ALU2": fmax_sv
-    })
-
-    fig = px.bar(df, x="Category", y=["ALU1", "ALU2"], barmode="group",
-                 title="Simple Vertical Bar Chart Example")
-
-    fig.update_layout(xaxis_title="Configuration", yaxis_title="Fmax (MHz)")
-
-    # fig.write_image(os.path.join(file_directory, "outputs", "test_bars", "figa.png"))
-
-    return fig, "Simple vertical grouped bar chart"
-
-def figb():
-    """
-    Creates a simple horizontal grouped bar chart with categorical y-values.
-    We have two series of data, each with 7 categories.
-    """
-    categories = ["04bits", "08bits", "16bits", "24bits", "32bits", "48bits", "64bits"]
-    fmax_chisel = [1147, 277, 256, 220, 207, 186, 179]
-    fmax_sv     = [375, 270, 235, 212, 205, 192, 190]
-    
-    df = pd.DataFrame({
-        "Category": categories,
-        "ALU1": fmax_chisel,
-        "ALU2": fmax_sv
-    })
-
-    fig = px.bar(df, x=["ALU1", "ALU2"], y="Category", barmode="group",
-                 title="Simple Horizontal Bar Chart Example")
-
-    fig.update_layout(xaxis_title="Fmax (MHz)", yaxis_title="Configuration")
-    
-    # fig.write_image(os.path.join(file_directory, "outputs", "test_bars", "figb.png"))
-    
-    return fig, "Simple horizontal grouped bar chart"
-
 if __name__ == "__main__":
 
     print("Tikzploty : ", tikzplotly.__version__)
@@ -286,26 +238,24 @@ if __name__ == "__main__":
     file_directory = os.path.dirname(os.path.abspath(__file__))
 
     functions = [
-        ("1", fig1),
-        ("2", fig2),
-        ("3", fig3),
-        ("5", fig5),
-        ("5bis", fig5bis),
-        ("6", fig6),              # Stacked bars are not supported yet.
-        ("6bis", fig6bis),        # Stacked bars are not supported yet.
-        ("7", fig7),              # Aggregated bars are not supported yet.
-        ("7bis", fig7bis),        # Aggregated bars are not supported yet.
-        ("8", fig8),              # Text template is not supported yet.
-        ("8bis", fig8bis),        # Text template is not supported yet.
-        ("8ter", fig8ter),        # Text template is not supported yet.
-        ("8quater", fig8quater),  # Text template is not supported yet.
-        ("9", fig9),              # Pattern fills are not supported yet.
-        ("10", fig10),
-        ("11", fig11),
-        ("12", fig12),
-        ("13", fig13),
-        ("a", figa),
-        ("b", figb),
+        ("vertical1", fig_vertical1),
+        ("vertical2", fig_vertical2),
+        ("vertical3", fig_vertical3),
+        ("vertical5", fig_vertical5),
+        ("vertical6", fig_vertical6),
+        ("vertical7", fig_vertical7),       # Stacked bars are not supported yet.
+        ("vertical8", fig_vertical8),       # Stacked bars are not supported yet.
+        ("vertical9", fig_vertical9),       # Aggregated bars are not supported yet.
+        ("vertical10", fig_vertical10),     # Aggregated bars are not supported yet.
+        ("vertical11", fig_vertical11),     # Text template is not supported yet.
+        ("vertical12", fig_vertical12),     # Text template is not supported yet.
+        ("vertical13", fig_vertical13),     # Text template is not supported yet.
+        ("vertical14", fig_vertical14),     # Text template is not supported yet.
+        ("vertical15", fig_vertical15),     # Pattern fills are not supported yet.
+        ("vertical16", fig_vertical16),
+        ("vertical17", fig_vertical17),
+        ("vertical18", fig_vertical18),
+        ("vertical19", fig_vertical19),
     ]
 
     main_tex_content = tex_create_document(options="twocolumn", compatibility="newest")
