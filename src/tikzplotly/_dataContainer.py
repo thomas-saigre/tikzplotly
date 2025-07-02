@@ -29,12 +29,20 @@ class Data:
         self.y_data.append(y)
         return self.y_label[-1]
 
+class Data3D:
+    def __init__(self, x, y, z, name):
+        self.x = list(x)
+        self.y = list(y)
+        self.z = list(z)
+        self.name = name if name else f"data3d_{id(self)}"
+        self.z_name = "z"
+
 class DataContainer:
 
     def __init__(self):
         self.data = []
 
-    def addData(self, x, y, y_label=None):
+    def addData(self, x, y, name=None, y_label=None):
         """Add data to the container.
 
         Parameters
@@ -45,28 +53,57 @@ class DataContainer:
             y values of the data
         y_label, optional
             name of the y data, by default None
+        name, optional
+            name of the data, by default None
 
         Returns
         -------
             tuple (macro_name, y_label), where macro_name is the name of the data in LaTeX and y_label the name of the y data in LaTeX
         """
         for data in self.data:
+            if isinstance(x, (tuple, list)):
+                continue
             if len(data.x) != len(x):
                 continue
             are_equals = data.x == x
             if type(are_equals) == bool:
                 if are_equals:
-                    y_label = data.addYData(y, y_label)
-                    return data.macro_name, y_label
-            elif are_equals.all():
-                if (data.x == x).all():
-                    y_label = data.addYData(y, y_label)
-                    return data.macro_name, y_label
+                    y_label_val = data.addYData(y, y_label or name)
+                    return data.macro_name, y_label_val
+            elif hasattr(are_equals, "all") and are_equals.all():
+                y_label_val = data.addYData(y, y_label or name)
+                return data.macro_name, y_label_val
         data_to_add = Data(f"data{len(self.data)}", x)
-        y_label = data_to_add.addYData(y, y_label)
+        y_label_val = data_to_add.addYData(y, y_label or name)
         self.data.append(data_to_add)
-        return data_to_add.macro_name, sanitize_text(y_label)
+        return data_to_add.macro_name, sanitize_text(y_label_val)
 
+    def addData3D(self, x, y, z, name=None):
+        """Add data to the container.
+
+        Parameters
+        ----------
+        x
+            x values of the data
+        y
+            y values of the data
+        z
+            z values of the data
+        name, optional
+            name of the data, by default None
+
+        Returns
+        -------
+            tuple (macro_name, z_name), where macro_name is the name of the data in LaTeX and z_name the name of the z data in LaTeX
+        """
+        for data in self.data:
+            if hasattr(data, "x") and hasattr(data, "y") and hasattr(data, "z"):
+                import numpy as np
+                if np.array_equal(data.x, x) and np.array_equal(data.y, y) and np.array_equal(data.z, z):
+                    return data.name, data.z_name
+        data_obj = Data3D(x, y, z, name)
+        self.data.append(data_obj)
+        return data_obj.name, data_obj.z_name
 
     def exportData(self):
         """Generate LaTeX code to export the data from DataContainer.
@@ -78,13 +115,30 @@ class DataContainer:
         export_string = ""
 
         for data in self.data:
-            export_string += "\\pgfplotstableread{"
-            export_string += f"{sanitize_text(data.name)} {' '.join([sanitize_text(label) for label in data.y_label])}\n"
-            for i in range(len(data.x)):
-                x_val = treat_data(data.x[i])
-                export_string += f"{x_val} {' '.join([str(y[i]) for y in data.y_data])}\n"
-
-            export_string += "}" + sanitize_text(data.macro_name) + "\n"
+            # 3D
+            if hasattr(data, "z"):
+                export_string += "\\pgfplotstableread{\n"
+                export_string += "x y z\n"
+                for i in range(len(data.x)):
+                    export_string += f"{data.x[i]} {data.y[i]} {data.z[i]}\n"
+                export_string += f"}}\\{data.name}\n"
+            
+            # 2D 
+            else:
+                export_string += "\\pgfplotstableread{\n"
+                header = "x"
+                if hasattr(data, "y_label") and data.y_label:
+                    for label in data.y_label:
+                        header += f" {label}"
+                else:
+                    header += " y"
+                export_string += header + "\n"
+                for i in range(len(data.x)):
+                    row = [str(data.x[i])]
+                    for y_col in data.y_data:
+                        row.append(str(y_col[i]))
+                    export_string += " ".join(row) + "\n"
+                export_string += f"}}\\{data.name}\n"
 
         return post_treat_data(export_string)
 

@@ -2,6 +2,7 @@ from pathlib import Path
 from .__about__ import __version__
 from ._tex import *
 from ._scatter import draw_scatter2d
+from ._scatter3d import draw_scatter3d
 from ._heatmap import draw_heatmap
 from ._histogram import draw_histogram
 from ._bar import draw_bar
@@ -123,6 +124,23 @@ def get_tikz_code(
 
             if trace.name and trace['showlegend'] != False:
                 data_str.append(tex_add_legendentry(sanitize_TeX_text(trace.name)))
+
+        elif trace.type == "scatter3d":
+            # Handle the case where x, y, or z is empty
+            if trace.x is None or trace.y is None or trace.z is None:
+                warn("Adding empty 3D trace.")
+                data_str.append("\\addplot3 coordinates {};\n")
+                continue
+
+            data_name_macro, z_name = data_container.addData3D(trace.x, trace.y, trace.z, trace.name)
+            data_str.append(draw_scatter3d(data_name_macro, trace, z_name, axis, colors_set))
+
+            if trace.name and trace['showlegend'] != False:
+                data_str.append(tex_add_legendentry(sanitize_TeX_text(trace.name)))
+            if getattr(trace, "line", None) and getattr(trace.line, "color", None) is not None:
+                colors_set.add(convert_color(trace.line.color)[:3])
+            if getattr(trace, "fillcolor", None) is not None:
+                colors_set.add(convert_color(trace.fillcolor)[:3])
 
         else:
             warn(f"Trace type {trace.type} is not supported yet.")
