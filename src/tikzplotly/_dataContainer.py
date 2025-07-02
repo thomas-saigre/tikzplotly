@@ -2,6 +2,11 @@ import re
 from ._utils import replace_all_digits, sanitize_text
 from ._data import treat_data, post_treat_data
 
+def hexid_to_alpha(num):
+    hexstr = str(num)
+    table = "ABCDEFGHIJKLMNOP"
+    return ''.join(table[int(c, 16)] for c in hexstr if c in "0123456789abcdef")
+
 class Data:
 
     def __init__(self, name, x):
@@ -34,7 +39,7 @@ class Data3D:
         self.x = list(x)
         self.y = list(y)
         self.z = list(z)
-        self.name = name if name else f"data3d_{id(self)}"
+        self.name = name if name else f"data{hexid_to_alpha(id(self))}"
         self.z_name = "z"
 
 class DataContainer:
@@ -121,7 +126,7 @@ class DataContainer:
                 export_string += "x y z\n"
                 for i in range(len(data.x)):
                     export_string += f"{data.x[i]} {data.y[i]} {data.z[i]}\n"
-                export_string += f"}}\\{data.name}\n"
+                export_string += f"}}{{\\{data.name}}}\n"
             
             # 2D 
             else:
@@ -141,6 +146,4 @@ class DataContainer:
                 export_string += f"}}\\{data.name}\n"
 
         return post_treat_data(export_string)
-
-
 
