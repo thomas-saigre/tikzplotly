@@ -30,7 +30,14 @@ def draw_scatter3d(data_name, scatter, z_name, axis: Axis, color_set):
             options_dict["only marks"] = None
 
         if marker.size is not None:
-            options_dict["mark size"] = px_to_pt(marker.size)
+            size = marker.size
+            if isinstance(size, (list, tuple)) or (hasattr(size, "shape") and hasattr(size, "__len__")):
+                try:
+                    import numpy as np
+                    size = float(np.mean(size))
+                except Exception:
+                    size = float(size[0])
+            options_dict["mark size"] = px_to_pt(size)
 
         if marker.color is not None:
             color_set.add(convert_color(marker.color)[:3])

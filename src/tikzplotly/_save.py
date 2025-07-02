@@ -132,6 +132,35 @@ def get_tikz_code(
                 data_str.append("\\addplot3 coordinates {};\n")
                 continue
 
+            # View
+            if hasattr(figure_layout.scene, "camera") and hasattr(figure_layout.scene.camera, "eye"):
+                eye = figure_layout.scene.camera.eye
+                if eye is not None and eye.x is not None and eye.y is not None and eye.z is not None:
+                    axis.add_option("view", f"{{{eye.x},{eye.y},{eye.z}}}")
+
+            # Labels
+            if hasattr(figure_layout.scene.xaxis, "title") and getattr(figure_layout.scene.xaxis.title, "text", None):
+                axis.add_option("xlabel", f"{{{sanitize_TeX_text(figure_layout.scene.xaxis.title.text)}}}")
+            if hasattr(figure_layout.scene.yaxis, "title") and getattr(figure_layout.scene.yaxis.title, "text", None):
+                axis.add_option("ylabel", f"{{{sanitize_TeX_text(figure_layout.scene.yaxis.title.text)}}}")
+            if hasattr(figure_layout.scene.zaxis, "title") and getattr(figure_layout.scene.zaxis.title, "text", None):
+                axis.add_option("zlabel", f"{{{sanitize_TeX_text(figure_layout.scene.zaxis.title.text)}}}")
+
+            # Grid
+            if hasattr(figure_layout.scene.xaxis, "showgrid"):
+                if figure_layout.scene.xaxis.showgrid is False:
+                    axis.add_option("xmajorgrids", "false")
+            if hasattr(figure_layout.scene.yaxis, "showgrid"):
+                if figure_layout.scene.yaxis.showgrid is False:
+                    axis.add_option("ymajorgrids", "false")
+            if hasattr(figure_layout.scene.zaxis, "showgrid"):
+                if figure_layout.scene.zaxis.showgrid is False:
+                    axis.add_option("zmajorgrids", "false")
+
+            # Title
+            if hasattr(figure_layout.scene, "title") and getattr(figure_layout.scene.title, "text", None):
+                axis.add_option("title", f"{{{sanitize_TeX_text(figure_layout.scene.title.text)}}}")
+
             data_name_macro, z_name = data_container.addData3D(trace.x, trace.y, trace.z, trace.name)
             data_str.append(draw_scatter3d(data_name_macro, trace, z_name, axis, colors_set))
 
