@@ -39,7 +39,7 @@ class Data3D:
         self.x = list(x)
         self.y = list(y)
         self.z = list(z)
-        self.name = name if name else f"data{hexid_to_alpha(id(self))}"
+        self.name = sanitize_text(name, keep_space=False) if name else f"data{hexid_to_alpha(id(self))}"
         self.z_name = "z"
 
 class DataContainer:

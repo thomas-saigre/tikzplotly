@@ -70,7 +70,12 @@ def sanitize_char(ch, keep_space=False):
     -------
     str: The sanitized character or its hexadecimal representation.
     """
-    if keep_space and ch == " ": return " "
+    if ch == "_":
+        return ""
+    if ch == "@":
+        return "at"
+    if ch == " ": 
+        return " " if keep_space else ""
     if ch in "[]{}= ": return f"x{ord(ch):x}"
     # if not ascii, return hex
     if ord(ch) > 127: return f"x{ord(ch):x}"
