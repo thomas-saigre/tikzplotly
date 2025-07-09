@@ -136,7 +136,10 @@ def get_tikz_code(
             if hasattr(figure_layout.scene, "camera") and hasattr(figure_layout.scene.camera, "eye"):
                 eye = figure_layout.scene.camera.eye
                 if eye is not None and eye.x is not None and eye.y is not None and eye.z is not None:
-                    axis.add_option("view", f"{{{eye.x},{eye.y},{eye.z}}}")
+                    norm = np.sqrt(eye.x**2 + eye.y**2 + eye.z**2)
+                    azimuth = np.degrees(np.arctan2(eye.y, eye.x))
+                    elevation = np.degrees(np.arcsin(eye.z / norm))
+                    axis.add_option("view", f"{{{azimuth:.1f}}}{{{elevation:.1f}}}")
 
             # Labels
             if hasattr(figure_layout.scene.xaxis, "title") and getattr(figure_layout.scene.xaxis.title, "text", None):
