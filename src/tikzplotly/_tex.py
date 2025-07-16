@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+"""This module provides utilities for generating LaTeX document headers,
+    specifically for documents using the pgfplots package.
+    It includes functions to create document classes, environments, and TikZ commands.
+"""
 from ._color import hex2rgb
 from ._utils import sanitize_text
 
@@ -34,8 +39,7 @@ def tex_begin_environment(environment, stack_env, options=None):
     stack_env.append(environment)
     if options is not None:
         return f"\\begin{{{environment}}}[\n{options}\n]\n"
-    else:
-        return f"\\begin{{{environment}}}\n"
+    return f"\\begin{{{environment}}}\n"
 
 def tex_end_environment(stack_env):
     """Close the last opened LaTeX environment.
@@ -69,14 +73,14 @@ def tex_end_all_environment(stack_env):
         code += tex_end_environment(stack_env)
     return code
 
-def tex_addplot(data_str, type="table", options=None, type_options=None):
+def tex_addplot(data_str, plot_type="table", options=None, type_options=None):
     """Create a LaTeX addplot command.
 
     Parameters
     ----------
     data_str
         string containing the data
-    type, optional
+    plot_type, optional
         type of data, by default "table"
     options, optional
         options given to the addplot command, by default None
@@ -90,7 +94,7 @@ def tex_addplot(data_str, type="table", options=None, type_options=None):
     code = "\\addplot+ "
     if options is not None:
         code += f"[{options}] "
-    code += type
+    code += plot_type
     if type_options is not None:
         code += f"[{type_options}]"
     code += " {" + data_str + "};\n"
@@ -119,8 +123,7 @@ def tex_add_text(x, y, text, options=None, relative=False):
     relative_text = ["", "rel "][relative]
     if options is not None:
         return f"\\node[{options}] at ({relative_text}axis cs:{x}, {y}) {{{tex_text(text)}}};\n"
-    else:
-        return f"\\node at (axis cs:{x},{y}) {{{tex_text(text)}}};\n"
+    return f"\\node at (axis cs:{x},{y}) {{{tex_text(text)}}};\n"
 
 def tex_add_color(color_name, type_color, color):
     """Create a LaTeX color definition.
@@ -140,8 +143,7 @@ def tex_add_color(color_name, type_color, color):
     """
     if type_color is not None:
         return f"\\definecolor{{{color_name}}}{{{type_color}}}{{{color}}}\n"
-    else:
-        return ""
+    return ""
 
 def tex_add_legendentry(legend, options=None):
     """Create a LaTeX legend entry.
@@ -159,8 +161,7 @@ def tex_add_legendentry(legend, options=None):
     """
     if options is not None:
         return f"\\addlegendentry[{options}]{{{legend}}}\n"
-    else:
-        return f"\\addlegendentry{{{legend}}}\n"
+    return f"\\addlegendentry{{{legend}}}\n"
 
 
 def tex_create_document(document_class="article", options=None, compatibility="newest"):
@@ -220,9 +221,29 @@ def tex_text(text):
     escaping the special characters %, _, &, #, $, {, }, ~.
     """
     text_san = sanitize_text(text, keep_space=True)
-    return text_san.replace("%", "\\%").replace("_", "\\_").replace("&", "\\&").replace("#", "\\#").replace("$", "\\$").replace("{", "\\{").replace("}", "\\}").replace("~", "\\textasciitilde ")
+    return (
+        text_san.replace("%", "\\%")
+        .replace("_", "\\_")
+        .replace("&", "\\&")
+        .replace("#", "\\#")
+        .replace("$", "\\$")
+        .replace("{", "\\{")
+        .replace("}", "\\}")
+        .replace("~", "\\textasciitilde ")
+    )
 
 def get_tikz_colorscale(colorscale, name="mycolor"):
+    """Get TikZ code for a colorscale.
+
+    Arguments:
+        colorscale {tuple} -- tuple of (dist, color) pairs (e.g. ((0.0, '#0d0887'), (1.0, '#f0f921')))
+
+    Keyword Arguments:
+        name {str} -- name of the colorscale (default: {"mycolor"})
+
+    Returns:
+        str -- code for the TikZ colorscale definition
+    """
 
     code = "{" + str(name) + "}{\n"
     for dist, color in colorscale:

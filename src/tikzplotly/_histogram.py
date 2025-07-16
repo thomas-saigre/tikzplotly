@@ -125,8 +125,8 @@ def draw_histogram(trace, axis: Axis, colors_set, row_sep="\\\\"):
         if f != "count":
             warn("To the best of our knowledge, other aggregate function than 'count' are not supported in pgfplots. Please pre-treat your data to display what you want. Sorry for the inconvenience.")
 
-    code += tex_addplot(data_str, type="table",
-                        options=option_dict_to_str(plot_options), type_options=option_dict_to_str(type_options))
+    code += tex_addplot(data_str, plot_type = "table",
+                        options = option_dict_to_str(plot_options), type_options=option_dict_to_str(type_options))
 
 
     return code
