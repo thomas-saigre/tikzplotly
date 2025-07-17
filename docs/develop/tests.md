@@ -37,7 +37,7 @@ Compile this TeX file with your favorite LaTeX compiler to see the result.
 ## Tests for the CI
 
 These tests are run on the CI to check that the generated LaTeX code is still the same after the modifications.
-They are placed in teh directory `tests` at the root of the repository.
+They are placed in the directory `tests` at the root of the repository.
 When `tox` is run (see [here](contributing.md#run-the-tests-and-look-at-code-coverage)), they are the tests that are run, not the ones on the present section.
 
 Here is an example of a test that is run on the CI:

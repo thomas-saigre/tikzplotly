@@ -133,7 +133,7 @@ def draw_heatmap(data, fig, img_name, axis: Axis):
         warn("No colorscale found, using default")
         axis.add_option("colormap", get_tikz_colorscale(DEFAULT_COLORSCALE))
 
-    tmp = np.where(figure_data is None, np.nan, figure_data)
+    tmp = np.where(figure_data == None, np.nan, figure_data)
     axis.add_option("point meta max", np.nanmax(tmp))
     axis.add_option("point meta min", np.nanmin(tmp))
     axis.add_option("xmin", xmin)

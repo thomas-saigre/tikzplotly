@@ -64,7 +64,7 @@ extra:
 
 nav:
   - Home: index.md
-  - Tilzplotly:
+  - TikZplotly:
     - "Usage": plot/usage.md
     - "Supported plots": plot/supported.md
     - "Other features" : plot/features.md
