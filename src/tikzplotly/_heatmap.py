@@ -1,8 +1,11 @@
+"""
+This module contains the code to draw a heatmap in TikZ using Plotly data.
+"""
+from warnings import warn
+import io
 from copy import deepcopy
 import numpy as np
-import io
 from PIL import Image
-from warnings import warn
 from ._tex import tex_addplot, get_tikz_colorscale
 from ._axis import Axis
 from ._color import DEFAULT_COLORSCALE
@@ -109,7 +112,7 @@ def draw_heatmap(data, fig, img_name, axis: Axis):
     ymax = -0.5         # NB : the axis is reversed
 
 
-    if not (fig.layout.coloraxis.showscale == False):   # If the value is True or None
+    if not fig.layout.coloraxis.showscale is False:   # If the value is True or None
         axis.add_option("colorbar", None)
 
     if (x := data.x) is not None:
@@ -130,7 +133,7 @@ def draw_heatmap(data, fig, img_name, axis: Axis):
         warn("No colorscale found, using default")
         axis.add_option("colormap", get_tikz_colorscale(DEFAULT_COLORSCALE))
 
-    tmp = np.where(figure_data == None, np.nan, figure_data)
+    tmp = np.where(figure_data is None, np.nan, figure_data)
     axis.add_option("point meta max", np.nanmax(tmp))
     axis.add_option("point meta min", np.nanmin(tmp))
     axis.add_option("xmin", xmin)
@@ -140,6 +143,7 @@ def draw_heatmap(data, fig, img_name, axis: Axis):
     axis.add_option("tick align", "outside")
     axis.add_option("tick pos", "left")
 
-    code += tex_addplot(img_name, type="graphics", type_options=f"includegraphics cmd=\\pgfimage,xmin={xmin}, xmax={xmax}, ymin={ymin}, ymax={ymax}")
+    code += tex_addplot(img_name, plot_type="graphics",
+                        type_options=f"includegraphics cmd=\\pgfimage,xmin={xmin}, xmax={xmax}, ymin={ymin}, ymax={ymax}")
 
     return code

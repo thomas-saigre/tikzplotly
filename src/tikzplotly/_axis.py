@@ -1,9 +1,19 @@
+"""
+tikzplotly._axis
+
+This module provides the Axis class, which manages the TikZ axis environment for converting Plotly figures to TikZ/PGFPlots code.
+It handles axis options, labels, ticks, background, and bar layout, supporting customization via Plotly figure layout and color sets.
+"""
+
+from warnings import warn
 from ._color import convert_color
 from ._tex import tex_begin_environment
-from ._utils import sanitize_TeX_text, option_dict_to_str, get_ticks_str
-from warnings import warn
+from ._utils import sanitize_tex_text, option_dict_to_str, get_ticks_str
 
 class Axis():
+    """Class to handle the axis environment in TikZ.
+    This class manages the options and environment for the TikZ axis, including labels, ticks, and background.
+    """
 
     def __init__(self, layout, colors_set, axis_options=None):
         """Initialize an Axis.
@@ -15,7 +25,8 @@ class Axis():
         colors_set
             set of colors used in the figure, to be filled with the colors of the axis
         axis_options
-            options given to the axis environment, by default None. Can be a dict ({option: value}) or a string ("option1=value1, option2=value2").
+            options given to the axis environment, by default None.
+            Can be a dict ({option: value}) or a string ("option1=value1, option2=value2").
         """
         self.layout = layout
 
@@ -33,6 +44,8 @@ class Axis():
         self.environment = "axis"
 
         self.xticks = None
+        self.x_label = None
+        self.y_label = None
 
         self.treat_axis_layout()
         self.treat_background_layout(colors_set)
@@ -92,11 +105,11 @@ class Axis():
             string of all options with their values
         """
         if self.title is not None:
-            self.options["title"] = sanitize_TeX_text(self.title)
+            self.options["title"] = sanitize_tex_text(self.title)
         if self.x_label is not None:
-            self.options["xlabel"] = sanitize_TeX_text(self.x_label)
+            self.options["xlabel"] = sanitize_tex_text(self.x_label)
         if self.y_label is not None:
-            self.options["ylabel"] = sanitize_TeX_text(self.y_label)
+            self.options["ylabel"] = sanitize_tex_text(self.y_label)
         options_str = option_dict_to_str(self.options, sep="\n")
         return options_str
 
@@ -135,9 +148,9 @@ class Axis():
         if self.layout.yaxis.autorange == "reversed":
             self.add_option("y dir", "reverse")
 
-        if self.layout.xaxis.showline == False:
+        if self.layout.xaxis.showline is False:
             self.add_option("axis x line", "none")
-        if self.layout.yaxis.showline == False:
+        if self.layout.yaxis.showline is False:
             self.add_option("axis y line", "none")
         if self.layout.xaxis.categoryorder == "array":
             self.xticks = self.layout.xaxis.categoryarray
@@ -145,8 +158,14 @@ class Axis():
             self.add_option("xtick", ticks)
             self.add_option("xticklabels", ticklabels)
 
-        if self.layout.xaxis.categoryorder != "trace" or self.layout.yaxis.categoryorder != "trace" or self.layout.xaxis.categoryorder != "total descending":
-            warn("The categoryorder option is not supported (yet 🤞) for the axis environment.")
+        if (
+            self.layout.xaxis.categoryorder != "trace"
+            or self.layout.yaxis.categoryorder != "trace"
+            or self.layout.xaxis.categoryorder != "total descending"
+        ):
+            warn(
+            "The categoryorder option is not supported (yet 🤞) for the axis environment."
+            )
 
         if self.layout.xaxis.showgrid:
             self.add_option("xmajorgrids", None)
@@ -165,13 +184,22 @@ class Axis():
 
 
     def treat_background_layout(self, colors_set):
+        """Treat the background layout of the axis.
+        Parameters
+        ----------
+        colors_set : set
+            Set of colors used in the figure, to be filled with the background color of the axis.
+        """
         if self.layout.plot_bgcolor is not None:
             bg_color = convert_color(self.layout.plot_bgcolor)
             colors_set.add(bg_color[:3])
-            opacity = bg_color[3]
+            # opacity = bg_color[3]
             self.add_option("axis background/.style", f"{{fill={bg_color[0]}}}")
 
     def treat_bar_layout(self):
+        """Treat the bar layout of the axis.
+        This method handles the bar mode and adds the appropriate options to the axis.
+        """
         if (barmode := self.layout.barmode) is not None:
             if barmode == "stack":
                 self.add_option("ybar stacked", None)

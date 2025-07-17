@@ -1,13 +1,16 @@
-from warnings import warn
+"""
+Provides functionality to convert Plotly scatter traces into TikZ/PGFPlots code for LaTeX documents.
+"""
 
-from ._tex import *
-from ._color import *
+from warnings import warn
+import numpy as np
+from ._tex import tex_addplot, tex_add_text
+from ._color import convert_color
 from ._marker import marker_symbol_to_tex
-from ._dash import *
+from ._dash import DASH_PATTERN
 from ._axis import Axis
-from ._data import *
+from ._data import data_type
 from ._utils import px_to_pt, option_dict_to_str, sanitize_text
-from numpy import round
 
 def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
     """Get code for a scatter trace.
@@ -37,7 +40,7 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
     if data_type(scatter.x[0]) == "date":
         axis.add_option("date coordinates in", "x")
     if data_type(scatter.x[0]) == "month":
-        scatter_x_str = "{" + ", ".join([x for x in scatter.x]) + "}"
+        scatter_x_str = "{" + ", ".join(list(scatter.x)) + "}"
         axis.add_option("xticklabels", scatter_x_str)
 
     if mode is None:
@@ -77,9 +80,9 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
             mark_option_dict["rotate"] = -angle
 
         if (opacity:=scatter.opacity) is not None:
-            options_dict["opacity"] = round(opacity, 2)
+            options_dict["opacity"] = np.round(opacity, 2)
         if (opacity:=scatter.marker.opacity) is not None:
-            mark_option_dict["opacity"] = round(opacity, 2)
+            mark_option_dict["opacity"] = np.round(opacity, 2)
 
         if mark_option_dict:
             mark_options = option_dict_to_str(mark_option_dict)

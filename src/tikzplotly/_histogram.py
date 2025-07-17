@@ -1,9 +1,17 @@
+"""
+Functions to convert Plotly histogram traces into TikZ/PGFPlots code.
+
+Notes:
+------
+- Some advanced Plotly histogram features (such as normalization modes and text templates) are not fully supported and will issue warnings.
+- Only the 'count' aggregation function is supported; other functions require pre-processing of data.
+"""
+import numbers
+from warnings import warn
 from ._axis import Axis
 from ._utils import get_ticks_str, option_dict_to_str
 from ._tex import tex_addplot
 from ._color import convert_color
-import numbers
-from warnings import warn
 
 def formalize_data(data, axis:Axis, row_sep="\\\\"):
     """Formalize the data for the histogram trace.
@@ -21,7 +29,7 @@ def formalize_data(data, axis:Axis, row_sep="\\\\"):
     data_str = f"data{row_sep}\n"
     if isinstance(data[0], numbers.Number):
         for x in data:
-            data_str += "{}{} ".format(x, row_sep)
+            data_str += f"{x}{row_sep} "
 
     else:
         flag_axis = True
@@ -91,13 +99,26 @@ def draw_histogram(trace, axis: Axis, colors_set, row_sep="\\\\"):
         hist_options["bins"] = trace.nbinsx
 
     if trace.histnorm == "percent":
-        warn(f"Sorry, I did not found an equivalent for histnorm='{trace.histnorm}' in Tikz. I you need this feature implemented, please open an issue, if possible with a general pgfplots code that would plot this :).\nFor now, the histogram will be plotted without normalization (as if histnorm='probability density').")
+        warn(
+            f"Sorry, I did not found an equivalent for histnorm='{trace.histnorm}' in Tikz. "
+            "If you need this feature implemented, please open an issue, if possible with a general pgfplots code "
+            "that would plot this :).\nFor now, the histogram will be plotted without normalization "
+            "(as if histnorm='probability density')."
+        )
         hist_options["density"] = None
     elif trace.histnorm == "probability":
-        warn(f"Sorry, I did not found an equivalent for histnorm='{trace.histnorm}' in Tikz. I you need this feature implemented, please open an issue, if possible with a general pgfplots code that would plot this :).\nFor now, the histogram will be plotted without normalization (as if histnorm='probability density').")
+        warn(
+            f"Sorry, I did not found an equivalent for histnorm='{trace.histnorm}' in Tikz. "
+            "I you need this feature implemented, please open an issue, if possible with a general pgfplots code that would plot this :).\n"
+            "For now, the histogram will be plotted without normalization (as if histnorm='probability density')."
+        )
         hist_options["density"] = None
     elif trace.histnorm == "density":
-        warn(f"Sorry, I did not found an equivalent for histnorm='{trace.histnorm}' in Tikz. I you need this feature implemented, please open an issue, if possible with a general pgfplots code that would plot this :).\nFor now, the histogram will be plotted without normalization (as if histnorm='probability density').")
+        warn(
+            f"Sorry, I did not found an equivalent for histnorm='{trace.histnorm}' in Tikz. "
+            "I you need this feature implemented, please open an issue, if possible with a general pgfplots code that would plot this :).\n"
+            "For now, the histogram will be plotted without normalization (as if histnorm='probability density')."
+        )
         hist_options["density"] = None
     elif trace.histnorm == "probability density":
         hist_options["density"] = None
@@ -123,7 +144,10 @@ def draw_histogram(trace, axis: Axis, colors_set, row_sep="\\\\"):
 
     if (f := trace.histfunc) is not None:
         if f != "count":
-            warn("To the best of our knowledge, other aggregate function than 'count' are not supported in pgfplots. Please pre-treat your data to display what you want. Sorry for the inconvenience.")
+            warn(
+                "To the best of our knowledge, other aggregate function than 'count' are not supported in pgfplots. "
+                "Please pre-treat your data to display what you want. Sorry for the inconvenience."
+            )
 
     code += tex_addplot(data_str, plot_type = "table",
                         options = option_dict_to_str(plot_options), type_options=option_dict_to_str(type_options))

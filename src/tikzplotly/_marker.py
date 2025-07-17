@@ -1,3 +1,12 @@
+"""
+Convert a Plotly marker symbol to its TikZ equivalent.
+
+Notes
+-----
+If the symbol is not supported, a warning is issued and the default '*' symbol is returned.
+Dotted markers (symbols containing '-dot') are not supported yet; a warning is issued and the non-dotted version is used instead.
+"""
+
 from warnings import warn
 
 # Source : https://github.com/plotly/plotly.py/blob/51eb5ea9fefda27bccfdb21e660b8d4035cef3b0/packages/python/plotly/plotly/graph_objs/box/_marker.py#L256-L344
@@ -207,6 +216,17 @@ marker_symbol_dict = {
 }
 
 def marker_symbol_to_tex(symbol):
+    """Convert a marker symbol to its TikZ equivalent.
+
+    Parameters
+    ----------
+    symbol
+        marker symbol, can be a string or an integer from the AUTHORIZED_SYMBOLS list
+
+    Returns
+    -------
+        tuple (symbol, options), where symbol is the TikZ symbol and options is a tuple of options to apply to the symbol
+    """
 
     if symbol not in AUTHORIZED_SYMBOLS:
         warn(f"Symbol '{symbol}' not supported, defaulting to '*'")

@@ -1,3 +1,13 @@
+"""Utility functions for string sanitization, digit and month replacement, LaTeX formatting, and TikZ option formatting.
+
+This module provides helper functions for:
+- Replacing digits in strings with corresponding letter codes.
+- Replacing month names with their numeric representations.
+- Sanitizing text and characters for safe usage in file names or LaTeX.
+- Converting pixel units to points.
+- Formatting option dictionaries for TikZ.
+- Generating tick strings for axis labeling.
+"""
 import re
 import warnings
 from math import floor
@@ -21,24 +31,26 @@ def replace_all_digits(text):
     """
     return pattern_digit.sub(lambda m: rep_digit[re.escape(m.group(0))], text)
 
-rep_mounts = {"January": '1', 'February': '2', 'March': '3', 'April': '4', 'May': '5', 'June': '6', 'July': '7', 'August': '8', 'September': '9', 'October': '10', 'November': '11', 'December': '12',
-              'january': 1, 'february': 2, 'march': 3, 'april': 4, 'may': 5, 'june': 6, 'july': 7, 'august': 8, 'september': 9, 'october': 10, 'november': 11, 'december': 12}
-rep_mounts = dict((re.escape(k), v) for k, v in rep_mounts.items())
-pattern_mounts = re.compile("|".join(rep_mounts.keys()))
+rep_mounths = {"January": '1', 'February': '2', 'March': '3', 'April': '4', 'May': '5', 'June': '6',
+              'July': '7', 'August': '8', 'September': '9', 'October': '10', 'November': '11', 'December': '12',
+              'january': 1, 'february': 2, 'march': 3, 'april': 4, 'may': 5, 'june': 6,
+              'july': 7, 'august': 8, 'september': 9, 'october': 10, 'november': 11, 'december': 12}
+rep_mounths = dict((re.escape(k), v) for k, v in rep_mounths.items())
+pattern_mounths = re.compile("|".join(rep_mounths.keys()))
 
-def replace_all_mounts(text):
-    """Replace all mounts in a string with their corresponding number.
+def replace_all_mounths(text):
+    """Replace all mounths in a string with their corresponding number.
 
     Parameters
     ----------
     text
-        string to replace mounts in
+        string to replace mounths in
 
     Returns
     -------
-        string with mounts replaced by their corresponding number
+        string with mounths replaced by their corresponding number
     """
-    return pattern_mounts.sub(lambda m: rep_mounts[re.escape(m.group(0))], text)
+    return pattern_mounths.sub(lambda m: rep_mounths[re.escape(m.group(0))], text)
 
 
 def sanitize_text(text: str, keep_space=False):
@@ -70,22 +82,49 @@ def sanitize_char(ch, keep_space=False):
     -------
     str: The sanitized character or its hexadecimal representation.
     """
-    if keep_space and ch == " ": return " "
-    if ch in "[]{}= ": return f"x{ord(ch):x}"
+    if keep_space and ch == " ":
+        return " "
+    if ch in "[]{}= ":
+        return f"x{ord(ch):x}"
     # if not ascii, return hex
-    if ord(ch) > 127: return f"x{ord(ch):x}"
+    if ord(ch) > 127:
+        return f"x{ord(ch):x}"
     # if not printable, return hex
-    if not ch.isprintable(): return f"x{ord(ch):x}"
+    if not ch.isprintable():
+        return f"x{ord(ch):x}"
     return ch
 
-def sanitize_TeX_text(text: str):
-    s = "".join(map(sanitize_TeX_char, text))
+def sanitize_tex_text(text: str):
+    """Sanitize a string for LaTeX, escaping special characters and ensuring proper formatting.
+
+    Parameters
+    ----------
+    text : str
+        The input text to be sanitized.
+    Returns
+    -------
+    str
+        The sanitized text, with special characters escaped and formatted for LaTeX.
+    """
+    s = "".join(map(sanitize_tex_char, text))
     if '[' in s or ']' in s:
         return "{" + s + "}"
     return s
 
-def sanitize_TeX_char(ch):
-    if ch in "_{}": return f"\\{ch}"
+def sanitize_tex_char(ch):
+    """Sanitize a character for LaTeX.
+
+    Parameters
+    ----------
+    ch
+        character to sanitize
+
+    Returns
+    -------
+        Character sanitized for LaTeX
+    """
+    if ch in "_{}":
+        return f"\\{ch}"
     # if not ascii, return hex
     if ord(ch) > 127:
         warnings.warn(f"Character {ch} has been replaced by \"x{ord(ch):x}\" in output file")
@@ -110,8 +149,9 @@ def px_to_pt(px):
         size in point
     """
     pt = px * .75
-    if floor(pt) == pt: return int(pt)
-    else: return pt
+    if floor(pt) == pt:
+        return int(pt)
+    return pt
 
 
 def option_dict_to_str(options_dict, sep=" "):
