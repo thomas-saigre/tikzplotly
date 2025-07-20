@@ -63,7 +63,7 @@ def convert_color(color):
         return color.lower(), "RGB", colors[color.lower()], 1
 
     warn(f"Color {color} type is not supported yet. Returning the same color.")
-    return color, 1
+    return color, None, None, 1
 
 def hex2rgb(hex_color):
     """Convert a hex color to a RGB color.
