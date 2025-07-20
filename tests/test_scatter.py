@@ -130,7 +130,7 @@ def plot_4():
     # add label at top of the plot
     annotations.append(dict(yref='paper', x=2008, y=1.05,
                             xanchor='left', yanchor='bottom',
-                            text='=={Top text}==',
+                            text='=={Top text}==	',
                             font=dict(family='Arial',
                                       size=30,
                                       color='rgb(37,37,37)'),

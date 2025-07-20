@@ -52,87 +52,85 @@ def replace_all_months(text):
     """
     return pattern_months.sub(lambda m: rep_months[re.escape(m.group(0))], text)
 
-
-def sanitize_text(text: str, keep_space=False):
+def sanitize_text(text: str, keep_space: bool = False) -> str:
     """
     Sanitize the input text by removing or replacing unwanted characters.
 
     Parameters
     ----------
-    text (str): The input text to be sanitized.
-    keep_space (bool, optional): If True, spaces will be preserved in the sanitized text.
-                                 If False, spaces will be removed. Defaults to False.
+    text : str
+        The input text to be sanitized.
+    keep_space : bool, optional
+        If True, spaces will be preserved in the sanitized text.
+        If False, spaces will be replaced with underscores. Defaults to False.
 
     Returns
     -------
-    str: The sanitized text.
+    str
+        The sanitized text.
     """
-    return "".join(sanitize_char(ch, keep_space=keep_space) for ch in text)
+    return ''.join(sanitize_char(ch, keep_space) for ch in text)
 
-def sanitize_char(ch, keep_space=False):
+def sanitize_char(ch: str, keep_space: bool = False) -> str:
     """
-    Sanitize a character by converting it to a hexadecimal representation if it is a special character, non-ASCII, or non-printable.
+    Sanitize a character by escaping special characters or converting to hex if non-ASCII/non-printable.
 
     Parameters
     ----------
-    ch (str): The character to sanitize.
-    keep_space (bool, optional): If True, spaces will be kept as is. Defaults to False.
+    ch : str
+        The character to sanitize.
+    keep_space : bool, optional
+        If True, spaces will be kept as is. Defaults to False.
 
     Returns
     -------
-    str: The sanitized character or its hexadecimal representation.
+    str
+        The sanitized character.
     """
-    if keep_space and ch == " ":
-        return " "
+    if ch == " ":
+        return " " if keep_space else "_"
     if ch in "{}":
         return f"\\{ch}"
-    if ch in " ":
-        return f"x{ord(ch):x}"
-    # if not ascii, return hex
-    if ord(ch) > 127:
-        return f"x{ord(ch):x}"
-    # if not printable, return hex
-    if not ch.isprintable():
+    if ord(ch) > 127 or not ch.isprintable():
         return f"x{ord(ch):x}"
     return ch
 
-def sanitize_tex_text(text: str):
-    """Sanitize a string for LaTeX, escaping special characters and ensuring proper formatting.
+def sanitize_tex_text(text: str) -> str:
+    """
+    Sanitize a string for LaTeX, escaping special characters and ensuring proper formatting.
 
     Parameters
     ----------
     text : str
         The input text to be sanitized.
+
     Returns
     -------
     str
         The sanitized text, with special characters escaped and formatted for LaTeX.
     """
-    s = "".join(map(sanitize_tex_char, text))
-    if '[' in s or ']' in s:
-        return "{" + s + "}"
-    return s
+    sanitized = ''.join(sanitize_tex_char(ch) for ch in text)
+    if '[' in sanitized or ']' in sanitized:
+        return f"{{{sanitized}}}"
+    return sanitized
 
-def sanitize_tex_char(ch):
-    """Sanitize a character for LaTeX.
+def sanitize_tex_char(ch: str) -> str:
+    """
+    Sanitize a character for LaTeX.
 
     Parameters
     ----------
-    ch
-        character to sanitize
+    ch : str
+        Character to sanitize.
 
     Returns
     -------
-        Character sanitized for LaTeX
+    str
+        Character sanitized for LaTeX.
     """
     if ch in "_{}":
         return f"\\{ch}"
-    # if not ascii, return hex
-    if ord(ch) > 127:
-        warnings.warn(f"Character {ch} has been replaced by \"x{ord(ch):x}\" in output file")
-        return f"x{ord(ch):x}"
-    # if not printable, return hex
-    if not ch.isprintable():
+    if ord(ch) > 127 or not ch.isprintable():
         warnings.warn(f"Character {ch} has been replaced by \"x{ord(ch):x}\" in output file")
         return f"x{ord(ch):x}"
     return ch

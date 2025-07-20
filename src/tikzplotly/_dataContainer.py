@@ -37,7 +37,6 @@ class Data:
             name of the y data in LaTeX
         """
         if y_label is not None and len(y_label) > 0:
-            y_label = y_label.replace(" ", "_")
             self.y_label.append(y_label)
         else:
             self.y_label.append(f"y{len(self.y_label)}")
