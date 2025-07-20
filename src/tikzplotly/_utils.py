@@ -31,26 +31,26 @@ def replace_all_digits(text):
     """
     return pattern_digit.sub(lambda m: rep_digit[re.escape(m.group(0))], text)
 
-rep_mounths = {"January": '1', 'February': '2', 'March': '3', 'April': '4', 'May': '5', 'June': '6',
+rep_months = {"January": '1', 'February': '2', 'March': '3', 'April': '4', 'May': '5', 'June': '6',
               'July': '7', 'August': '8', 'September': '9', 'October': '10', 'November': '11', 'December': '12',
               'january': 1, 'february': 2, 'march': 3, 'april': 4, 'may': 5, 'june': 6,
               'july': 7, 'august': 8, 'september': 9, 'october': 10, 'november': 11, 'december': 12}
-rep_mounths = dict((re.escape(k), v) for k, v in rep_mounths.items())
-pattern_mounths = re.compile("|".join(rep_mounths.keys()))
+rep_months = dict((re.escape(k), v) for k, v in rep_months.items())
+pattern_months = re.compile("|".join(rep_months.keys()))
 
-def replace_all_mounths(text):
-    """Replace all mounths in a string with their corresponding number.
+def replace_all_months(text):
+    """Replace all months in a string with their corresponding number.
 
     Parameters
     ----------
     text
-        string to replace mounths in
+        string to replace months in
 
     Returns
     -------
-        string with mounths replaced by their corresponding number
+        string with months replaced by their corresponding number
     """
-    return pattern_mounths.sub(lambda m: rep_mounths[re.escape(m.group(0))], text)
+    return pattern_months.sub(lambda m: rep_months[re.escape(m.group(0))], text)
 
 
 def sanitize_text(text: str, keep_space=False):
@@ -84,7 +84,9 @@ def sanitize_char(ch, keep_space=False):
     """
     if keep_space and ch == " ":
         return " "
-    if ch in "[]{}= ":
+    if ch in "{}":
+        return f"\\{ch}"
+    if ch in " ":
         return f"x{ord(ch):x}"
     # if not ascii, return hex
     if ord(ch) > 127:

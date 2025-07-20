@@ -100,23 +100,23 @@ def draw_histogram(trace, axis: Axis, colors_set, row_sep="\\\\"):
 
     if trace.histnorm == "percent":
         warn(
-            f"Sorry, I did not found an equivalent for histnorm='{trace.histnorm}' in Tikz. "
-            "If you need this feature implemented, please open an issue, if possible with a general pgfplots code "
+            f"Sorry, I did not find an equivalent for histnorm='{trace.histnorm}' in TikZ. "
+            "If you need this feature implemented, please open an issue, if possible with a MWE pgfplots code "
             "that would plot this :).\nFor now, the histogram will be plotted without normalization "
             "(as if histnorm='probability density')."
         )
         hist_options["density"] = None
     elif trace.histnorm == "probability":
         warn(
-            f"Sorry, I did not found an equivalent for histnorm='{trace.histnorm}' in Tikz. "
-            "I you need this feature implemented, please open an issue, if possible with a general pgfplots code that would plot this :).\n"
+            f"Sorry, I did not find an equivalent for histnorm='{trace.histnorm}' in TikZ. "
+            "If you need this feature implemented, please open an issue, if possible with a MWE pgfplots code that would plot this :).\n"
             "For now, the histogram will be plotted without normalization (as if histnorm='probability density')."
         )
         hist_options["density"] = None
     elif trace.histnorm == "density":
         warn(
-            f"Sorry, I did not found an equivalent for histnorm='{trace.histnorm}' in Tikz. "
-            "I you need this feature implemented, please open an issue, if possible with a general pgfplots code that would plot this :).\n"
+            f"Sorry, I did not find an equivalent for histnorm='{trace.histnorm}' in TikZ. "
+            "If you need this feature implemented, please open an issue, if possible with a MWE pgfplots code that would plot this :).\n"
             "For now, the histogram will be plotted without normalization (as if histnorm='probability density')."
         )
         hist_options["density"] = None

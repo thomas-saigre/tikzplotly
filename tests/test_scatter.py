@@ -127,6 +127,15 @@ def plot_4():
                                             color='rgb(150,150,150)'),
                                 showarrow=False))
 
+    # add label at top of the plot
+    annotations.append(dict(yref='paper', x=2008, y=1.05,
+                            xanchor='left', yanchor='bottom',
+                            text='=={Top text}==',
+                            font=dict(family='Arial',
+                                      size=30,
+                                      color='rgb(37,37,37)'),
+                            showarrow=False))
+
     fig.update_layout(annotations=annotations)
 
     # fig.show()

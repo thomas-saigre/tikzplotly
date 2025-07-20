@@ -2,7 +2,7 @@
 This module contains the code to handle data types in TikZ using Plotly data.
 """
 from warnings import warn
-from ._utils import replace_all_mounths
+from ._utils import replace_all_months
 
 def data_type(data):
     """Return the type of data, for special handling.
@@ -33,7 +33,7 @@ def data_type(data):
 
 
 def post_treat_data(data_str):
-    """Post-treat the data string to replace all mounths with their corresponding number.
+    """Post-treat the data string to replace all months with their corresponding number.
     Parameters
     ----------
     data_str
@@ -42,5 +42,5 @@ def post_treat_data(data_str):
     -------
         string of post-treated data
     """
-    data_str = replace_all_mounths(data_str)
+    data_str = replace_all_months(data_str)
     return data_str.replace("None", "nan")

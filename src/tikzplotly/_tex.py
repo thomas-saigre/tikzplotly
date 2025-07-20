@@ -227,8 +227,8 @@ def tex_text(text):
         .replace("&", "\\&")
         .replace("#", "\\#")
         .replace("$", "\\$")
-        .replace("{", "\\{")
-        .replace("}", "\\}")
+        # .replace("{", "\\{")  # Already done in sanitize_text
+        # .replace("}", "\\}")  #
         .replace("~", "\\textasciitilde ")
     )
 
