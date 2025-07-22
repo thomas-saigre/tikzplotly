@@ -89,7 +89,7 @@ def draw_scatter3d(data_name, scatter, z_name, axis: Axis, color_set):
     
     code += f"\\addplot3+ "
     if options is not None:
-         code += f"[{options}]"
+        code += f"[{options}]"
     else:
         code += "[only marks]"
     code += f"table[x=x, y=y, z=z] {{\\{data_name}}};\n"
