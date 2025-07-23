@@ -193,8 +193,11 @@ class Axis():
         if self.layout.plot_bgcolor is not None:
             bg_color = convert_color(self.layout.plot_bgcolor)
             colors_set.add(bg_color[:3])
-            # opacity = bg_color[3]
-            self.add_option("axis background/.style", f"{{fill={bg_color[0]}}}")
+            opacity = bg_color[-1]
+            options = f"fill={bg_color[0]}"
+            if opacity != 1:
+                options += f", opacity={opacity}"
+            self.add_option("axis background/.style", f"{{{options}}}")
 
     def treat_bar_layout(self):
         """Treat the bar layout of the axis.
