@@ -77,7 +77,7 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
                 mark_option_dict["line width"] = px_to_pt(line.width)
 
         if (angle:=scatter.marker.angle) is not None:
-            mark_option_dict["rotate"] = -angle
+            mark_option_dict["rotate"] = angle
 
         if (opacity:=scatter.opacity) is not None:
             options_dict["opacity"] = np.round(opacity, 2)

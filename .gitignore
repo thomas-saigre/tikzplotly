@@ -10,6 +10,8 @@
 *.synctex.gz
 *.toc
 
+**.DS_Store
+
 # Tests outputs
 src/tests/outputs/**
 

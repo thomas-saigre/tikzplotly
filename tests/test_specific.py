@@ -3,19 +3,27 @@ In this file are present the test of some very specific usage case, that should 
 """
 import os, pathlib
 import plotly.express as px
+import plotly.graph_objects as go
 from .helpers import assert_equality
 
 this_dir = pathlib.Path(__file__).resolve().parent
 test_name = "test_specific"
 
 def plot_sanitized_text():
-    fig = px.scatter(x=[0, 1, 2, 3, 4], y=[0, 1, 4, 9, 16])
+    fig = go.Figure()
+    fig.add_trace(
+        go.Scatter(x=[0, 1, 2, 3, 4], y=[0, 1, 4, 9, 16], name="[test​]")
+    )
     annotations = []
     # add label at top of the plot
     annotations.append(dict(yref='paper', x=2, y=1.05,
                             xanchor='left', yanchor='bottom',
-                            text='=={𝕋op text}==	',  # special characters u1d54b (blackbold T, should appear x1d54b), and
+                            text='==[{𝕋op text}]==	'  # special characters u1d54b (blackbold T, should appear x1d54b), and
                                                        # u9 (horizontal tabulation, should appear as x9 in exported code)
+    ))
+    annotations.append(dict(x=2, y=2,
+                            xanchor='left', yanchor='bottom',
+                            text="Ouais c'est pas faux"
     ))
     fig.update_layout(annotations=annotations)
 
@@ -25,8 +33,6 @@ def plot_transparent_background():
     # TODO: move it into test_color (when created)
     fig = px.scatter(x=[0, 1, 2, 3, 4], y=[0, 1, 4, 9, 16])
     fig.update_layout(plot_bgcolor='rgba(255, 182, 193, .5)')
-
-    fig.show()
 
     return fig
 

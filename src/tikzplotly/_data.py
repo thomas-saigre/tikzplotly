@@ -24,7 +24,7 @@ def data_type(data):
             warn("Assuming this is a date, add \"\\usetikzlibrary{pgfplots.dateplot}\" to your tex preamble.")
             return 'date'
         if data.lower() in ['january', 'february', 'march', 'april', 'may', 'june',
-                              'july', 'august', 'september', 'october', 'november', 'december']:
+                            'july', 'august', 'september', 'october', 'november', 'december']:
             warn(f"Assuming data {data} is a month. This feature is experimental.")
             return 'month'
         warn(f"Data type of {data} is not supported yet.")

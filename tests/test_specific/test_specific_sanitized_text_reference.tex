@@ -1,4 +1,4 @@
-\pgfplotstableread{data0 y0
+\pgfplotstableread{data0 x5btestx200bx5d
 0 0
 1 1
 2 4
@@ -7,15 +7,12 @@
 }\dataZ
 
 \begin{tikzpicture}
-
-\definecolor{636efa}{HTML}{636efa}
-
 \begin{axis}[
-clip=false,
-xlabel=x,
-ylabel=y
+clip=false
 ]
-\addplot+ [mark=*, only marks, mark options={solid, fill=636efa}, forget plot] table[y=y0] {\dataZ};
-\node[anchor=south west] at (axis cs:2, \pgfkeysvalueof{/pgfplots/ymin} + 1.05*\pgfkeysvalueof{/pgfplots/ymax}-1.05*\pgfkeysvalueof{/pgfplots/ymin}) {==\{x1d54bop text\}==x9};
+\addplot+ table[y=x5btestx200bx5d] {\dataZ};
+\addlegendentry{{[testx200b]}}
+\node[anchor=south west] at (axis cs:2, \pgfkeysvalueof{/pgfplots/ymin} + 1.05*\pgfkeysvalueof{/pgfplots/ymax}-1.05*\pgfkeysvalueof{/pgfplots/ymin}) {{==[\{x1d54bop text\}]==x9}};
+\node[anchor=south west] at (axis cs:2, 2) {Ouais c'est pas faux};
 \end{axis}
 \end{tikzpicture}
