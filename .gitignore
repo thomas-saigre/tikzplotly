@@ -10,12 +10,17 @@
 *.synctex.gz
 *.toc
 
+**.DS_Store
+
 # Tests outputs
 src/tests/outputs/**
 
+# Doxygen output
+doxygen/*
+
 
 # Virtual environment
-venv/
+.venv/
 *.egg-info/
 
 # Distribution / packaging

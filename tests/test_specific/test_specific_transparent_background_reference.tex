@@ -1,0 +1,21 @@
+\pgfplotstableread{data0 y0
+0 0
+1 1
+2 4
+3 9
+4 16
+}\dataZ
+
+\begin{tikzpicture}
+
+\definecolor{636efa}{HTML}{636efa}
+\definecolor{8d466771e5}{RGB}{255, 182, 193}
+
+\begin{axis}[
+axis background/.style={fill=8d466771e5, opacity=0.5},
+xlabel=x,
+ylabel=y
+]
+\addplot+ [mark=*, only marks, mark options={solid, fill=636efa}, forget plot] table[y=y0] {\dataZ};
+\end{axis}
+\end{tikzpicture}

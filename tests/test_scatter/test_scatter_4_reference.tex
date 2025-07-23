@@ -1,4 +1,4 @@
-\pgfplotstableread{data0 x1d54belevision Newspaper Internet Radio
+\pgfplotstableread{data0 Television Newspaper Internet Radio
 2001 74 45 13 18
 2002 82 42 14 21
 2003 80 50 20 18
@@ -32,7 +32,7 @@ axis y line=none,
 axis background/.style={fill=white},
 clip=false
 ]
-\addplot+ [mark=none, line width=1.5, color=6fb95895bc] table[y=x1d54belevision] {\dataZ};
+\addplot+ [mark=none, line width=1.5, color=6fb95895bc] table[y=Television] {\dataZ};
 \addplot+ [only marks, mark size=3, mark options={solid, fill=6fb95895bc}] table[y=y0] {\dataO};
 \addplot+ [mark=none, line width=1.5, color=9b5dacb44d] table[y=Newspaper] {\dataZ};
 \addplot+ [only marks, mark size=3, mark options={solid, fill=9b5dacb44d}] table[y=y1] {\dataO};
@@ -40,7 +40,7 @@ clip=false
 \addplot+ [only marks, mark size=4.5, mark options={solid, fill=8b7c4ec1c1}] table[y=y2] {\dataO};
 \addplot+ [mark=none, line width=1.5, color=9f6fd82da0] table[y=Radio] {\dataZ};
 \addplot+ [only marks, mark size=3, mark options={solid, fill=9f6fd82da0}] table[y=y3] {\dataO};
-\node[anchor= east] at (axis cs:\pgfkeysvalueof{/pgfplots/xmin} + 0.05*\pgfkeysvalueof{/pgfplots/xmax}-0.05*\pgfkeysvalueof{/pgfplots/xmin}, 74) {x1d54belevision 74\%};
+\node[anchor= east] at (axis cs:\pgfkeysvalueof{/pgfplots/xmin} + 0.05*\pgfkeysvalueof{/pgfplots/xmax}-0.05*\pgfkeysvalueof{/pgfplots/xmin}, 74) {Television 74\%};
 \node[anchor= west] at (axis cs:\pgfkeysvalueof{/pgfplots/xmin} + 0.95*\pgfkeysvalueof{/pgfplots/xmax}-0.95*\pgfkeysvalueof{/pgfplots/xmin}, 69) {69\%};
 \node[anchor= east] at (axis cs:\pgfkeysvalueof{/pgfplots/xmin} + 0.05*\pgfkeysvalueof{/pgfplots/xmax}-0.05*\pgfkeysvalueof{/pgfplots/xmin}, 45) {Newspaper 45\%};
 \node[anchor= west] at (axis cs:\pgfkeysvalueof{/pgfplots/xmin} + 0.95*\pgfkeysvalueof{/pgfplots/xmax}-0.95*\pgfkeysvalueof{/pgfplots/xmin}, 28) {28\%};

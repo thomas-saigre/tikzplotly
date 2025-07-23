@@ -1,10 +1,21 @@
 """
-Adapted from https://github.com/plotly/plotly.py/blob/master/packages/python/plotly/templategen/utils/colors.py
+Handle the color conversion and definitions for TikZ plots.
+Adapted from https://github.com/plotly/plotly.py/blob/main/templategen/utils/colors.py
 """
 from warnings import warn
 import hashlib
 
 def rgb_str(red, green, blue):
+    """Convert RGB values to a string representation.
+    Parameters
+    ----------
+    red, green, blue : int
+        RGB values between 0 and 255
+
+    Returns
+    -------
+        A string in the format "R, G, B"
+    """
     return str(red) + ", " + str(green) + ", " + str(blue)
 
 colors = {}
@@ -19,7 +30,8 @@ def convert_color(color):
         - hex string : "#______"
         - rgb string : "rgb(__, __, __)" with values between 0 and 255
         - rgba string : "rgba(__, __, __, __)" with values between 0 and 255 and an opacity value between 0 and 1
-        - color name : "red", "green", "blue", "yellow", "orange", "purple", "brown", "black", "gray", "white" or any other color name from https://github.com/plotly/plotly.py/blob/master/packages/python/plotly/templategen/utils/colors.py
+        - color name : "red", "green", "blue", "yellow", "orange", "purple", "brown", "black", "gray", "white" or any other color name from
+                        https://github.com/plotly/plotly.py/blob/main/templategen/utils/colors.py
 
     Returns
     -------
@@ -34,25 +46,24 @@ def convert_color(color):
     if color[0] == "#":
         return color[1:], "HTML", color[1:], 1
 
-    elif color[0:4] == "rgba":
+    if color[0:4] == "rgba":
         sp = color.split("(")[1].split(",")
         rgb_color = sp[:-1]
         rgb_color = convert_color(f"rgb({rgb_color[0]},{rgb_color[1]},{rgb_color[2]})")[:-1]
         return rgb_color + (float(sp[-1][:-1]),)
 
-    elif color[0:3] == "rgb":
+    if color[0:3] == "rgb":
         color = color[4:-1].replace("[", "{").replace("]", "}")
         return hashlib.sha1(color.encode('UTF-8')).hexdigest()[:10], "RGB", color, 1
 
-    elif color in ["red", "green", "blue", "yellow", "orange", "purple", "brown", "black", "gray", "white"]:
+    if color in ["red", "green", "blue", "yellow", "orange", "purple", "brown", "black", "gray", "white"]:
         return color, None, None, 1
 
-    elif color.lower() in colors:
+    if color.lower() in colors:
         return color.lower(), "RGB", colors[color.lower()], 1
 
-    else:
-        warn(f"Color {color} type is not supported yet. Returning the same color.")
-        return color, 1
+    warn(f"Color {color} type is not supported yet. Returning the same color.")
+    return color, None, None, 1
 
 def hex2rgb(hex_color):
     """Convert a hex color to a RGB color.
@@ -69,7 +80,11 @@ def hex2rgb(hex_color):
     hex_color = hex_color.lstrip("#")
     return str(int(hex_color[:2], 16)) + ", " + str(int(hex_color[2:4], 16)) + ", " + str(int(hex_color[4:], 16))
 
-DEFAULT_COLORSCALE = ((0.0, '#0d0887'), (0.1111111111111111, '#46039f'), (0.2222222222222222, '#7201a8'), (0.3333333333333333, '#9c179e'), (0.4444444444444444, '#bd3786'), (0.5555555555555556, '#d8576b'), (0.6666666666666666, '#ed7953'), (0.7777777777777778, '#fb9f3a'), (0.8888888888888888, '#fdca26'), (1.0, '#f0f921'))
+DEFAULT_COLORSCALE = (
+    (0.0, '#0d0887'), (0.1111111111111111, '#46039f'), (0.2222222222222222, '#7201a8'), (0.3333333333333333, '#9c179e'),
+    (0.4444444444444444, '#bd3786'), (0.5555555555555556, '#d8576b'), (0.6666666666666666, '#ed7953'),
+    (0.7777777777777778, '#fb9f3a'), (0.8888888888888888, '#fdca26'), (1.0, '#f0f921')
+    )
 
 
 ALICEBLUE = rgb_str(240, 248, 255)

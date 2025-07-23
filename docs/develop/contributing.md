@@ -17,8 +17,8 @@ Some external packages are necessary to make tikzplotly work, that are specified
 You can create a virtual environment and install the dependencies with the following commands:
 
 ```bash
-python -m venv venv
-source venv/bin/activate
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
