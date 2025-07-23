@@ -81,7 +81,7 @@ def plot_3():
 
     return fig
 
-@pytest.mark.parametrize("symbol", ["circle", 0, "0"])
+@pytest.mark.parametrize("symbol", ["circle", 0, "0", "circle-dot"])
 def test_1(symbol):
     assert_equality(plot_1(symbol), os.path.join(this_dir, test_name, test_name + "_1_reference.tex"))
 

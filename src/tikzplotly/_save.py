@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Provides functionality to convert Plotly figures into TikZ/PGFPlots code for LaTeX documents.
 It includes utilities to process different Plotly trace types (scatter, heatmap, histogram), handle axis and color

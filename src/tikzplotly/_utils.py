@@ -89,8 +89,8 @@ def sanitize_char(ch: str, keep_space: bool = False) -> str:
     """
     if ch == " ":
         return " " if keep_space else "_"
-    if ch in "{}":
-        return f"\\{ch}"
+    if ch in "[]{}=":
+        return f"x{ord(ch):x}"
     if ord(ch) > 127 or not ch.isprintable():
         return f"x{ord(ch):x}"
     return ch
@@ -122,7 +122,6 @@ def sanitize_tex_char(ch: str) -> str:
     ----------
     ch : str
         Character to sanitize.
-
     Returns
     -------
     str

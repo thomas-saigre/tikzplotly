@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 """This module provides utilities for generating LaTeX document headers,
     specifically for documents using the pgfplots package.
     It includes functions to create document classes, environments, and TikZ commands.
 """
 from ._color import hex2rgb
-from ._utils import sanitize_text
+from ._utils import sanitize_tex_text
 
 def tex_comment(text):
     """Create a LaTeX comment.
@@ -220,15 +219,15 @@ def tex_text(text):
     """Convert a string to LaTeX,
     escaping the special characters %, _, &, #, $, {, }, ~.
     """
-    text_san = sanitize_text(text, keep_space=True)
+    text_san = sanitize_tex_text(text)
     return (
         text_san.replace("%", "\\%")
-        .replace("_", "\\_")
         .replace("&", "\\&")
         .replace("#", "\\#")
         .replace("$", "\\$")
-        # .replace("{", "\\{")  # Already done in sanitize_text
+        # .replace("{", "\\{")  # Already done in sanitize_tex_text
         # .replace("}", "\\}")  #
+        # .replace("_", "\\_")
         .replace("~", "\\textasciitilde ")
     )
 
