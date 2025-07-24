@@ -1,6 +1,6 @@
 ---
 title: Supported plots
-subtitle: Convert plotly figures to tikz code
+subtitle: Convert plotly figures to TikZ code
 ---
 
 
