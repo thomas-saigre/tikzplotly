@@ -1,5 +1,9 @@
+"""
+Deal with annotations in Plotly figures and convert them to LaTeX code for TikZ.
+"""
+
 from ._axis import Axis
-from ._tex import *
+from ._tex import tex_add_text
 from ._color import convert_color
 
 anchor_dict = {
@@ -35,14 +39,21 @@ def get_coordinates(x, y, x_ref, y_ref):
     """
     if x_ref == "paper" and y_ref == "paper":
         return x, y, True
-    elif x_ref == "paper" and y_ref != "paper":
-        x_text = "\\pgfkeysvalueof{/pgfplots/xmin} + " + str(x) + "*\\pgfkeysvalueof{/pgfplots/xmax}-" + str(x) + "*\\pgfkeysvalueof{/pgfplots/xmin}"
+    if x_ref == "paper" and y_ref != "paper":
+        x_text = (
+            "\\pgfkeysvalueof{/pgfplots/xmin} + " + str(x)
+            + "*\\pgfkeysvalueof{/pgfplots/xmax}-" + str(x)
+            + "*\\pgfkeysvalueof{/pgfplots/xmin}"
+        )
         return x_text, y, False
-    elif x_ref != "paper" and y_ref == "paper":
-        y_text = "\\pgfkeysvalueof{/pgfplots/ymin} + " + str(y) + "*\\pgfkeysvalueof{/pgfplots/ymax}-" + str(y) + "*\\pgfkeysvalueof{/pgfplots/ymin}"
+    if x_ref != "paper" and y_ref == "paper":
+        y_text = (
+            "\\pgfkeysvalueof{/pgfplots/ymin} + " + str(y)
+            +"*\\pgfkeysvalueof{/pgfplots/ymax}-" + str(y)
+            + "*\\pgfkeysvalueof{/pgfplots/ymin}"
+        )
         return x, y_text, False
-    else:
-        return x, y, False
+    return x, y, False
 
 def str_from_annotation(annotation_list, axis: Axis, colors_set):
     """Create a string of LaTeX code for the annotations of a figure.

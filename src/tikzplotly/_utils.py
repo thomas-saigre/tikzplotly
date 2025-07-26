@@ -1,3 +1,13 @@
+"""Utility functions for string sanitization, digit and month replacement, LaTeX formatting, and TikZ option formatting.
+
+This module provides helper functions for:
+- Replacing digits in strings with corresponding letter codes.
+- Replacing month names with their numeric representations.
+- Sanitizing text and characters for safe usage in file names or LaTeX.
+- Converting pixel units to points.
+- Formatting option dictionaries for TikZ.
+- Generating tick strings for axis labeling.
+"""
 import re
 import warnings
 from math import floor
@@ -21,54 +31,61 @@ def replace_all_digits(text):
     """
     return pattern_digit.sub(lambda m: rep_digit[re.escape(m.group(0))], text)
 
-rep_mounts = {"January": '1', 'February': '2', 'March': '3', 'April': '4', 'May': '5', 'June': '6', 'July': '7', 'August': '8', 'September': '9', 'October': '10', 'November': '11', 'December': '12',
-              'january': 1, 'february': 2, 'march': 3, 'april': 4, 'may': 5, 'june': 6, 'july': 7, 'august': 8, 'september': 9, 'october': 10, 'november': 11, 'december': 12}
-rep_mounts = dict((re.escape(k), v) for k, v in rep_mounts.items())
-pattern_mounts = re.compile("|".join(rep_mounts.keys()))
+rep_months = {"January": '1', 'February': '2', 'March': '3', 'April': '4', 'May': '5', 'June': '6',
+              'July': '7', 'August': '8', 'September': '9', 'October': '10', 'November': '11', 'December': '12',
+              'january': 1, 'february': 2, 'march': 3, 'april': 4, 'may': 5, 'june': 6,
+              'july': 7, 'august': 8, 'september': 9, 'october': 10, 'november': 11, 'december': 12}
+rep_months = dict((re.escape(k), v) for k, v in rep_months.items())
+pattern_months = re.compile("|".join(rep_months.keys()))
 
-def replace_all_mounts(text):
-    """Replace all mounts in a string with their corresponding number.
+def replace_all_months(text):
+    """Replace all months in a string with their corresponding number.
 
     Parameters
     ----------
     text
-        string to replace mounts in
+        string to replace months in
 
     Returns
     -------
-        string with mounts replaced by their corresponding number
+        string with months replaced by their corresponding number
     """
-    return pattern_mounts.sub(lambda m: rep_mounts[re.escape(m.group(0))], text)
+    return pattern_months.sub(lambda m: rep_months[re.escape(m.group(0))], text)
 
-
-def sanitize_text(text: str, keep_space=False):
+def sanitize_text(text: str, keep_space: bool = False) -> str:
     """
     Sanitize the input text by removing or replacing unwanted characters.
 
     Parameters
     ----------
-    text (str): The input text to be sanitized.
-    keep_space (bool, optional): If True, spaces will be preserved in the sanitized text.
-                                 If False, spaces will be removed. Defaults to False.
+    text : str
+        The input text to be sanitized.
+    keep_space : bool, optional
+        If True, spaces will be preserved in the sanitized text.
+        If False, spaces will be replaced with underscores. Defaults to False.
 
     Returns
     -------
-    str: The sanitized text.
+    str
+        The sanitized text.
     """
-    return "".join(sanitize_char(ch, keep_space=keep_space) for ch in text)
+    return ''.join(sanitize_char(ch, keep_space) for ch in text)
 
-def sanitize_char(ch, keep_space=False):
+def sanitize_char(ch: str, keep_space: bool = False) -> str:
     """
-    Sanitize a character by converting it to a hexadecimal representation if it is a special character, non-ASCII, or non-printable.
+    Sanitize a character by escaping special characters or converting to hex if non-ASCII/non-printable.
 
     Parameters
     ----------
-    ch (str): The character to sanitize.
-    keep_space (bool, optional): If True, spaces will be kept as is. Defaults to False.
+    ch : str
+        The character to sanitize.
+    keep_space : bool, optional
+        If True, spaces will be kept as is. Defaults to False.
 
     Returns
     -------
-    str: The sanitized character or its hexadecimal representation.
+    str
+        The sanitized character.
     """
     if ch == "_":
         return ""
@@ -83,21 +100,42 @@ def sanitize_char(ch, keep_space=False):
     if not ch.isprintable(): return f"x{ord(ch):x}"
     return ch
 
-def sanitize_TeX_text(text: str):
-    s = "".join(map(sanitize_TeX_char, text))
-    special_chars = "[], "
-    if any(c in s for c in special_chars):
-        return "{" + s + "}"
-    return s
+def sanitize_tex_text(text: str):
+    """
+    Sanitize a string for LaTeX, escaping special characters and ensuring proper formatting.
 
-def sanitize_TeX_char(ch):
-    if ch in "_{}": return f"\\{ch}"
-    # if not ascii, return hex
-    if ord(ch) > 127:
-        warnings.warn(f"Character {ch} has been replaced by \"x{ord(ch):x}\" in output file")
-        return f"x{ord(ch):x}"
-    # if not printable, return hex
-    if not ch.isprintable():
+    Parameters
+    ----------
+    text : str
+        The input text to be sanitized.
+
+    Returns
+    -------
+    str
+        The sanitized text, with special characters escaped and formatted for LaTeX.
+    """
+    sanitized = "".join(map(sanitize_tex_char, text))
+    special_chars = "[], "
+    if any(c in sanitized for c in special_chars):
+        return "{" + sanitized + "}"
+    return sanitized
+
+def sanitize_tex_char(ch: str) -> str:
+    """
+    Sanitize a character for LaTeX.
+
+    Parameters
+    ----------
+    ch : str
+        Character to sanitize.
+    Returns
+    -------
+    str
+        Character sanitized for LaTeX.
+    """
+    if ch in "_{}":
+        return f"\\{ch}"
+    if ord(ch) > 127 or not ch.isprintable():
         warnings.warn(f"Character {ch} has been replaced by \"x{ord(ch):x}\" in output file")
         return f"x{ord(ch):x}"
     return ch
@@ -116,8 +154,9 @@ def px_to_pt(px):
         size in point
     """
     pt = px * .75
-    if floor(pt) == pt: return int(pt)
-    else: return pt
+    if floor(pt) == pt:
+        return int(pt)
+    return pt
 
 
 def option_dict_to_str(options_dict, sep=" "):

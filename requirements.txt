@@ -4,5 +4,5 @@ pillow
 kaleido
 tox
 pandas
-mkdocs-material
+mkdocs-material[recommended]
 mkdocs-git-revision-date-localized-plugin

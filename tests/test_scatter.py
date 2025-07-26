@@ -14,6 +14,17 @@ def plot_1():
     fig = px.line(df, x='year', y='lifeExp', color='country', markers=True)
     return fig
 
+def plot_transparent_color():
+    # TODO move into color tests
+    fig = px.scatter(x=[0, 1, 2, 3, 4], y=[0, 1, 4, 9, 16], opacity=0.5)
+    return fig
+
+def plot_transparent_color_rgba():
+    # TODO
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=[0, 1, 2, 3, 4], y=[0, 1, 4, 9, 16], marker_color='rgba(255, 182, 193, .5)'))
+    return fig
+
 def plot_2():
     df = px.data.gapminder().query("country in ['Canada', 'Botswana']")
     fig = px.line(df, x="lifeExp", y="gdpPercap", color="country", text="year")
@@ -28,7 +39,7 @@ def plot_3():
     return fig
 
 def plot_4():
-    labels = ['𝕋elevision', 'Newspaper', 'Internet', 'Radio']
+    labels = ['Television', 'Newspaper', 'Internet', 'Radio']
     colors = ['rgb(67,67,67)', 'rgb(115,115,115)', 'rgb(49,130,189)', 'rgb(189,189,189)']
 
     mode_size = [4, 4, 6, 4]
@@ -205,6 +216,12 @@ def test_1():
 
 def test_2():
     assert_equality(plot_2(), os.path.join(this_dir, test_name, test_name + "_2_reference.tex"))
+
+def test_tranparent_color():
+    assert_equality(plot_transparent_color(), os.path.join(this_dir, test_name, test_name + "_transparent_color_reference.tex"))
+
+# def test_tranparent_color_rgba():
+    # assert_equality(plot_transparent_color_rgba(), os.path.join(this_dir, test_name, test_name + "_transparent_color_rgba_reference.tex"))
 
 def test_3():
     assert_equality(plot_3(), os.path.join(this_dir, test_name, test_name + "_3_reference.tex"))

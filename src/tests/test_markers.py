@@ -6,7 +6,7 @@ import numpy as np
 import tikzplotly
 import os
 import plotly.graph_objects as go
-from plotly.validators.scatter.marker import SymbolValidator
+from plotly.validator_cache import ValidatorCache
 from warnings import warn
 from tikzplotly._tex import tex_create_document, tex_begin_environment, tex_end_environment, tex_end_all_environment
 
@@ -226,6 +226,7 @@ def fig3ter():
 
 def fig4():
     warn("This example is not exactly the one online, but has been changed as this kind of data is not yet supported.")
+    SymbolValidator = ValidatorCache.get_validator("scatter.marker", "symbol")
     raw_symbols = SymbolValidator().values
     namestems = []
     namevariants = []

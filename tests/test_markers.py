@@ -81,7 +81,20 @@ def plot_3():
 
     return fig
 
-@pytest.mark.parametrize("symbol", ["circle", 0, "0"])
+def plot_with_angle():
+    df = px.data.iris()
+    fig = px.scatter(df, x="sepal_width", y="sepal_length", color="species")
+
+    fig.update_traces(
+        marker=dict(
+            size=12, symbol="arrow", angle=45, line=dict(width=2, color="DarkSlateGrey")
+        ),
+        selector=dict(mode="markers"),
+    )
+    # fig.show()
+    return fig
+
+@pytest.mark.parametrize("symbol", ["circle", 0, "0", "circle-dot"])
 def test_1(symbol):
     assert_equality(plot_1(symbol), os.path.join(this_dir, test_name, test_name + "_1_reference.tex"))
 
@@ -90,3 +103,6 @@ def test_2():
 
 def test_3():
     assert_equality(plot_3(), os.path.join(this_dir, test_name, test_name + "_3_reference.tex"))
+
+def test_angle():
+    assert_equality(plot_with_angle(), os.path.join(this_dir, test_name, test_name + "_angle_reference.tex"))

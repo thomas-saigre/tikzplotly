@@ -37,7 +37,8 @@ jobs:
         run: |
           pip install tox
           tox -- --cov tikzplotly --cov-report xml --cov-report term
-      - uses: codecov/codecov-action@v4.0.1
+      - uses: codecov/codecov-action@v5.4.3
         if: ${{ matrix.python-version == '3.13' && matrix.os == 'ubuntu-latest' }}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true

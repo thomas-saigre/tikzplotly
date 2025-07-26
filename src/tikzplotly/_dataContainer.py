@@ -1,4 +1,6 @@
-import re
+"""
+Contain the code to handle data in TikZ plots.
+"""
 from ._utils import replace_all_digits, sanitize_text
 from ._data import treat_data, post_treat_data
 
@@ -8,6 +10,8 @@ def hexid_to_alpha(num):
     return ''.join(table[int(c, 16)] for c in hexstr if c in "0123456789abcdef")
 
 class Data:
+    """Class to handle data in TikZ plots.
+    """
 
     def __init__(self, name, x):
         """Initialize a Data object.
@@ -25,9 +29,19 @@ class Data:
         self.y_label = []
         self.y_data = []
 
-    def addYData(self, y, y_label=None):
+    def add_y_data(self, y, y_label=None):
+        """Add y data to the Data object.
+        Parameters
+        ----------
+        y
+            y values of the data
+        y_label, optional
+            name of the y data, by default None
+        Returns
+        -------
+            name of the y data in LaTeX
+        """
         if y_label is not None and len(y_label) > 0:
-            y_label = y_label.replace(" ", "_")
             self.y_label.append(y_label)
         else:
             self.y_label.append(f"y{len(self.y_label)}")
@@ -43,11 +57,13 @@ class Data3D:
         self.z_name = "z"
 
 class DataContainer:
+    """Container for data used in TikZ plots.
+    """
 
     def __init__(self):
         self.data = []
 
-    def addData(self, x, y, name=None, y_label=None):
+    def add_data(self, x, y, name=None y_label=None):
         """Add data to the container.
 
         Parameters
@@ -71,15 +87,15 @@ class DataContainer:
             if len(data.x) != len(x):
                 continue
             are_equals = data.x == x
-            if type(are_equals) == bool:
+            if isinstance(are_equals, bool):
                 if are_equals:
-                    y_label_val = data.addYData(y, y_label or name)
+                    y_label_val = data.add_y_data(y, y_label or name)
                     return data.macro_name, y_label_val
             elif hasattr(are_equals, "all") and are_equals.all():
-                y_label_val = data.addYData(y, y_label or name)
+                y_label_val = data.add_y_data(y, y_label or name)
                 return data.macro_name, y_label_val
         data_to_add = Data(f"data{len(self.data)}", x)
-        y_label_val = data_to_add.addYData(y, y_label or name)
+        y_label_val = data_to_add.add_y_data(y, y_label or name)
         self.data.append(data_to_add)
         return data_to_add.macro_name, sanitize_text(y_label_val)
 
@@ -110,7 +126,7 @@ class DataContainer:
         self.data.append(data_obj)
         return data_obj.name, data_obj.z_name
 
-    def exportData(self):
+    def export_data(self):
         """Generate LaTeX code to export the data from DataContainer.
 
         Returns
@@ -146,4 +162,5 @@ class DataContainer:
                 export_string += f"}}\\{data.name}\n"
 
         return post_treat_data(export_string)
+
 
