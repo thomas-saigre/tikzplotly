@@ -17,12 +17,13 @@ def data_type(data):
         Type of data, can be :
             - None : no special handling
             - 'date' : data is a date
-            - 'month' : data is a month
+            - 'string' : a symbolic data
     """
     if isinstance(data, str):
         if len(data.split('-')) == 3:
             warn("Assuming this is a date, add \"\\usetikzlibrary{pgfplots.dateplot}\" to your tex preamble.")
             return 'date'
+          
         if data.lower() in ['january', 'february', 'march', 'april', 'may', 'june',
                             'july', 'august', 'september', 'october', 'november', 'december']:
             warn(f"Assuming data {data} is a month. This feature is experimental.")
@@ -31,6 +32,14 @@ def data_type(data):
         return None
     return None
 
+def treat_data(data_str): 
+    if not isinstance(data_str, str):
+        return data_str
+    if data_str.find(' ') !=- 1: # Add curly braces if there space in string
+        if not data_str.startswith("{") and not data_str.startswith("}"):
+            data_str = "{" + data_str + "}"
+            return data_str
+    return data_str
 
 def post_treat_data(data_str):
     """Post-treat the data string to replace all months with their corresponding number.

@@ -39,6 +39,7 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
 
     if data_type(scatter.x[0]) == "date":
         axis.add_option("date coordinates in", "x")
+
     if data_type(scatter.x[0]) == "month":
         scatter_x_str = "{" + ", ".join(list(scatter.x)) + "}"
         axis.add_option("xticklabels", scatter_x_str)
