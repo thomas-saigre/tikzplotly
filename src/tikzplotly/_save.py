@@ -73,7 +73,7 @@ def get_tikz_code(
                 continue
 
             data_name_macro, y_name = data_container.add_data(trace.x, trace.y, trace.name)
-            
+
             # If x is textual => symbolic x coords
             if all(isinstance(v, str) for v in trace.x):
                 axis.add_option("symbolic x coords", "{" + ",".join(trace.x) + "}")
@@ -118,16 +118,16 @@ def get_tikz_code(
             data_str.append(bar_code)
 
             if trace.name and trace['showlegend'] != False:
-                data_str.append(tex_add_legendentry(sanitize_TeX_text(trace.name)))
+                data_str.append(tex_add_legendentry(sanitize_tex_text(trace.name)))
 
         elif trace.type == "scatterpolar" or trace.type == "scatterpolargl":
             data_name_macro, theta_col_name, r_col_name = get_polar_coord(trace, axis, data_container)
-           
+
             polar_code = draw_scatterpolar(data_name_macro, theta_col_name, r_col_name, trace, axis, colors_set)
             data_str.append(polar_code)
 
             if trace.name and trace['showlegend'] != False:
-                data_str.append(tex_add_legendentry(sanitize_TeX_text(trace.name)))
+                data_str.append(tex_add_legendentry(sanitize_tex_text(trace.name)))
 
         elif trace.type == "scatter3d":
             # Handle the case where x, y, or z is empty
@@ -147,11 +147,11 @@ def get_tikz_code(
 
             # Labels
             if hasattr(figure_layout.scene.xaxis, "title") and getattr(figure_layout.scene.xaxis.title, "text", None):
-                axis.add_option("xlabel", f"{{{sanitize_TeX_text(figure_layout.scene.xaxis.title.text)}}}")
+                axis.add_option("xlabel", f"{{{sanitize_tex_text(figure_layout.scene.xaxis.title.text)}}}")
             if hasattr(figure_layout.scene.yaxis, "title") and getattr(figure_layout.scene.yaxis.title, "text", None):
-                axis.add_option("ylabel", f"{{{sanitize_TeX_text(figure_layout.scene.yaxis.title.text)}}}")
+                axis.add_option("ylabel", f"{{{sanitize_tex_text(figure_layout.scene.yaxis.title.text)}}}")
             if hasattr(figure_layout.scene.zaxis, "title") and getattr(figure_layout.scene.zaxis.title, "text", None):
-                axis.add_option("zlabel", f"{{{sanitize_TeX_text(figure_layout.scene.zaxis.title.text)}}}")
+                axis.add_option("zlabel", f"{{{sanitize_tex_text(figure_layout.scene.zaxis.title.text)}}}")
 
             # Grid
             if hasattr(figure_layout.scene.xaxis, "showgrid"):
@@ -166,13 +166,13 @@ def get_tikz_code(
 
             # Title
             if hasattr(figure_layout.scene, "title") and getattr(figure_layout.scene.title, "text", None):
-                axis.add_option("title", f"{{{sanitize_TeX_text(figure_layout.scene.title.text)}}}")
+                axis.add_option("title", f"{{{sanitize_tex_text(figure_layout.scene.title.text)}}}")
 
             data_name_macro, z_name = data_container.addData3D(trace.x, trace.y, trace.z, trace.name)
             data_str.append(draw_scatter3d(data_name_macro, trace, z_name, axis, colors_set))
 
             if trace.name and trace['showlegend'] != False:
-                data_str.append(tex_add_legendentry(sanitize_TeX_text(trace.name)))
+                data_str.append(tex_add_legendentry(sanitize_tex_text(trace.name)))
             if getattr(trace, "line", None) and getattr(trace.line, "color", None) is not None:
                 colors_set.add(convert_color(trace.line.color)[:3])
             if getattr(trace, "fillcolor", None) is not None:

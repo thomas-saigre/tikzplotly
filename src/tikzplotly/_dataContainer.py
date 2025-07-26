@@ -63,7 +63,7 @@ class DataContainer:
     def __init__(self):
         self.data = []
 
-    def add_data(self, x, y, name=None y_label=None):
+    def add_data(self, x, y, name=None, y_label=None):
         """Add data to the container.
 
         Parameters
@@ -143,8 +143,8 @@ class DataContainer:
                 for i in range(len(data.x)):
                     export_string += f"{data.x[i]} {data.y[i]} {data.z[i]}\n"
                 export_string += f"}}{{\\{data.name}}}\n"
-            
-            # 2D 
+
+            # 2D
             else:
                 export_string += "\\pgfplotstableread{\n"
                 header = "x"

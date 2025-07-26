@@ -26,10 +26,10 @@ def get_polar_coord(trace, axis: Axis, data_container: DataContainer):
             if direction == "clockwise":
                 axis.add_option("y dir", "reverse")
                 axis.add_option("xticklabel style", f"{{anchor={rotation}-\\tick+180}}")
-            
+
             # Period
             period = getattr(angularaxis, "period")
-            
+
             # Category
             angular_categoryorder = getattr(angularaxis, 'categoryorder', 'trace')
             angular_categoryarray = getattr(angularaxis, 'categoryarray', None)
@@ -88,11 +88,11 @@ def get_polar_coord(trace, axis: Axis, data_container: DataContainer):
         axis.add_option("xtick", f"{{{','.join(str( i * (360 / n_theta)) for i in range(n_theta))}}}")
         axis.add_option("xticklabels", "{" + ",".join(symbolic_theta) + "}")
     else:
-        symbolic_theta = None        
+        symbolic_theta = None
         if thetaunit == "radians":
             numeric_theta = [t * (180 / 3.141592653589793) for t in theta]
         else:
-            numeric_theta = theta 
+            numeric_theta = theta
 
     # Radial Axis
     if all(isinstance(v, str) for v in r):
@@ -111,7 +111,7 @@ def get_polar_coord(trace, axis: Axis, data_container: DataContainer):
         axis.add_option("symbolic y coords", "{" + ",".join(symbolic_r) + "}")
         axis.add_option("ytick", "data")
 
-    data_name_macro, r_col_name = data_container.addData(numeric_theta, r, trace.name)
+    data_name_macro, r_col_name = data_container.add_data(numeric_theta, r, trace.name)
     theta_col_name = data_container.data[-1].name
 
     return data_name_macro, theta_col_name, r_col_name
@@ -124,7 +124,7 @@ def draw_scatterpolar(data_name_macro, theta_col_name, r_col_name, trace, axis: 
     Parameters
     ----------
     data_name_macro : str
-        The LaTeX macro for the data table (e.g. '\data0').
+        The LaTeX macro for the data table (e.g. '\\data0').
     theta_col_name : str
         Name of the column for theta values (angles).
     r_col_name : str
@@ -191,7 +191,7 @@ def draw_scatterpolar(data_name_macro, theta_col_name, r_col_name, trace, axis: 
     # Construct TikZ addplot
     code = tex_addplot(
         data_str=data_name_macro,
-        type="table",
+        plot_type="table",
         options=option_dict_to_str(plot_options),
         type_options=f"x={theta_col_name}, y={r_col_name}"
     )

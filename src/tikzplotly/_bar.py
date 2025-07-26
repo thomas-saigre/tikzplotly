@@ -2,7 +2,7 @@ from ._axis import Axis
 from ._utils import option_dict_to_str
 from ._tex import tex_addplot
 from ._color import convert_color
-from ._utils import sanitize_TeX_text
+from ._utils import sanitize_tex_text
 from warnings import warn
 
 
@@ -27,7 +27,7 @@ def draw_bar(data_name_macro, x_col_name, y_col_name, trace, axis: Axis, colors_
     axis : Axis
         The axis object to which the bar chart will be added.
     colors_set : set
-        A set to keep track of colors used in the plot (for \definecolor).
+        A set to keep track of colors used in the plot (for \\definecolor).
     row_sep : str, optional
         The row separator for the data table in TikZ, by default "\\"
     """
@@ -54,7 +54,7 @@ def draw_bar(data_name_macro, x_col_name, y_col_name, trace, axis: Axis, colors_
 
     # Handle symbolic coords
     if all(isinstance(value, str) for value in categories):
-        symbolic = sanitize_TeX_text(",".join(categories))
+        symbolic = sanitize_tex_text(",".join(categories))
         if orientation == "h":
             axis.add_option("symbolic y coords", "{" + symbolic + "}")
             axis.add_option("ytick", "data")
