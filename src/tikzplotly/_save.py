@@ -112,7 +112,7 @@ def get_tikz_code(
             val_list = trace.x if orientation == "h" else trace.y
 
             data_name_macro, val_col_name = data_container.add_data(cat_list, val_list, trace.name)
-            x_col_name = data_container.data[-1].name
+            x_col_name = "x"
 
             bar_code = draw_bar(data_name_macro, x_col_name, val_col_name, trace, axis, colors_set)
             data_str.append(bar_code)
@@ -122,6 +122,7 @@ def get_tikz_code(
 
         elif trace.type == "scatterpolar" or trace.type == "scatterpolargl":
             data_name_macro, theta_col_name, r_col_name = get_polar_coord(trace, axis, data_container)
+            theta_col_name = "x"
 
             polar_code = draw_scatterpolar(data_name_macro, theta_col_name, r_col_name, trace, axis, colors_set)
             data_str.append(polar_code)
