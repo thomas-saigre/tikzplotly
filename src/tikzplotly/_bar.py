@@ -9,7 +9,7 @@ from warnings import warn
 def draw_bar(data_name_macro, x_col_name, y_col_name, trace, axis: Axis, colors_set, row_sep="\\"):
     r"""
     Draw a bar chart (vertical or horizontal) referencing the data table
-    created by DataContainer.addData(...).
+    created by DataContainer.add_data(...).
 
     If trace.orientation == 'h', we do xbar (horizontal).
     Otherwise, we do ybar (vertical).

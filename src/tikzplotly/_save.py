@@ -111,7 +111,7 @@ def get_tikz_code(
             cat_list = trace.y if orientation == "h" else trace.x
             val_list = trace.x if orientation == "h" else trace.y
 
-            data_name_macro, val_col_name = data_container.addData(cat_list, val_list, trace.name)
+            data_name_macro, val_col_name = data_container.add_data(cat_list, val_list, trace.name)
             x_col_name = data_container.data[-1].name
 
             bar_code = draw_bar(data_name_macro, x_col_name, val_col_name, trace, axis, colors_set)
@@ -168,7 +168,7 @@ def get_tikz_code(
             if hasattr(figure_layout.scene, "title") and getattr(figure_layout.scene.title, "text", None):
                 axis.add_option("title", f"{{{sanitize_tex_text(figure_layout.scene.title.text)}}}")
 
-            data_name_macro, z_name = data_container.addData3D(trace.x, trace.y, trace.z, trace.name)
+            data_name_macro, z_name = data_container.add_data3d(trace.x, trace.y, trace.z, trace.name)
             data_str.append(draw_scatter3d(data_name_macro, trace, z_name, axis, colors_set))
 
             if trace.name and trace['showlegend'] != False:

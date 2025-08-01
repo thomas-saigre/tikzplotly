@@ -99,7 +99,7 @@ class DataContainer:
         self.data.append(data_to_add)
         return data_to_add.macro_name, sanitize_text(y_label_val)
 
-    def addData3D(self, x, y, z, name=None):
+    def add_data3d(self, x, y, z, name=None):
         """Add data to the container.
 
         Parameters
