@@ -50,5 +50,5 @@ def post_treat_data(data_str):
     -------
         string of post-treated data
     """
-    data_str = replace_all_months(data_str)
+    # data_str = replace_all_months(data_str)
     return data_str.replace("None", "nan")
