@@ -33,9 +33,8 @@ def data_type(data):
     return None
 
 def treat_data(data_str): 
-    if not isinstance(data_str, str):
-        return data_str
-    if data_str.find(' ') !=- 1: # Add curly braces if there space in string
+    data_str = str(data_str)
+    if data_str.find(' ') !=- 1: # Add curly braces if space in string
         if not data_str.startswith("{") and not data_str.startswith("}"):
             data_str = "{" + data_str + "}"
             return data_str
