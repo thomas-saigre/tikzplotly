@@ -9,6 +9,17 @@ def hexid_to_alpha(num):
     table = "ABCDEFGHIJKLMNOP"
     return ''.join(table[int(c, 16)] for c in hexstr if c in "0123456789abcdef")
 
+def index_to_letters(idx):
+    """Convert an integer to a string like Excel columns: A, B, ..., Z, AA, AB, ..."""
+    letters = ""
+    while True:
+        idx, rem = divmod(idx, 26)
+        letters = chr(65 + rem) + letters  # 65 = ord('A')
+        if idx == 0:
+            break
+        idx -= 1
+    return letters
+
 class Data:
     """Class to handle data in TikZ plots.
     """
@@ -94,7 +105,7 @@ class DataContainer:
             elif hasattr(are_equals, "all") and are_equals.all():
                 y_label_val = data.add_y_data(y, y_label or name)
                 return data.macro_name, treat_data(y_label_val)
-        data_to_add = Data(f"data{len(self.data)}", x)
+        data_to_add = Data(f"data{index_to_letters(len(self.data))}", x)
         y_label_val = data_to_add.add_y_data(y, y_label or name)
         self.data.append(data_to_add)
         return data_to_add.macro_name, treat_data(y_label_val)
