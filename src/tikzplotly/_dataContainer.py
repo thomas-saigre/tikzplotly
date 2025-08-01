@@ -90,14 +90,14 @@ class DataContainer:
             if isinstance(are_equals, bool):
                 if are_equals:
                     y_label_val = data.add_y_data(y, y_label or name)
-                    return data.macro_name, y_label_val
+                    return data.macro_name, treat_data(y_label_val)
             elif hasattr(are_equals, "all") and are_equals.all():
                 y_label_val = data.add_y_data(y, y_label or name)
-                return data.macro_name, y_label_val
+                return data.macro_name, treat_data(y_label_val)
         data_to_add = Data(f"data{len(self.data)}", x)
         y_label_val = data_to_add.add_y_data(y, y_label or name)
         self.data.append(data_to_add)
-        return data_to_add.macro_name, sanitize_text(y_label_val)
+        return data_to_add.macro_name, treat_data(y_label_val)
 
     def add_data3d(self, x, y, z, name=None):
         """Add data to the container.
@@ -141,7 +141,7 @@ class DataContainer:
                 export_string += "\\pgfplotstableread{\n"
                 export_string += "x y z\n"
                 for i in range(len(data.x)):
-                    export_string += f"{data.x[i]} {data.y[i]} {data.z[i]}\n"
+                    export_string += f"{treat_data(data.x[i])} {treat_data(data.y[i])} {treat_data(data.z[i])}\n"
                 export_string += f"}}{{\\{data.name}}}\n"
 
             # 2D
@@ -150,14 +150,14 @@ class DataContainer:
                 header = "x"
                 if hasattr(data, "y_label") and data.y_label:
                     for label in data.y_label:
-                        header += f" {label}"
+                        header += f" {treat_data(label)}"
                 else:
                     header += " y"
                 export_string += header + "\n"
                 for i in range(len(data.x)):
-                    row = [str(data.x[i])]
+                    row = [treat_data(data.x[i])]
                     for y_col in data.y_data:
-                        row.append(str(y_col[i]))
+                        row.append(treat_data(y_col[i]))
                     export_string += " ".join(row) + "\n"
                 export_string += f"}}\\{data.name}\n"
 

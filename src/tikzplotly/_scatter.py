@@ -127,7 +127,7 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
         options_dict["forget plot"] = None
 
     options = option_dict_to_str(options_dict)
-    code += tex_addplot(data_name, plot_type="table", options=options, type_options=f"y={sanitize_text(y_name)}")
+    code += tex_addplot(data_name, plot_type="table", options=options, type_options=f"y={y_name}")
 
     if scatter.text is not None:
         for x_data, y_data, text_data in zip(scatter.x, scatter.y, scatter.text):
