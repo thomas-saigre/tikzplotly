@@ -86,7 +86,7 @@ def draw_bar(data_name_macro, x_col_name, y_col_name, trace, axis: Axis, colors_
     # Build the final addplot referencing the table
     code += tex_addplot(
         data_str=data_name_macro,
-        type="table",
+        plot_type="table",
         options=option_dict_to_str(plot_options),
         type_options=option_dict_to_str(type_options)
     )
