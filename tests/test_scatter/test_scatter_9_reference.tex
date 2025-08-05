@@ -1,4 +1,5 @@
-\pgfplotstableread{data0 y0
+\pgfplotstableread{
+x y0
 5.836039190663969 0.40841700265768377
 1.4920592434019648 1.4724129208622037
 2.661095776728801 0.6000122918441767
@@ -49,7 +50,7 @@
 2.176004410404423 5.964769984228198
 0.19910999912356603 1.1353172107281377
 0.8083660586147164 1.4947954331172004
-}\dataZ
+}\dataA
 
 \begin{tikzpicture}
 
@@ -61,6 +62,6 @@ hide y axis,
 xmode=log,
 ymode=log
 ]
-\addplot+ [mark=*, only marks, mark options={solid, fill=636efa}, forget plot] table[y=y0] {\dataZ};
+\addplot+ [mark=*, only marks, mark options={solid, fill=636efa}, forget plot] table[y=y0] {\dataA};
 \end{axis}
 \end{tikzpicture}

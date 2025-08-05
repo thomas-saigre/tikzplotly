@@ -1,4 +1,5 @@
-\pgfplotstableread{data0 High_2014 Low_2014 High_2007 Low_2007 High_2000 Low_2000
+\pgfplotstableread{
+x High_2014 Low_2014 High_2007 Low_2007 High_2000 Low_2000
 1 28.8 12.7 36.5 23.6 32.5 13.8
 2 28.5 14.3 26.6 14.0 37.6 22.3
 3 37.0 18.6 43.6 27.0 49.9 32.5
@@ -11,7 +12,7 @@
 10 62.6 45.2 67.3 48.5 60.6 42.8
 11 45.3 32.2 46.1 31.0 45.1 31.6
 12 39.9 29.1 35.0 23.6 29.3 15.9
-}\dataZ
+}\dataA
 
 \begin{tikzpicture}
 
@@ -24,17 +25,17 @@ title=Average High and Low Temperatures in New York,
 xlabel=Month,
 ylabel=Temperature (degrees F)
 ]
-\addplot+ [line width=1.125, color=firebrick] table[y=High_2014] {\dataZ};
+\addplot+ [line width=1.125, color=firebrick] table[y=High_2014] {\dataA};
 \addlegendentry{High 2014}
-\addplot+ [line width=1.125, color=royalblue] table[y=Low_2014] {\dataZ};
+\addplot+ [line width=1.125, color=royalblue] table[y=Low_2014] {\dataA};
 \addlegendentry{Low 2014}
-\addplot+ [line width=1.125, dashed, color=firebrick] table[y=High_2007] {\dataZ};
+\addplot+ [line width=1.125, dashed, color=firebrick] table[y=High_2007] {\dataA};
 \addlegendentry{High 2007}
-\addplot+ [line width=1.125, dashed, color=royalblue] table[y=Low_2007] {\dataZ};
+\addplot+ [line width=1.125, dashed, color=royalblue] table[y=Low_2007] {\dataA};
 \addlegendentry{Low 2007}
-\addplot+ [line width=1.125, dotted, color=firebrick] table[y=High_2000] {\dataZ};
+\addplot+ [line width=1.125, dotted, color=firebrick] table[y=High_2000] {\dataA};
 \addlegendentry{High 2000}
-\addplot+ [line width=1.125, dotted, color=royalblue] table[y=Low_2000] {\dataZ};
+\addplot+ [line width=1.125, dotted, color=royalblue] table[y=Low_2000] {\dataA};
 \addlegendentry{Low 2000}
 \end{axis}
 \end{tikzpicture}

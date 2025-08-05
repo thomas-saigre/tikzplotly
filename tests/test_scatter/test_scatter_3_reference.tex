@@ -1,4 +1,5 @@
-\pgfplotstableread{data0 y0
+\pgfplotstableread{
+x y0
 0 0
 1 1
 2 4
@@ -9,10 +10,10 @@
 7 49
 8 64
 9 81
-}\dataZ
+}\dataA
 
 \begin{tikzpicture}
 \begin{axis}
-\addplot+ table[y=y0] {\dataZ};
+\addplot+ table[y=y0] {\dataA};
 \end{axis}
 \end{tikzpicture}
