@@ -10,7 +10,7 @@ from ._marker import marker_symbol_to_tex
 from ._dash import DASH_PATTERN
 from ._axis import Axis
 from ._data import data_type
-from ._utils import px_to_pt, option_dict_to_str, sanitize_text
+from ._utils import px_to_pt, option_dict_to_str
 
 def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
     """Get code for a scatter trace.

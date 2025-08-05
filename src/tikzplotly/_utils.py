@@ -91,8 +91,8 @@ def sanitize_char(ch: str, keep_space: bool = False) -> str:
         return ""
     if ch == "@":
         return "at"
-    if ch == " ": 
-        return " " if keep_space else ""
+    if ch == " ":
+        return " " if keep_space else "_"
     if ch in "[]{}= ": return f"x{ord(ch):x}"
     # if not ascii, return hex
     if ord(ch) > 127: return f"x{ord(ch):x}"
@@ -115,7 +115,7 @@ def sanitize_tex_text(text: str):
         The sanitized text, with special characters escaped and formatted for LaTeX.
     """
     sanitized = "".join(map(sanitize_tex_char, text))
-    special_chars = "[], "
+    special_chars = "[],"
     if any(c in sanitized for c in special_chars):
         return "{" + sanitized + "}"
     return sanitized

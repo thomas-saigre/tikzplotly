@@ -2,7 +2,7 @@
 This module contains the code to handle data types in TikZ using Plotly data.
 """
 from warnings import warn
-from ._utils import replace_all_months
+from ._utils import sanitize_text
 
 def data_type(data):
     """Return the type of data, for special handling.
@@ -23,7 +23,7 @@ def data_type(data):
         if len(data.split('-')) == 3:
             warn("Assuming this is a date, add \"\\usetikzlibrary{pgfplots.dateplot}\" to your tex preamble.")
             return 'date'
-          
+
         if data.lower() in ['january', 'february', 'march', 'april', 'may', 'june',
                             'july', 'august', 'september', 'october', 'november', 'december']:
             warn(f"Assuming data {data} is a month. This feature is experimental.")
@@ -32,8 +32,8 @@ def data_type(data):
         return None
     return None
 
-def treat_data(data_str): 
-    data_str = str(data_str)
+def treat_data(data_str):
+    data_str = sanitize_text(str(data_str))
     if data_str.find(' ') !=- 1: # Add curly braces if space in string
         if not data_str.startswith("{") and not data_str.startswith("}"):
             data_str = "{" + data_str + "}"
