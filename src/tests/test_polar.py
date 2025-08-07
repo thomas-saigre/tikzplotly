@@ -126,7 +126,7 @@ def fig_polar5():
         ))
 
     fig.update_layout(showlegend=False)
-    
+
     # fig.show()
     return fig, "Basic Polar Chart"
 
@@ -337,7 +337,7 @@ def fig_polar10a():
 
     r = [1,2,3,4,5]
     theta = [0,90,180,360,0]
-    
+
     fig.add_trace(go.Scatterpolar())
     fig.update_traces(r= r, theta=theta,
                     mode="lines+markers", line_color='indianred',
@@ -363,7 +363,7 @@ def fig_polar10b():
 
     r = [1,2,3,4,5]
     theta = [0,90,180,360,0]
-    
+
     fig.add_trace(go.Scatterpolar())
     fig.update_traces(r= r, theta=theta,
                     mode="lines+markers", line_color='indianred',
@@ -389,7 +389,7 @@ def fig_polar10c():
 
     r = [1,2,3,4,5]
     theta = [0,90,180,360,0]
-    
+
     fig.add_trace(go.Scatterpolar())
     fig.update_traces(r= r, theta=theta,
                     mode="lines+markers", line_color='indianred',
@@ -415,7 +415,7 @@ def fig_polar10d():
 
     r = [1,2,3,4,5]
     theta = [0,90,180,360,0]
-    
+
     fig.add_trace(go.Scatterpolar())
     fig.update_traces(r= r, theta=theta,
                     mode="lines+markers", line_color='indianred',
@@ -595,7 +595,7 @@ if __name__ == "__main__":
 
     print("Tikzploty : ", tikzplotly.__version__)
     print("Plotly : ", plotly.__version__)
-    print("Test line charts")
+    print("Test polar/radar charts")
 
     file_directory = os.path.dirname(os.path.abspath(__file__))
 

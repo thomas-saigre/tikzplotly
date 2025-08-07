@@ -145,7 +145,6 @@ def draw_scatterpolar(data_name_macro, theta_col_name, r_col_name, trace, axis: 
     """
 
     plot_options = {}
-    mark_options = {}
 
     mode = trace.mode if trace.mode else "lines"
 
