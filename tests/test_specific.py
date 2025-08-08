@@ -36,9 +36,17 @@ def plot_transparent_background():
 
     return fig
 
+def plot_empty_figure():
+    fig = go.Figure()
+    fig.show()
+    return fig
+
 
 def test_sanitized_text():
     assert_equality(plot_sanitized_text(), os.path.join(this_dir, test_name, test_name + "_sanitized_text_reference.tex"))
 
 def test_transparent_background():
     assert_equality(plot_transparent_background(), os.path.join(this_dir, test_name, test_name + "_transparent_background_reference.tex"))
+
+def test_empty_figure():
+    assert_equality(plot_empty_figure(), os.path.join(this_dir, "empty_plot.tex"))

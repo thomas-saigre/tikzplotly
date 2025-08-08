@@ -1,10 +1,11 @@
-\pgfplotstableread{data0 y0
+\pgfplotstableread{
+x y0
 0 0
 1 1
 2 2
 3 3
 4 4
-}\dataZ
+}\dataA
 
 \begin{tikzpicture}
 
@@ -14,6 +15,6 @@
 xlabel=x,
 ylabel=y
 ]
-\addplot+ [mark=*, only marks, mark options={solid, fill=636efa}, forget plot] table[y=y0] {\dataZ};
+\addplot+ [mark=*, only marks, mark options={solid, fill=636efa}, forget plot] table[y=y0] {\dataA};
 \end{axis}
 \end{tikzpicture}

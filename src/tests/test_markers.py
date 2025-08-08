@@ -227,7 +227,7 @@ def fig3ter():
 def fig4():
     warn("This example is not exactly the one online, but has been changed as this kind of data is not yet supported.")
     SymbolValidator = ValidatorCache.get_validator("scatter.marker", "symbol")
-    raw_symbols = SymbolValidator().values
+    raw_symbols = SymbolValidator.values
     namestems = []
     namevariants = []
     symbols = []

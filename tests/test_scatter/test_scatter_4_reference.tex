@@ -1,4 +1,5 @@
-\pgfplotstableread{data0 Television Newspaper Internet Radio
+\pgfplotstableread{
+x Television Newspaper Internet Radio
 2001 74 45 13 18
 2002 82 42 14 21
 2003 80 50 20 18
@@ -11,11 +12,12 @@
 2010 66 31 41 16
 2011 66 31 43 19
 2012 69 28 50 23
-}\dataZ
-\pgfplotstableread{data1 y0 y1 y2 y3
+}\dataA
+\pgfplotstableread{
+x y0 y1 y2 y3
 2001 74 45 13 18
 2012 69 28 50 23
-}\dataO
+}\dataB
 
 \begin{tikzpicture}
 
@@ -32,14 +34,14 @@ axis y line=none,
 axis background/.style={fill=white},
 clip=false
 ]
-\addplot+ [mark=none, line width=1.5, color=6fb95895bc] table[y=Television] {\dataZ};
-\addplot+ [only marks, mark size=3, mark options={solid, fill=6fb95895bc}] table[y=y0] {\dataO};
-\addplot+ [mark=none, line width=1.5, color=9b5dacb44d] table[y=Newspaper] {\dataZ};
-\addplot+ [only marks, mark size=3, mark options={solid, fill=9b5dacb44d}] table[y=y1] {\dataO};
-\addplot+ [mark=none, line width=3, color=8b7c4ec1c1] table[y=Internet] {\dataZ};
-\addplot+ [only marks, mark size=4.5, mark options={solid, fill=8b7c4ec1c1}] table[y=y2] {\dataO};
-\addplot+ [mark=none, line width=1.5, color=9f6fd82da0] table[y=Radio] {\dataZ};
-\addplot+ [only marks, mark size=3, mark options={solid, fill=9f6fd82da0}] table[y=y3] {\dataO};
+\addplot+ [mark=none, line width=1.5, color=6fb95895bc] table[y=Television] {\dataA};
+\addplot+ [only marks, mark size=3, mark options={solid, fill=6fb95895bc}] table[y=y0] {\dataB};
+\addplot+ [mark=none, line width=1.5, color=9b5dacb44d] table[y=Newspaper] {\dataA};
+\addplot+ [only marks, mark size=3, mark options={solid, fill=9b5dacb44d}] table[y=y1] {\dataB};
+\addplot+ [mark=none, line width=3, color=8b7c4ec1c1] table[y=Internet] {\dataA};
+\addplot+ [only marks, mark size=4.5, mark options={solid, fill=8b7c4ec1c1}] table[y=y2] {\dataB};
+\addplot+ [mark=none, line width=1.5, color=9f6fd82da0] table[y=Radio] {\dataA};
+\addplot+ [only marks, mark size=3, mark options={solid, fill=9f6fd82da0}] table[y=y3] {\dataB};
 \node[anchor= east] at (axis cs:\pgfkeysvalueof{/pgfplots/xmin} + 0.05*\pgfkeysvalueof{/pgfplots/xmax}-0.05*\pgfkeysvalueof{/pgfplots/xmin}, 74) {Television 74\%};
 \node[anchor= west] at (axis cs:\pgfkeysvalueof{/pgfplots/xmin} + 0.95*\pgfkeysvalueof{/pgfplots/xmax}-0.95*\pgfkeysvalueof{/pgfplots/xmin}, 69) {69\%};
 \node[anchor= east] at (axis cs:\pgfkeysvalueof{/pgfplots/xmin} + 0.05*\pgfkeysvalueof{/pgfplots/xmax}-0.05*\pgfkeysvalueof{/pgfplots/xmin}, 45) {Newspaper 45\%};

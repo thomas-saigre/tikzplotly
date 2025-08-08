@@ -1,0 +1,27 @@
+\pgfplotstableread{
+x y0
+0 0
+10 10
+20 20
+30 30
+40 40
+50 50
+60 60
+70 70
+80 80
+}\dataA
+
+\begin{tikzpicture}
+
+\definecolor{636efa}{HTML}{636efa}
+
+\begin{polaraxis}[
+rotate=0,
+xticklabel style={anchor=\tick+0+180},
+yticklabel style={anchor=\tick-0-90},
+xmin=0,
+xmax=90
+]
+\addplot+ [only marks, color=636efa, mark options={solid, fill=636efa}] table[x=x, y=y0] {\dataA};
+\end{polaraxis}
+\end{tikzpicture}

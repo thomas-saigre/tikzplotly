@@ -1,16 +1,17 @@
-\pgfplotstableread{data0 x5btestx200bx5d
+\pgfplotstableread{
+x x5btestx200bx5d
 0 0
 1 1
 2 4
 3 9
 4 16
-}\dataZ
+}\dataA
 
 \begin{tikzpicture}
 \begin{axis}[
 clip=false
 ]
-\addplot+ table[y=x5btestx200bx5d] {\dataZ};
+\addplot+ table[y=x5btestx200bx5d] {\dataA};
 \addlegendentry{{[testx200b]}}
 \node[anchor=south west] at (axis cs:2, \pgfkeysvalueof{/pgfplots/ymin} + 1.05*\pgfkeysvalueof{/pgfplots/ymax}-1.05*\pgfkeysvalueof{/pgfplots/ymin}) {{==[\{x1d54bop text\}]==x9}};
 \node[anchor=south west] at (axis cs:2, 2) {Ouais c'est pas faux};

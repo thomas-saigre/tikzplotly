@@ -18,8 +18,9 @@ def test_tikzplotly(axis_options):
     else:
         tikzplotly.save("/tmp/tikzplotly/test_tikzplotly_none.tex", fig)
 
-def test_create_document():
-    main_tex_content = tex_create_document(compatibility="newest")
+@pytest.mark.parametrize("options", [None, "a4paper"])
+def test_create_document(options):
+    main_tex_content = tex_create_document(compatibility="newest", options=options)
     main_tex_content += "\\usepackage{graphicx}\n"
     main_tex_content += "\n"
     stack_env = []
@@ -36,4 +37,4 @@ def test_create_document():
     with open(main_tex_path, "w") as f:
         f.write(main_tex_content)
 
-    compare_two_files(main_tex_path, os.path.join(this_dir, "test_tikzplotly", "test_create_document.tex"))
+    compare_two_files(main_tex_path, os.path.join(this_dir, "test_tikzplotly", f"test_create_document_{options}.tex"))

@@ -1,4 +1,5 @@
-\pgfplotstableread{data0 y0
+\pgfplotstableread{
+x y0
 4.251066014107722 3.2624466286607725
 5.160973480326474 3.6819292088540663
 3.0003431244520344 3.943129848342151
@@ -499,11 +500,12 @@
 5.53298984569714 5.006389817768609
 5.760619542916981 3.9779016219269576
 3.6837008698539506 5.323431798045239
-}\dataZ
-\pgfplotstableread{data1 y0
+}\dataA
+\pgfplotstableread{
+x y0
 2 4.25
 2 4.75
-}\dataO
+}\dataB
 
 \begin{tikzpicture}
 
@@ -511,7 +513,7 @@
 \definecolor{mediumpurple}{RGB}{147, 112, 219}
 
 \begin{axis}
-\addplot+ [only marks, mark size=15, mark options={solid, fill=lightskyblue, draw=mediumpurple, line width=1.5, opacity=0.5}, forget plot] table[y=y0] {\dataZ};
-\addplot+ [only marks, mark size=60, mark options={solid, fill=lightskyblue, draw=mediumpurple, line width=6, opacity=0.5}, forget plot] table[y=y0] {\dataO};
+\addplot+ [only marks, mark size=15, mark options={solid, fill=lightskyblue, draw=mediumpurple, line width=1.5, opacity=0.5}, forget plot] table[y=y0] {\dataA};
+\addplot+ [only marks, mark size=60, mark options={solid, fill=lightskyblue, draw=mediumpurple, line width=6, opacity=0.5}, forget plot] table[y=y0] {\dataB};
 \end{axis}
 \end{tikzpicture}

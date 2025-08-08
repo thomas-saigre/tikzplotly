@@ -1,4 +1,5 @@
-\pgfplotstableread{data0 Botswana
+\pgfplotstableread{
+x Botswana
 47.622 851.2411407
 49.618 918.2325349
 51.52 983.6539764
@@ -11,8 +12,9 @@
 52.556 8647.142313
 46.63399999999999 11003.60508
 50.728 12569.85177
-}\dataZ
-\pgfplotstableread{data1 Canada
+}\dataA
+\pgfplotstableread{
+x Canada
 68.75 11367.16112
 69.96 12489.95006
 71.3 13462.48555
@@ -25,7 +27,7 @@
 78.61 28954.92589
 79.77 33328.96507
 80.653 36319.23501
-}\dataO
+}\dataB
 
 \begin{tikzpicture}
 
@@ -36,7 +38,7 @@
 xlabel=lifeExp,
 ylabel=gdpPercap
 ]
-\addplot+ [mark=*, solid, color=636efa] table[y=Botswana] {\dataZ};
+\addplot+ [mark=*, solid, color=636efa] table[y=Botswana] {\dataA};
 \node at (axis cs:47.622,851.2411407) {1952};
 \node at (axis cs:49.618,918.2325349) {1957};
 \node at (axis cs:51.52,983.6539764) {1962};
@@ -50,7 +52,7 @@ ylabel=gdpPercap
 \node at (axis cs:46.63399999999999,11003.60508) {2002};
 \node at (axis cs:50.728,12569.85177) {2007};
 \addlegendentry{Botswana}
-\addplot+ [mark=*, solid, color=EF553B] table[y=Canada] {\dataO};
+\addplot+ [mark=*, solid, color=EF553B] table[y=Canada] {\dataB};
 \node at (axis cs:68.75,11367.16112) {1952};
 \node at (axis cs:69.96,12489.95006) {1957};
 \node at (axis cs:71.3,13462.48555) {1962};

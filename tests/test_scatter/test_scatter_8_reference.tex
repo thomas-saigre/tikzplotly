@@ -1,4 +1,5 @@
-\pgfplotstableread{data0 y0
+\pgfplotstableread{
+x y0
 974.5803384 43.828
 5937.029525999998 76.423
 6223.367465 72.301
@@ -141,7 +142,7 @@
 2280.769906 62.698
 1271.211593 42.38399999999999
 469.70929810000007 43.487
-}\dataZ
+}\dataA
 
 \begin{tikzpicture}
 
@@ -161,6 +162,6 @@ subtickwidth=6,
 xlabel=gdpPercap,
 ylabel=lifeExp
 ]
-\addplot+ [mark=*, only marks, mark options={solid, fill=636efa}, forget plot] table[y=y0] {\dataZ};
+\addplot+ [mark=*, only marks, mark options={solid, fill=636efa}, forget plot] table[y=y0] {\dataA};
 \end{axis}
 \end{tikzpicture}
