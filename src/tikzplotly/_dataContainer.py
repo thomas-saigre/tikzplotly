@@ -5,6 +5,26 @@ from ._utils import replace_all_digits, sanitize_text
 from ._data import treat_data, post_treat_data
 
 def hexid_to_alpha(num):
+    """
+    Converts a hexadecimal string or integer to an alphabetic representation using the letters A-P.
+    Each hexadecimal digit (0-15) is mapped to a corresponding uppercase letter (A-P).
+
+    Parameters
+    ----------
+    num : int or str
+        The hexadecimal number to convert. Can be an integer or a string containing hexadecimal digits.
+
+    Returns
+    -------
+        Alphabetic representation of the hexadecimal input, where each digit is replaced by a letter from A to P.
+
+    Examples
+    --------
+    >>> hexid_to_alpha(255)
+    'PP'
+    >>> hexid_to_alpha('1a3')
+    'ABD'
+    """
     hexstr = str(num)
     table = "ABCDEFGHIJKLMNOP"
     return ''.join(table[int(c, 16)] for c in hexstr if c in "0123456789abcdef")
@@ -93,8 +113,6 @@ class DataContainer:
             tuple (macro_name, y_label), where macro_name is the name of the data in LaTeX and y_label the name of the y data in LaTeX
         """
         for data in self.data:
-            if isinstance(x, (tuple, list)):
-                continue
             if len(data.x) != len(x):
                 continue
             are_equals = data.x == x
