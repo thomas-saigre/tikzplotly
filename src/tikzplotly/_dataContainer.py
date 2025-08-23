@@ -1,6 +1,7 @@
 """
 Contain the code to handle data in TikZ plots.
 """
+import hashlib
 from ._utils import replace_all_digits, sanitize_text
 from ._data import treat_data, post_treat_data
 
@@ -84,7 +85,12 @@ class Data3D:
         self.x = list(x)
         self.y = list(y)
         self.z = list(z)
-        self.name = sanitize_text(name, keep_space=False) if name else f"data{hexid_to_alpha(id(self))}"
+        if name:
+            self.name = sanitize_text(name, keep_space=False)
+        else:
+            hash_input = str(self.x) + str(self.y) + str(self.z)
+            hash_digest = hashlib.md5(hash_input.encode()).hexdigest()
+            self.name = f"data{hexid_to_alpha(hash_digest)}"
         self.z_name = "z"
 
 class DataContainer:
