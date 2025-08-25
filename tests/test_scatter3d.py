@@ -29,7 +29,8 @@ def plot_scatter_3d_2(mode):
             size=12,
             color=z,                # set color to an array/list of desired values
             colorscale='Viridis',   # choose a colorscale
-            opacity=0.8
+            opacity=0.8,
+            symbol="diamond"
         ),
     )])
     fig.update_layout(margin=dict(l=0, r=0, b=0, t=0))
