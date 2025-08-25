@@ -158,13 +158,14 @@ class Axis():
             self.add_option("xtick", ticks)
             self.add_option("xticklabels", ticklabels)
 
-        if (
-            self.layout.xaxis.categoryorder != "trace"
-            or self.layout.yaxis.categoryorder != "trace"
-            or self.layout.xaxis.categoryorder != "total descending"
-        ):
+        # At this point, only layout.xaxis.categoryarray = "array" is supported
+        if self.layout.xaxis.categoryorder is not None and self.layout.xaxis.categoryorder not in ["array"]:
             warn(
-            "The categoryorder option is not supported (yet 🤞) for the axis environment."
+            f"The xaxis categoryorder option {self.layout.xaxis.categoryorder} is not supported (yet 🤞) for the axis environment."
+            )
+        if self.layout.yaxis.categoryorder is not None and self.layout.yaxis.categoryorder not in []:
+            warn(
+            f"The yaxis categoryorder option {self.layout.yaxis.categoryorder} is not supported (yet 🤞) for the axis environment."
             )
 
         if self.layout.xaxis.showgrid:
