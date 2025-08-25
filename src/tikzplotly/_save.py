@@ -72,6 +72,11 @@ def get_tikz_code(
                 data_str.append( "\\addplot coordinates {};\n" )
                 continue
 
+            if trace.x is None:
+                trace.x = list(range(len(trace.y)))
+            if trace.y is None:
+                trace.y = list(range(len(trace.x)))
+
             data_name_macro, y_name = data_container.add_data(trace.x, trace.y, trace.name)
 
             # If x is textual => symbolic x coords
