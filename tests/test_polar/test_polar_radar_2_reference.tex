@@ -1,5 +1,5 @@
 \pgfplotstableread{
-x Figure_8 Cardioid Hypercardioid
+x Figure8 Cardioid Hypercardioid
 0 1.0 1.0 1.0
 6 0.995 0.997 0.996
 12 0.978 0.989 0.984
@@ -72,7 +72,7 @@ x Figure_8 Cardioid Hypercardioid
 \begin{polaraxis}[
 title=Basic Polar Chart
 ]
-\addplot+ [no markers, color=peru] table[x=x, y=Figure_8] {\dataA};
+\addplot+ [no markers, color=peru] table[x=x, y=Figure8] {\dataA};
 \addplot+ [no markers, color=darkviolet, line width=2] table[x=x, y=Cardioid] {\dataA};
 \addplot+ [no markers, color=deepskyblue] table[x=x, y=Hypercardioid] {\dataA};
 \end{polaraxis}

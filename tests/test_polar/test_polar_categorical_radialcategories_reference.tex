@@ -1,5 +1,5 @@
 \pgfplotstableread{
-x radial_categories_(w/_category_descending)
+x radialcategories(w/categorydescending)
 45 a
 90 b
 180 c
@@ -15,7 +15,7 @@ x radial_categories_(w/_category_descending)
 symbolic y coords={f,d,c,b,a},
 ytick=data
 ]
-\addplot+ [no markers, fill=.!50, opacity=0.6] table[x=x, y=radial_categories_(w/_category_descending)] {\dataA};
+\addplot+ [no markers, fill=.!50, opacity=0.6] table[x=x, y=radialcategories(w/categorydescending)] {\dataA};
 \addlegendentry{radial categories (w/ category descending)}
 \end{polaraxis}
 \end{tikzpicture}
