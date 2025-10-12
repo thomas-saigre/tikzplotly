@@ -98,11 +98,14 @@ def sanitize_char(ch: str, keep_space: int = 0) -> str:
         if keep_space == 0:
             return "_"
         return ""
-    if ch in "[]{}= ": return f"x{ord(ch):x}"
+    if ch in "[]{}= ":
+        return f"x{ord(ch):x}"
     # if not ascii, return hex
-    if ord(ch) > 127: return f"x{ord(ch):x}"
+    if ord(ch) > 127:
+        return f"x{ord(ch):x}"
     # if not printable, return hex
-    if not ch.isprintable(): return f"x{ord(ch):x}"
+    if not ch.isprintable():
+        return f"x{ord(ch):x}"
     return ch
 
 def sanitize_tex_text(text: str):

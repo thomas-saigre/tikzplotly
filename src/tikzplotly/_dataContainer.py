@@ -2,6 +2,7 @@
 Contain the code to handle data in TikZ plots.
 """
 import hashlib
+import numpy as np
 from ._utils import replace_all_digits, sanitize_text
 from ._data import treat_data, post_treat_data
 
@@ -81,6 +82,8 @@ class Data:
         return self.y_label[-1]
 
 class Data3D:
+    """Handle 3D data in Tikz plots
+    """
     def __init__(self, x, y, z, name):
         self.x = list(x)
         self.y = list(y)
@@ -154,7 +157,6 @@ class DataContainer:
         """
         for data in self.data:
             if hasattr(data, "x") and hasattr(data, "y") and hasattr(data, "z"):
-                import numpy as np
                 if np.array_equal(data.x, x) and np.array_equal(data.y, y) and np.array_equal(data.z, z):
                     return data.name, data.z_name
         data_obj = Data3D(x, y, z, name)
@@ -175,8 +177,8 @@ class DataContainer:
             if hasattr(data, "z"):
                 export_string += "\\pgfplotstableread{\n"
                 export_string += "x y z\n"
-                for i in range(len(data.x)):
-                    export_string += f"{treat_data(data.x[i])} {treat_data(data.y[i])} {treat_data(data.z[i])}\n"
+                for x, y, z in zip(data.x, data.y, data.z):
+                    export_string += f"{treat_data(x)} {treat_data(y)} {treat_data(z)}\n"
                 export_string += f"}}{{\\{data.name}}}\n"
 
             # 2D
@@ -189,13 +191,11 @@ class DataContainer:
                 else:
                     header += " y"
                 export_string += header + "\n"
-                for i in range(len(data.x)):
-                    row = [treat_data(data.x[i])]
+                for i, x in enumerate(data.x):
+                    row = [treat_data(x)]
                     for y_col in data.y_data:
                         row.append(treat_data(y_col[i]))
                     export_string += " ".join(row) + "\n"
                 export_string += f"}}\\{data.name}\n"
 
         return post_treat_data(export_string)
-
-

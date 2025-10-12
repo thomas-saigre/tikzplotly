@@ -1,12 +1,33 @@
+"""
+Provides functionality to convert Plotly 3D polar plots into TikZ/PGFPlots code for LaTeX documents.
+"""
+from warnings import warn
+import numpy as np
 from ._axis import Axis
 from ._utils import option_dict_to_str
 from ._tex import tex_addplot
 from ._color import convert_color
 from ._dataContainer import DataContainer
-from warnings import warn
-import numpy as np
 
 def get_polar_coord(trace, axis: Axis, data_container: DataContainer):
+    """Get polar coordinates from the trace
+
+    Parameters
+    ----------
+    trace
+        polar trace from Plotly figure
+    axis
+        axis object previously created
+    data_container
+        Data table, created before
+
+    Returns
+    -------
+        Tuple (data_name_macro, theta_col_name, r_col_name):
+            - data_name_macro: name of the data in LaTeX
+            - theta_col_name: name of the theta column
+            - r_col_name: name of the r column
+    """
     polar_layout = getattr(axis.layout, 'polar')
     if polar_layout:
         # Angular Axis
@@ -117,7 +138,7 @@ def get_polar_coord(trace, axis: Axis, data_container: DataContainer):
     return data_name_macro, theta_col_name, r_col_name
 
 
-def draw_scatterpolar(data_name_macro, theta_col_name, r_col_name, trace, axis: Axis, colors_set, row_sep="\\"):
+def draw_scatterpolar(data_name_macro, theta_col_name, r_col_name, trace, axis: Axis, colors_set):
     """
     Draw a scatterpolar plot using pgfplots polaraxis environment.
 
@@ -135,8 +156,6 @@ def draw_scatterpolar(data_name_macro, theta_col_name, r_col_name, trace, axis: 
         Axis object (to add axis-level options)
     colors_set : set
         Set of colors defined
-    row_sep : str, optional
-        Row separator in LaTeX, default "\\"
 
     Returns
     -------
@@ -148,9 +167,9 @@ def draw_scatterpolar(data_name_macro, theta_col_name, r_col_name, trace, axis: 
 
     mode = trace.mode if trace.mode else "lines"
 
-    if not "markers" in mode:
+    if "markers" not in mode:
         plot_options["no markers"] = None
-    elif not "lines" in mode:
+    elif "lines" not in mode:
         plot_options["only marks"] = None
 
     # Marker style
@@ -164,7 +183,7 @@ def draw_scatterpolar(data_name_macro, theta_col_name, r_col_name, trace, axis: 
             plot_options["mark options"] = "{" + option_dict_to_str(mark_opts) + "}"
         if marker.size is not None:
             if isinstance(marker.size, np.ndarray):
-                warn(f"Polar: Individual marker sizes in a trace are not supported yet.")
+                warn("Polar: Individual marker sizes in a trace are not supported yet.")
             else:
                 plot_options["mark size"] = marker.size/4
 

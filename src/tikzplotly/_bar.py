@@ -1,12 +1,15 @@
+"""
+This module handles bar plots.
+"""
+from warnings import warn
 from ._axis import Axis
 from ._utils import option_dict_to_str
 from ._tex import tex_addplot
 from ._color import convert_color
-from ._utils import sanitize_tex_text
-from warnings import warn
+from ._utils import sanitize_text
 
 
-def draw_bar(data_name_macro, x_col_name, y_col_name, trace, axis: Axis, colors_set, row_sep="\\"):
+def draw_bar(data_name_macro, x_col_name, y_col_name, trace, axis: Axis, colors_set):
     r"""
     Draw a bar chart (vertical or horizontal) referencing the data table
     created by DataContainer.add_data(...).
@@ -28,13 +31,10 @@ def draw_bar(data_name_macro, x_col_name, y_col_name, trace, axis: Axis, colors_
         The axis object to which the bar chart will be added.
     colors_set : set
         A set to keep track of colors used in the plot (for \\definecolor).
-    row_sep : str, optional
-        The row separator for the data table in TikZ, by default "\\"
     """
     code = ""
     plot_options = {}
     type_options = {}
-    # type_options = {"row sep": row_sep}
 
     orientation = getattr(trace, "orientation", "v")  # default vertical
     stack = " stacked" if axis.layout.barmode in ("stack", "relative") else ""
@@ -54,7 +54,7 @@ def draw_bar(data_name_macro, x_col_name, y_col_name, trace, axis: Axis, colors_
 
     # Handle symbolic coords
     if all(isinstance(value, str) for value in categories):
-        symbolic = sanitize_tex_text(",".join(categories))
+        symbolic = sanitize_text(",".join(categories), keep_space=-1)
         if orientation == "h":
             axis.add_option("symbolic y coords", "{" + symbolic + "}")
             axis.add_option("ytick", "data")

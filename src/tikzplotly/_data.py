@@ -28,10 +28,20 @@ def data_type(data):
                             'july', 'august', 'september', 'october', 'november', 'december']:
             warn(f"Assuming data {data} is a month. This feature is experimental.")
             return 'month'
-        return None
     return None
 
 def treat_data(data_str):
+    """Treat data for correct TeX display
+
+    Parameters
+    ----------
+    data_str
+        string of data to be treated
+
+    Returns
+    -------
+        Sanitized TeX string
+    """
     data_str = sanitize_text(str(data_str), keep_space=-1)
     if data_str.find(' ') !=- 1: # Add curly braces if space in string
         if not data_str.startswith("{") and not data_str.startswith("}"):

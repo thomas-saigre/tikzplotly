@@ -63,7 +63,6 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
         else:
             options_dict["only marks"] = None
 
-        mark_options = ""
         if scatter.marker.size is not None:
             options_dict["mark size"] = px_to_pt(marker.size)
 
@@ -82,9 +81,9 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
         if (angle:=scatter.marker.angle) is not None:
             mark_option_dict["rotate"] = angle
 
-        if (opacity:=scatter.opacity) is not None:
+        if (opacity := scatter.opacity) is not None:
             options_dict["opacity"] = np.round(opacity, 2)
-        if (opacity:=scatter.marker.opacity) is not None:
+        if (opacity := scatter.marker.opacity) is not None:
             mark_option_dict["opacity"] = np.round(opacity, 2)
 
         if mark_option_dict:

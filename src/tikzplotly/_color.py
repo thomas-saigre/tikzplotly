@@ -45,22 +45,22 @@ def convert_color(color):
     if color is None:
         return None, None, None, 1
     if isinstance(color, numpy.ndarray):
-        warn(f"Color from data is not supported yet. Returning the default color: blue.")
+        warn("Color from data is not supported yet. Returning the default color: blue.")
         return "blue", "HTML", "0000ff", 1
-    elif not isinstance(color, str):
+    if not isinstance(color, str):
         warn(f"Color {color} type '{color.__class__.__name__}' is not supported yet. Returning the default color: blue.")
         return "blue", "HTML", "0000ff", 1
 
     if color.startswith("#"):
         return color[1:], "HTML", color[1:], 1
 
-    elif color.startswith("rgba"):
+    if color.startswith("rgba"):
         sp = color.split("(")[1].split(",")
         rgb_color = sp[:-1]
         rgb_color = convert_color(f"rgb({rgb_color[0]},{rgb_color[1]},{rgb_color[2]})")[:-1]
         return rgb_color + (float(sp[-1][:-1]),)
 
-    elif color.startswith("rgb"):
+    if color.startswith("rgb"):
         color = color[4:-1].replace("[", "{").replace("]", "}")
         return hashlib.sha1(color.encode('UTF-8')).hexdigest()[:10], "RGB", color, 1
 

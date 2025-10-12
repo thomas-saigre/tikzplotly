@@ -1,14 +1,24 @@
+"""
+Provides functionality to convert Plotly 3D scatter traces into TikZ/PGFPlots code for LaTeX documents.
+"""
 from warnings import warn
-
-from ._tex import tex_addplot
+import numpy as np
 from ._color import convert_color
 from ._marker import marker_symbol_to_tex
-from ._axis import Axis
 from ._utils import px_to_pt, option_dict_to_str
 
-def draw_scatter3d(data_name, scatter, z_name, axis: Axis, color_set):
+def draw_scatter3d(data_name, scatter, color_set):
     """
     Get code for a scatter3d trace.
+
+    Parameters
+    ----------
+    data_name
+        name of the data imported in LaTeX
+    scatter
+        scatter trace from Plotly figure
+    color_set
+        set of colors used in the figure
     """
     code = ""
 
@@ -33,16 +43,15 @@ def draw_scatter3d(data_name, scatter, z_name, axis: Axis, color_set):
             size = marker.size
             if isinstance(size, (list, tuple)) or (hasattr(size, "shape") and hasattr(size, "__len__")):
                 try:
-                    import numpy as np
                     size = float(np.mean(size))
-                except Exception:
+                except (TypeError, ValueError):
                     size = float(size[0])
             options_dict["mark size"] = px_to_pt(size)
 
-        if marker.color is not None:
-            color_set.add(convert_color(marker.color)[:3])
+        if (c := marker.color) is not None:
+            color_set.add(convert_color(c)[:3])
             mark_option_dict["solid"] = None
-            mark_option_dict["fill"] = convert_color(marker.color)[0]
+            mark_option_dict["fill"] = convert_color(c)[0]
 
         if (line := marker.line) is not None:
             if line.color is not None:
@@ -87,7 +96,7 @@ def draw_scatter3d(data_name, scatter, z_name, axis: Axis, color_set):
     if scatter.name:
         code += f"\n% {scatter.name}\n"
 
-    code += f"\\addplot3+ "
+    code += "\\addplot3+ "
     if options is not None:
         code += f"[{options}] "
     code += f"table[x=x, y=y, z=z] {{\\{data_name}}};\n"

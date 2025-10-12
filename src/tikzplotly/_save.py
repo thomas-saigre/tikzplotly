@@ -7,6 +7,7 @@ configuration, manage data containers, and export the resulting TikZ code to a f
 from pathlib import Path
 from warnings import warn
 import re
+import numpy as np
 from .__about__ import __version__
 from ._tex import tex_add_legendentry, tex_comment, tex_begin_environment, tex_add_color, tex_end_all_environment
 from ._scatter import draw_scatter2d
@@ -20,10 +21,6 @@ from ._color import convert_color
 from ._annotations import str_from_annotation
 from ._dataContainer import DataContainer
 from ._utils import sanitize_tex_text, sanitize_text
-from warnings import warn
-from collections import defaultdict
-import numpy as np
-import re
 
 
 def get_tikz_code(
@@ -124,17 +121,17 @@ def get_tikz_code(
             bar_code = draw_bar(data_name_macro, x_col_name, val_col_name, trace, axis, colors_set)
             data_str.append(bar_code)
 
-            if trace.name and trace['showlegend'] != False:
+            if trace.name and trace['showlegend'] is not False:
                 data_str.append(tex_add_legendentry(sanitize_tex_text(trace.name)))
 
-        elif trace.type == "scatterpolar" or trace.type == "scatterpolargl":
+        elif trace.type in ('scatterpolar', 'scatterpolargl'):
             data_name_macro, theta_col_name, r_col_name = get_polar_coord(trace, axis, data_container)
             theta_col_name = "x"
 
             polar_code = draw_scatterpolar(data_name_macro, theta_col_name, r_col_name, trace, axis, colors_set)
             data_str.append(polar_code)
 
-            if trace.name and trace['showlegend'] != False:
+            if trace.name and trace['showlegend'] is not False:
                 data_str.append(tex_add_legendentry(sanitize_tex_text(trace.name)))
 
         elif trace.type == "scatter3d":
@@ -179,7 +176,7 @@ def get_tikz_code(
             data_name_macro, z_name = data_container.add_data3d(trace.x, trace.y, trace.z, trace.name)
             data_str.append(draw_scatter3d(data_name_macro, trace, z_name, axis, colors_set))
 
-            if trace.name and trace['showlegend'] != False:
+            if trace.name and trace['showlegend'] is not False:
                 data_str.append(tex_add_legendentry(sanitize_tex_text(trace.name)))
             if getattr(trace, "line", None) and getattr(trace.line, "color", None) is not None:
                 colors_set.add(convert_color(trace.line.color)[:3])

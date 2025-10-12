@@ -93,7 +93,7 @@ def draw_heatmap(data, fig, img_name, axis: Axis):
     fig_copy.update_layout(coloraxis_showscale=False, coloraxis_colorbar=None, xaxis_visible=False, yaxis_visible=False)
     try:
         fig_copy.update_traces(showscale=False)
-    except ValueError as e:
+    except ValueError as _:
         pass
 
     if data.texttemplate is not None:
