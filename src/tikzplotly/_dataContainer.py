@@ -85,6 +85,19 @@ class Data3D:
     """Handle 3D data in Tikz plots
     """
     def __init__(self, x, y, z, name):
+        """Initialize the Data3D object
+
+        Parameters
+        ----------
+        x
+            x_values of the data
+        y
+            y_values of the data
+        z
+            z_values of the data
+        name
+            name of the data
+        """
         self.x = list(x)
         self.y = list(y)
         self.z = list(z)

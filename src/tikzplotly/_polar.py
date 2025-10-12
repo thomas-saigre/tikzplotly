@@ -137,7 +137,6 @@ def get_polar_coord(trace, axis: Axis, data_container: DataContainer):
 
     return data_name_macro, theta_col_name, r_col_name
 
-
 def draw_scatterpolar(data_name_macro, theta_col_name, r_col_name, trace, axis: Axis, colors_set):
     """
     Draw a scatterpolar plot using pgfplots polaraxis environment.

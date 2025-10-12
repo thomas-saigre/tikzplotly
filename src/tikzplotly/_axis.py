@@ -51,9 +51,6 @@ class Axis():
         self.treat_background_layout(colors_set)
         self.treat_bar_layout()
 
-
-
-
     def set_x_label(self, x_label):
         """Set the x label.
 
@@ -112,7 +109,6 @@ class Axis():
             self.options["ylabel"] = sanitize_tex_text(self.y_label)
         options_str = option_dict_to_str(self.options, sep="\n")
         return options_str
-
 
     def treat_axis_layout(self):
         """Treat the layout of the axis."""
@@ -182,7 +178,6 @@ class Axis():
                 self.add_option("xminorgrids", None)
             if m.ticklen is not None:
                 self.add_option("subtickwidth", m.ticklen)
-
 
     def treat_background_layout(self, colors_set):
         """Treat the background layout of the axis.

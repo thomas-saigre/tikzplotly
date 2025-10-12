@@ -64,7 +64,6 @@ def resize_image(img, nb_row, nb_col):
 
     return resized_image
 
-
 def draw_heatmap(data, fig, img_name, axis: Axis):
     """Draw a heatmap, and return the tikz code.
 

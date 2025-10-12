@@ -174,7 +174,7 @@ def get_tikz_code(
                 axis.add_option("title", f"{{{sanitize_tex_text(figure_layout.scene.title.text)}}}")
 
             data_name_macro, z_name = data_container.add_data3d(trace.x, trace.y, trace.z, trace.name)
-            data_str.append(draw_scatter3d(data_name_macro, trace, z_name, axis, colors_set))
+            data_str.append(draw_scatter3d(data_name_macro, trace, colors_set))
 
             if trace.name and trace['showlegend'] is not False:
                 data_str.append(tex_add_legendentry(sanitize_tex_text(trace.name)))

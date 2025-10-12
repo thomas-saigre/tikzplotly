@@ -166,7 +166,6 @@ def px_to_pt(px):
         return int(pt)
     return pt
 
-
 def option_dict_to_str(options_dict, sep=" "):
     """Convert a dictionary of options to a string of options for TikZ.
 
