@@ -19,7 +19,7 @@ from ._axis import Axis
 from ._color import convert_color
 from ._annotations import str_from_annotation
 from ._dataContainer import DataContainer
-from ._utils import sanitize_tex_text
+from ._utils import sanitize_tex_text, sanitize_text
 from warnings import warn
 from collections import defaultdict
 import numpy as np
@@ -81,12 +81,14 @@ def get_tikz_code(
 
             # If x is textual => symbolic x coords
             if all(isinstance(v, str) for v in trace.x):
-                axis.add_option("symbolic x coords", "{" + ",".join(trace.x) + "}")
+                sanitized_trace_x = [sanitize_text(x, keep_space=-1) for x in trace.x]
+                axis.add_option("symbolic x coords", "{" + ",".join(sanitized_trace_x) + "}")
                 axis.add_option("xtick", "data")
 
             # If y is textual => symbolic y coords
             if all(isinstance(v, str) for v in trace.y):
-                axis.add_option("symbolic y coords", "{" + ",".join(trace.y) + "}")
+                sanitized_trace_y = [sanitize_text(y, keep_space=-1) for y in trace.y]
+                axis.add_option("symbolic y coords", "{" + ",".join(sanitized_trace_y) + "}")
                 axis.add_option("ytick", "data")
 
             data_str.append( draw_scatter2d(data_name_macro, trace, y_name, axis, colors_set) )

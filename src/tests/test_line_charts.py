@@ -396,7 +396,7 @@ def fig18():
 
 def fig19():
     df = pd.DataFrame(dict(
-        x = ["A", "B", "C", "D"],
+        x = ["A et B", "B", "C", "D"],
         y = [1, 2, 3, 4],
     ))
     fig = px.line(df, x="x", y="y", title="symbolic x coords")

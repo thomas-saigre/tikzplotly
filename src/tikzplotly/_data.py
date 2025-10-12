@@ -28,12 +28,11 @@ def data_type(data):
                             'july', 'august', 'september', 'october', 'november', 'december']:
             warn(f"Assuming data {data} is a month. This feature is experimental.")
             return 'month'
-        warn(f"Data type of {data} is not supported yet.")
         return None
     return None
 
 def treat_data(data_str):
-    data_str = sanitize_text(str(data_str))
+    data_str = sanitize_text(str(data_str), keep_space=-1)
     if data_str.find(' ') !=- 1: # Add curly braces if space in string
         if not data_str.startswith("{") and not data_str.startswith("}"):
             data_str = "{" + data_str + "}"

@@ -52,7 +52,7 @@ def replace_all_months(text):
     """
     return pattern_months.sub(lambda m: rep_months[re.escape(m.group(0))], text)
 
-def sanitize_text(text: str, keep_space: bool = False) -> str:
+def sanitize_text(text: str, keep_space: int = 0) -> str:
     """
     Sanitize the input text by removing or replacing unwanted characters.
 
@@ -60,9 +60,10 @@ def sanitize_text(text: str, keep_space: bool = False) -> str:
     ----------
     text : str
         The input text to be sanitized.
-    keep_space : bool, optional
-        If True, spaces will be preserved in the sanitized text.
-        If False, spaces will be replaced with underscores. Defaults to False.
+    keep_space : int, optional
+        If 1, spaces will be preserved in the sanitized text.
+        If 0, spaces will be replaced with underscores. Defaults to 0.
+        If -1, spaces will be deleted from the text
 
     Returns
     -------
@@ -71,7 +72,7 @@ def sanitize_text(text: str, keep_space: bool = False) -> str:
     """
     return ''.join(sanitize_char(ch, keep_space) for ch in text)
 
-def sanitize_char(ch: str, keep_space: bool = False) -> str:
+def sanitize_char(ch: str, keep_space: int = 0) -> str:
     """
     Sanitize a character by escaping special characters or converting to hex if non-ASCII/non-printable.
 
@@ -79,20 +80,24 @@ def sanitize_char(ch: str, keep_space: bool = False) -> str:
     ----------
     ch : str
         The character to sanitize.
-    keep_space : bool, optional
-        If True, spaces will be kept as is. Defaults to False.
+    keep_space : int, optional
+        If 1, spaces will be preserved in the sanitized text.
+        If 0, spaces will be replaced with underscores. Defaults to 0.
+        If -1, spaces will be deleted from the text
 
     Returns
     -------
     str
         The sanitized character.
     """
-    if ch == "_":
-        return ""
     if ch == "@":
         return "at"
     if ch == " ":
-        return " " if keep_space else "_"
+        if keep_space == 1:
+            return " "
+        if keep_space == 0:
+            return "_"
+        return ""
     if ch in "[]{}= ": return f"x{ord(ch):x}"
     # if not ascii, return hex
     if ord(ch) > 127: return f"x{ord(ch):x}"

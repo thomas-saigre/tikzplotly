@@ -86,7 +86,7 @@ class Data3D:
         self.y = list(y)
         self.z = list(z)
         if name:
-            self.name = sanitize_text(name, keep_space=False)
+            self.name = sanitize_text(name, keep_space=0)
         else:
             hash_input = str(self.x) + str(self.y) + str(self.z)
             hash_digest = hashlib.md5(hash_input.encode()).hexdigest()
