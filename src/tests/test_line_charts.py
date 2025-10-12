@@ -410,6 +410,13 @@ def fig20():
     fig = px.line(df, x="x", y="y", title="symbolic y coords")
     return fig, "Line Charts with symbolic y coords"
 
+
+def fig21(x=True, y=False):
+    fig = px.scatter(x=[0, 1, 2, 3, 4], y=[0, 1, 4, 9, 16])
+    if x: fig.data[0].x = None
+    if y: fig.data[0].y = None
+    return fig, "empty fig"
+
 if __name__ == "__main__":
 
     print("Tikzploty : ", tikzplotly.__version__)
@@ -430,7 +437,7 @@ if __name__ == "__main__":
         ("9", fig9),
         ("10", fig10),
         ("11", fig11),
-        # ("12", fig12),
+        ("12", fig12),
         ("14", fig14),
         ("15", fig15),
         ("16", fig16),
@@ -438,6 +445,7 @@ if __name__ == "__main__":
         ("18", fig18),
         ("19", fig19),
         ("20", fig20),
+        ("21", fig21),
     ]
 
     main_tex_content = tex_create_document(options="twocolumn", compatibility="newest")

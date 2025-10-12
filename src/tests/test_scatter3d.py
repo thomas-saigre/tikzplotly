@@ -72,11 +72,32 @@ def fig6():
     # fig.show()
     return fig, "3D Scatter Plot with Colorscaling and Marker Styling"
 
+def fig7():
+    fig = go.Figure(data=[go.Scatter3d(
+        x=[1, 2, 3],
+        y=[4, 5, 6],
+        z=[7, 8, 9],
+        mode='markers',
+    )])
+    fig.update_layout(
+        scene=dict(
+            xaxis=dict(showgrid=True),
+            yaxis=dict(showgrid=True),
+            zaxis=dict(showgrid=True),
+            camera=dict(
+                eye=dict(x=1.5, y=1.5, z=0.5)
+            )
+        )
+    )
+    fig.show()
+    return fig, "3D plot with custom view"
+
+
 if __name__ == "__main__":
 
     print("Tikzploty : ", tikzplotly.__version__)
     print("Plotly : ", plotly.__version__)
-    print("Test line charts")
+    print("Test scatter 3d charts")
 
     file_directory = os.path.dirname(os.path.abspath(__file__))
 
@@ -87,6 +108,7 @@ if __name__ == "__main__":
         ("4", fig4),
         ("5", fig5),
         ("6", fig6),
+        ("7", fig7),
     ]
 
     main_tex_content = tex_create_document(options="twocolumn", compatibility="newest")

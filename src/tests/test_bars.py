@@ -1,4 +1,4 @@
-# From https://plotly.com/python/bar-charts/
+# From https://plotly.com/python/bar-charts/ and https://plotly.com/python/horizontal-bar-charts/
 import plotly
 import plotly.express as px
 import pandas as pd
@@ -35,9 +35,18 @@ def fig_vertical2():
 def fig_vertical3():
 
     wide_df = px.data.medals_wide()
-
-    fig = px.bar(wide_df, x="nation", y=["gold", "silver", "bronze"], title="Wide-Form Input")
-
+    fig = px.bar(
+        wide_df,
+        x="nation",
+        y=["gold", "silver", "bronze"],
+        title="Wide-Form Input",
+        color_discrete_map={
+            "gold": "gold",
+            "silver": "silver",
+            "bronze": "#cd7f32"
+        }
+    )
+    fig.update_traces(marker_line_width=2, marker_line_color="black")
     # fig.show()
     # fig.write_image(os.path.join(file_directory, "outputs", "test_bars", "fig3.png"))
 
@@ -64,7 +73,7 @@ def fig_vertical6():
 
     # fig.show()
     # fig.write_image(os.path.join(file_directory, "outputs", "test_bars", "fig5bis.png"))
-    
+
     return fig, "Colored Bars"
 
 def fig_vertical7():
@@ -227,6 +236,18 @@ def fig_vertical19():
 
     return fig, "Bar Chart with Relative Barmode"
 
+def fig_horizontal1():
+    df = px.data.tips()
+    fig = px.bar(df, x="total_bill", y="day", orientation='h')
+    return fig, "Horizontal figure"
+
+def fig_horizontal2():
+    fig = go.Figure(go.Bar(
+            x=[20, 14, 23],
+            y=['giraffes', 'orangutans', 'monkeys'],
+            orientation='h'))
+    return fig, "Basic Horizontal Bar Chart"
+
 
 if __name__ == "__main__":
 
@@ -256,6 +277,8 @@ if __name__ == "__main__":
         ("vertical17", fig_vertical17),
         ("vertical18", fig_vertical18),
         ("vertical19", fig_vertical19),
+        ("horizontal1", fig_horizontal1),
+        ("horizontal2", fig_horizontal2),
     ]
 
     main_tex_content = tex_create_document(options="twocolumn", compatibility="newest")

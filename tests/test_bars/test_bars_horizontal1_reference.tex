@@ -1,0 +1,16 @@
+\pgfplotstableread{
+x y0
+giraffes 20
+orangutans 14
+monkeys 23
+}\dataA
+
+\begin{tikzpicture}
+\begin{axis}[
+xbar,
+symbolic y coords={giraffes,orangutans,monkeys},
+ytick=data
+]
+\addplot+ [xbar] table[x=y0, y=x] {\dataA};
+\end{axis}
+\end{tikzpicture}

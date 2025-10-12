@@ -43,7 +43,7 @@ def fig_radar3():
     fig.update_layout(
         polar=dict(
             radialaxis=dict(
-            visible=True
+                visible=True
             ),
         ),
         showlegend=False
