@@ -98,16 +98,28 @@ class Data3D:
         name
             name of the data
         """
-        self.x = list(x)
-        self.y = list(y)
-        self.z = list(z)
+        self.x = np.array(x)
+        self.y = np.array(y)
+        self.z = np.array(z)
         if name:
             self.name = sanitize_text(name, keep_space=0)
         else:
-            hash_input = str(self.x) + str(self.y) + str(self.z)
-            hash_digest = hashlib.md5(hash_input.encode()).hexdigest()
+            hash_digest = self.get_hash()
             self.name = f"data{hexid_to_alpha(hash_digest)}"
         self.z_name = "z"
+
+    def get_hash(self, tolerance=1e-6):
+        """
+        Generates the unique hash corresponding to the data, up to tolerance
+        """
+        def normalize_float(value):
+            return np.round(value / tolerance) * tolerance
+        x_norm = normalize_float(self.x)
+        y_norm = normalize_float(self.y)
+        z_norm = normalize_float(self.z)
+        hash_input = f"{x_norm}{y_norm}{z_norm}"
+        return hashlib.md5(hash_input.encode()).hexdigest()
+
 
 class DataContainer:
     """Container for data used in TikZ plots.
