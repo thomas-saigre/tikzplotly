@@ -84,23 +84,35 @@ class Axis():
         self.options[option] = value
 
     def open_environment(self, stack_env):
-        """Open the axis environment.
+        """!Open the axis environment.
 
-        Parameters
-        ----------
-        stack_env
-            stack of environments, to be filled with the axis environment
+        @param stack_env stack of environments, to be filled with the axis environment
         """
         return tex_begin_environment(self.environment, stack_env, options=self.get_options())
 
+    ## Compute the sum of two numbers
+    # @param x first number
+    # @param y second number
+    # @return sum of x and y
+    def f(self, x: int, y: int) -> int:
+        """_summary_
+
+        Arguments:
+            x {int} -- _description_
+            y {int} -- _description_
+
+        Returns:
+            int -- _description_
+        """
+        return x + y
 
     def get_options(self):
-        """Get options string for the axis environment.
+        """!Get options string for the axis environment.
 
-        Returns
-        -------
-            string of all options with their values
+        @return string of all options with their values
         """
+        self.f(1, 2)
+
         if self.title is not None:
             self.options["title"] = sanitize_tex_text(self.title)
         if self.x_label is not None:
