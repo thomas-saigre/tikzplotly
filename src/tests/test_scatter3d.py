@@ -89,7 +89,7 @@ def fig7():
             )
         )
     )
-    fig.show()
+    # fig.show()
     return fig, "3D plot with custom view"
 
 

@@ -38,7 +38,8 @@ tikzplotly.save("example.tex", fig)
 will result in the following ti*k*z code
 
 ```latex
-\pgfplotstableread{data0 Australia New_Zealand
+\pgfplotstableread{
+x Australia NewZealand
 1952 69.12 69.39
 1957 70.33 70.26
 1962 70.93 71.24
@@ -51,7 +52,7 @@ will result in the following ti*k*z code
 1997 78.83 77.55
 2002 80.37 79.11
 2007 81.235 80.204
-}\dataZ
+}\dataA
 
 \begin{tikzpicture}
 
@@ -60,11 +61,11 @@ will result in the following ti*k*z code
 
 \begin{axis}[
 xlabel=year,
-ylabel=lifeExp,
+ylabel=lifeExp
 ]
-\addplot+ [mark=*, solid, color=636efa, mark options={solid, draw=636efa}] table[y=Australia] {\dataZ};
+\addplot+ [mark=*, solid, color=636efa] table[y=Australia] {\dataA};
 \addlegendentry{Australia}
-\addplot+ [mark=*, solid, color=EF553B, mark options={solid, draw=EF553B}] table[y=New_Zealand] {\dataZ};
+\addplot+ [mark=*, solid, color=EF553B] table[y=NewZealand] {\dataA};
 \addlegendentry{New Zealand}
 \end{axis}
 \end{tikzpicture}
