@@ -52,7 +52,7 @@ def replace_all_months(text):
     """
     return pattern_months.sub(lambda m: rep_months[re.escape(m.group(0))], text)
 
-def sanitize_text(text: str, keep_space: bool = False) -> str:
+def sanitize_text(text: str, keep_space: int = 0) -> str:
     """
     Sanitize the input text by removing or replacing unwanted characters.
 
@@ -60,9 +60,10 @@ def sanitize_text(text: str, keep_space: bool = False) -> str:
     ----------
     text : str
         The input text to be sanitized.
-    keep_space : bool, optional
-        If True, spaces will be preserved in the sanitized text.
-        If False, spaces will be replaced with underscores. Defaults to False.
+    keep_space : int, optional
+        If 1, spaces will be preserved in the sanitized text.
+        If 0, spaces will be replaced with underscores. Defaults to 0.
+        If -1, spaces will be deleted from the text
 
     Returns
     -------
@@ -71,7 +72,7 @@ def sanitize_text(text: str, keep_space: bool = False) -> str:
     """
     return ''.join(sanitize_char(ch, keep_space) for ch in text)
 
-def sanitize_char(ch: str, keep_space: bool = False) -> str:
+def sanitize_char(ch: str, keep_space: int = 0) -> str:
     """
     Sanitize a character by escaping special characters or converting to hex if non-ASCII/non-printable.
 
@@ -79,23 +80,35 @@ def sanitize_char(ch: str, keep_space: bool = False) -> str:
     ----------
     ch : str
         The character to sanitize.
-    keep_space : bool, optional
-        If True, spaces will be kept as is. Defaults to False.
+    keep_space : int, optional
+        If 1, spaces will be preserved in the sanitized text.
+        If 0, spaces will be replaced with underscores. Defaults to 0.
+        If -1, spaces will be deleted from the text
 
     Returns
     -------
     str
         The sanitized character.
     """
+    if ch == "@":
+        return "at"
     if ch == " ":
-        return " " if keep_space else "_"
-    if ch in "[]{}=":
+        if keep_space == 1:
+            return " "
+        if keep_space == 0:
+            return "_"
+        return ""
+    if ch in "[]{}= ":
         return f"x{ord(ch):x}"
-    if ord(ch) > 127 or not ch.isprintable():
+    # if not ascii, return hex
+    if ord(ch) > 127:
+        return f"x{ord(ch):x}"
+    # if not printable, return hex
+    if not ch.isprintable():
         return f"x{ord(ch):x}"
     return ch
 
-def sanitize_tex_text(text: str) -> str:
+def sanitize_tex_text(text: str):
     """
     Sanitize a string for LaTeX, escaping special characters and ensuring proper formatting.
 
@@ -109,9 +122,10 @@ def sanitize_tex_text(text: str) -> str:
     str
         The sanitized text, with special characters escaped and formatted for LaTeX.
     """
-    sanitized = ''.join(sanitize_tex_char(ch) for ch in text)
-    if '[' in sanitized or ']' in sanitized:
-        return f"{{{sanitized}}}"
+    sanitized = "".join(map(sanitize_tex_char, text))
+    special_chars = "[],"
+    if any(c in sanitized for c in special_chars):
+        return "{" + sanitized + "}"
     return sanitized
 
 def sanitize_tex_char(ch: str) -> str:
@@ -151,7 +165,6 @@ def px_to_pt(px):
     if floor(pt) == pt:
         return int(pt)
     return pt
-
 
 def option_dict_to_str(options_dict, sep=" "):
     """Convert a dictionary of options to a string of options for TikZ.

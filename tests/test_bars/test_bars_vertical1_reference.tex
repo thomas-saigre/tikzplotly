@@ -1,0 +1,28 @@
+\pgfplotstableread{
+x y0
+1952 14785584
+1957 17010154
+1962 18985849
+1967 20819767
+1972 22284500
+1977 23796400
+1982 25201900
+1987 26549700
+1992 28523502
+1997 30305843
+2002 31902268
+2007 33390141
+}\dataA
+
+\begin{tikzpicture}
+
+\definecolor{636efa}{HTML}{636efa}
+
+\begin{axis}[
+ybar stacked,
+xlabel=year,
+ylabel=pop
+]
+\addplot+ [ybar, fill=636efa, color=636efa] table[x=x, y=y0] {\dataA};
+\end{axis}
+\end{tikzpicture}

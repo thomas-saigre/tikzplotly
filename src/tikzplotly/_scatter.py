@@ -10,7 +10,7 @@ from ._marker import marker_symbol_to_tex
 from ._dash import DASH_PATTERN
 from ._axis import Axis
 from ._data import data_type
-from ._utils import px_to_pt, option_dict_to_str, sanitize_text
+from ._utils import px_to_pt, option_dict_to_str
 
 def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
     """Get code for a scatter trace.
@@ -37,9 +37,12 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
     mode = scatter.mode
     marker = scatter.marker
 
-    if data_type(scatter.x[0]) == "date":
+    type_of_data = data_type(scatter.x[0])
+
+    if type_of_data == "date":
         axis.add_option("date coordinates in", "x")
-    if data_type(scatter.x[0]) == "month":
+
+    if type_of_data == "month":
         scatter_x_str = "{" + ", ".join(list(scatter.x)) + "}"
         axis.add_option("xticklabels", scatter_x_str)
 
@@ -60,7 +63,6 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
         else:
             options_dict["only marks"] = None
 
-        mark_options = ""
         if scatter.marker.size is not None:
             options_dict["mark size"] = px_to_pt(marker.size)
 
@@ -79,9 +81,9 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
         if (angle:=scatter.marker.angle) is not None:
             mark_option_dict["rotate"] = angle
 
-        if (opacity:=scatter.opacity) is not None:
+        if (opacity := scatter.opacity) is not None:
             options_dict["opacity"] = np.round(opacity, 2)
-        if (opacity:=scatter.marker.opacity) is not None:
+        if (opacity := scatter.marker.opacity) is not None:
             mark_option_dict["opacity"] = np.round(opacity, 2)
 
         if mark_option_dict:
@@ -126,7 +128,7 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
         options_dict["forget plot"] = None
 
     options = option_dict_to_str(options_dict)
-    code += tex_addplot(data_name, plot_type="table", options=options, type_options=f"y={sanitize_text(y_name)}")
+    code += tex_addplot(data_name, plot_type="table", options=options, type_options=f"y={y_name}")
 
     if scatter.text is not None:
         for x_data, y_data, text_data in zip(scatter.x, scatter.y, scatter.text):

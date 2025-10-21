@@ -3,6 +3,7 @@ This module contains the code to draw a heatmap in TikZ using Plotly data.
 """
 from warnings import warn
 import io
+import os
 from copy import deepcopy
 import numpy as np
 from PIL import Image
@@ -63,7 +64,6 @@ def resize_image(img, nb_row, nb_col):
 
     return resized_image
 
-
 def draw_heatmap(data, fig, img_name, axis: Axis):
     """Draw a heatmap, and return the tikz code.
 
@@ -92,7 +92,7 @@ def draw_heatmap(data, fig, img_name, axis: Axis):
     fig_copy.update_layout(coloraxis_showscale=False, coloraxis_colorbar=None, xaxis_visible=False, yaxis_visible=False)
     try:
         fig_copy.update_traces(showscale=False)
-    except ValueError as e:
+    except ValueError as _:
         pass
 
     if data.texttemplate is not None:
@@ -103,6 +103,8 @@ def draw_heatmap(data, fig, img_name, axis: Axis):
     img_bytes = fig_copy.to_image(format="png")  # The image created by plotly keeps places around the heatmap
     cropped_image = crop_image(Image.open(io.BytesIO(img_bytes)))   # so we crop all the white around the figure
     resized_image = resize_image(cropped_image, *figure_data.shape)  # and we resize it so each square is a 1px x 1px square
+
+    os.makedirs(os.path.dirname(img_name), exist_ok=True) # Make sure the directory exists
     resized_image.save(img_name)
 
 

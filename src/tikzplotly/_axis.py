@@ -51,9 +51,6 @@ class Axis():
         self.treat_background_layout(colors_set)
         self.treat_bar_layout()
 
-
-
-
     def set_x_label(self, x_label):
         """Set the x label.
 
@@ -113,7 +110,6 @@ class Axis():
         options_str = option_dict_to_str(self.options, sep="\n")
         return options_str
 
-
     def treat_axis_layout(self):
         """Treat the layout of the axis."""
 
@@ -158,13 +154,14 @@ class Axis():
             self.add_option("xtick", ticks)
             self.add_option("xticklabels", ticklabels)
 
-        if (
-            self.layout.xaxis.categoryorder != "trace"
-            or self.layout.yaxis.categoryorder != "trace"
-            or self.layout.xaxis.categoryorder != "total descending"
-        ):
+        # At this point, only layout.xaxis.categoryarray = "array" is supported
+        if self.layout.xaxis.categoryorder is not None and self.layout.xaxis.categoryorder not in ["array"]:
             warn(
-            "The categoryorder option is not supported (yet 🤞) for the axis environment."
+            f"The xaxis categoryorder option {self.layout.xaxis.categoryorder} is not supported (yet 🤞) for the axis environment."
+            )
+        if self.layout.yaxis.categoryorder is not None and self.layout.yaxis.categoryorder not in []:
+            warn(
+            f"The yaxis categoryorder option {self.layout.yaxis.categoryorder} is not supported (yet 🤞) for the axis environment."
             )
 
         if self.layout.xaxis.showgrid:
@@ -181,7 +178,6 @@ class Axis():
                 self.add_option("xminorgrids", None)
             if m.ticklen is not None:
                 self.add_option("subtickwidth", m.ticklen)
-
 
     def treat_background_layout(self, colors_set):
         """Treat the background layout of the axis.

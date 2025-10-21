@@ -162,7 +162,6 @@ def tex_add_legendentry(legend, options=None):
         return f"\\addlegendentry[{options}]{{{legend}}}\n"
     return f"\\addlegendentry{{{legend}}}\n"
 
-
 def tex_create_document(document_class="article", options=None, compatibility="newest"):
     """Create a LaTeX document.
 
@@ -211,9 +210,6 @@ def tex_create_document(document_class="article", options=None, compatibility="n
 #         code += f",{options}"
 #     code += f"];\n"
 #     return code
-
-
-
 
 def tex_text(text):
     """Convert a string to LaTeX,

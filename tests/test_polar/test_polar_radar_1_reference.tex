@@ -1,0 +1,25 @@
+\pgfplotstableread{
+x y0
+0.0 1
+72.0 5
+144.0 2
+216.0 2
+288.0 3
+0.0 1
+}\dataA
+
+\begin{tikzpicture}
+
+\definecolor{636efa}{HTML}{636efa}
+
+\begin{polaraxis}[
+rotate=90,
+xticklabel style={anchor=90-\tick+180},
+yticklabel style={anchor=\tick-90-90},
+y dir=reverse,
+xtick={0.0,72.0,144.0,216.0,288.0},
+xticklabels={processing cost,mechanical properties,chemical stability,thermal stability,device integration}
+]
+\addplot+ [no markers, color=636efa] table[x=x, y=y0] {\dataA};
+\end{polaraxis}
+\end{tikzpicture}

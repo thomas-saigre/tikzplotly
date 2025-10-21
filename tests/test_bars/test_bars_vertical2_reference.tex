@@ -1,0 +1,29 @@
+\pgfplotstableread{
+x gold silver bronze
+SouthKorea 24 13 11
+China 10 15 8
+Canada 9 12 12
+}\dataA
+
+\begin{tikzpicture}
+
+\definecolor{cd7f32}{HTML}{cd7f32}
+\definecolor{gold}{RGB}{255, 215, 0}
+\definecolor{silver}{RGB}{192, 192, 192}
+
+\begin{axis}[
+ybar stacked,
+symbolic x coords={SouthKorea,China,Canada},
+xtick=data,
+title=Wide-Form Input,
+xlabel=nation,
+ylabel=value
+]
+\addplot+ [ybar, fill=gold, color=gold, line width=2, draw=black] table[x=x, y=gold] {\dataA};
+\addlegendentry{gold}
+\addplot+ [ybar, fill=silver, color=silver, line width=2, draw=black] table[x=x, y=silver] {\dataA};
+\addlegendentry{silver}
+\addplot+ [ybar, fill=cd7f32, color=cd7f32, line width=2, draw=black] table[x=x, y=bronze] {\dataA};
+\addlegendentry{bronze}
+\end{axis}
+\end{tikzpicture}

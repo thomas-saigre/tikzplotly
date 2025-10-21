@@ -1,0 +1,20 @@
+\pgfplotstableread{
+x angularcategories(w/categoryarray)
+90.0 5
+270.0 4
+180.0 2
+0.0 4
+90.0 5
+}\dataA
+
+\begin{tikzpicture}
+\begin{polaraxis}[
+xmin=80,
+xmax=400,
+xtick={0.0,90.0,180.0,270.0},
+xticklabels={d,a,c,b}
+]
+\addplot+ [no markers, fill=.!50, opacity=0.6] table[x=x, y=angularcategories(w/categoryarray)] {\dataA};
+\addlegendentry{angular categories (w/ categoryarray)}
+\end{polaraxis}
+\end{tikzpicture}

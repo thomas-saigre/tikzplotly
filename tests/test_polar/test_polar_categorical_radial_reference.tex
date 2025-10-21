@@ -1,0 +1,20 @@
+\pgfplotstableread{
+x radialcategories
+57.29577951308232 a
+229.1831180523293 b
+114.59155902616465 c
+85.94366926962348 d
+85.94366926962348 b
+343.77467707849394 f
+286.4788975654116 a
+}\dataA
+
+\begin{tikzpicture}
+\begin{polaraxis}[
+symbolic y coords={a,b,c,d,f},
+ytick=data
+]
+\addplot+ [no markers, fill=.!50, opacity=0.6] table[x=x, y=radialcategories] {\dataA};
+\addlegendentry{radial categories}
+\end{polaraxis}
+\end{tikzpicture}

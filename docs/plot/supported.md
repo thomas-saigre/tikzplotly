@@ -62,3 +62,64 @@ The examples of the page [Histograms in Python](https://plotly.com/python/histog
 
 !!! Note
     - There may be issues when many histograms are plotted on the same figure...
+
+
+## Bar plots
+
+Some examples of the page [Bar Charts in Python](https://plotly.com/python/bar-charts/) of Plotly documentation are supported (not stacked and aggregated bars).
+
+??? example "Bar plot"
+    ```python
+    wide_df = px.data.medals_wide()
+    fig = px.bar(
+        wide_df,
+        x="nation",
+        y=["gold", "silver", "bronze"],
+        color_discrete_map = {"gold": "gold", "silver": "silver", "bronze": "#cd7f32"}
+    )
+    fig.update_traces(marker_line_width=2, marker_line_color="black")
+    tikzplotly.save("bar.tex", fig)
+    ```
+    ![Bar plot Example](../assets/examples/bar.png)
+
+
+## Polar and radar plots
+
+The examples from the pages [Polar Charts in Python](https://plotly.com/python/polar-chart/) and [Radar Charts in Python](https://plotly.com/python/radar-chart/) are supported.
+
+
+??? example "Polar plot"
+    ```python
+    df = px.data.wind()
+    fig = px.line_polar(df, r="frequency", theta="direction", color="strength", line_close=True,
+                        color_discrete_sequence=px.colors.sequential.Plasma_r,
+                        template="plotly_dark",)
+    tikzploylt.save("polar.tex", fig)
+    ```
+    ![Polar plot Example](../assets/examples/polar.png)
+
+
+??? example "Radar plot"
+    ```python
+    df = pd.DataFrame(dict(
+        r=[1, 5, 2, 2, 3],
+        theta=['processing cost','mechanical properties','chemical stability',
+            'thermal stability', 'device integration']))
+    fig = px.line_polar(df, r='r', theta='theta', line_close=True)
+    tikzploylt.save("radar.tex", fig)
+    ```
+    ![Radar plot Example](../assets/examples/radar.png)
+
+
+## 3D scatter plots
+
+Examples from [3D Scatter Plots in Python ](https://plotly.com/python/3d-scatter-plots/) can be exported with tikzplotly.
+
+
+??? example "3D scatter plot"
+    ```python
+    df = px.data.iris()
+    fig = px.scatter_3d(df, x='sepal_length', y='sepal_width', z='petal_width', color='species')
+    tikzploylt.save("scatter3d.tex", fig)
+    ```
+    ![3D scatter plot Example](../assets/examples/scatter3d.png)
