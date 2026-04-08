@@ -78,13 +78,13 @@ def get_tikz_code(
 
             # If x is textual => symbolic x coords
             if all(isinstance(v, str) for v in trace.x):
-                sanitized_trace_x = [sanitize_text(x, keep_space=-1) for x in trace.x]
+                sanitized_trace_x = [sanitize_text(str(x), keep_space=-1) for x in trace.x]
                 axis.add_option("symbolic x coords", "{" + ",".join(sanitized_trace_x) + "}")
                 axis.add_option("xtick", "data")
 
             # If y is textual => symbolic y coords
             if all(isinstance(v, str) for v in trace.y):
-                sanitized_trace_y = [sanitize_text(y, keep_space=-1) for y in trace.y]
+                sanitized_trace_y = [sanitize_text(str(y), keep_space=-1) for y in trace.y]
                 axis.add_option("symbolic y coords", "{" + ",".join(sanitized_trace_y) + "}")
                 axis.add_option("ytick", "data")
 
