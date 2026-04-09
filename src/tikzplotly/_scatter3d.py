@@ -28,16 +28,17 @@ def draw_scatter3d(data_name, scatter, color_set):
     options_dict = {}
     mark_option_dict = {}
 
-    # Markers only
-    if mode == "markers":
+    if "markers" in mode:
         if marker.symbol is not None:
             symbol, symbol_options = marker_symbol_to_tex(marker.symbol)
             options_dict["mark"] = symbol
-            options_dict["only marks"] = None
+            if "lines" not in mode:
+                options_dict["only marks"] = None
             if symbol_options is not None:
                 mark_option_dict[symbol_options[0]] = symbol_options[1]
         else:
-            options_dict["only marks"] = None
+            if "lines" not in mode:
+                options_dict["only marks"] = None
 
         if marker.size is not None:
             size = marker.size
@@ -71,13 +72,6 @@ def draw_scatter3d(data_name, scatter, color_set):
 
     elif mode == "lines":
         options_dict["mark"] = "none"
-
-    elif "lines" in mode and "markers" in mode:
-        if marker.symbol is not None:
-            symbol, symbol_options = marker_symbol_to_tex(marker.symbol)
-            options_dict["mark"] = symbol
-            if symbol_options is not None:
-                mark_option_dict[symbol_options[0]] = symbol_options[1]
 
     else:
         warn(f"Scatter3d : Mode {mode} is not supported yet.")
