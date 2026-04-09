@@ -1,7 +1,7 @@
 numpy
 plotly
 pillow
-kaleido
+kaleido<1.0.0
 tox
 pandas
 mkdocs-material[recommended]

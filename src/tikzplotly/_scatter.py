@@ -53,15 +53,17 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
     options_dict = {}
     mark_option_dict = {}
 
-    if mode == "markers":
+    if "markers" in mode:
         if marker.symbol is not None:
             symbol, symbol_options = marker_symbol_to_tex(marker.symbol)
             options_dict["mark"] = symbol
-            options_dict["only marks"] = None
+            if "lines" not in mode:
+                options_dict["only marks"] = None
             if symbol_options is not None:
                 mark_option_dict[symbol_options[0]] = symbol_options[1]
         else:
-            options_dict["only marks"] = None
+            if "lines" not in mode:
+                options_dict["only marks"] = None
 
         if scatter.marker.size is not None:
             options_dict["mark size"] = px_to_pt(marker.size)
@@ -92,13 +94,6 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
 
     elif mode == "lines":
         options_dict["mark"] = "none"
-
-    elif "lines" in mode and "markers" in mode:
-        if marker.symbol is not None:
-            symbol, symbol_options = marker_symbol_to_tex(marker.symbol)
-            options_dict["mark"] = symbol
-            if symbol_options is not None:
-                mark_option_dict[symbol_options[0]] = symbol_options[1]
 
     else:
         warn(f"Scatter : Mode {mode} is not supported yet.")

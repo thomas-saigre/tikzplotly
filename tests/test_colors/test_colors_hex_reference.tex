@@ -1,0 +1,17 @@
+\pgfplotstableread{
+x y0
+0 0
+1 1
+2 4
+3 9
+4 16
+}\dataA
+
+\begin{tikzpicture}
+
+\definecolor{ffb6c1}{HTML}{ffb6c1}
+
+\begin{axis}
+\addplot+ [mark options={solid, fill=ffb6c1}] table[y=y0] {\dataA};
+\end{axis}
+\end{tikzpicture}
