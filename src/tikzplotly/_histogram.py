@@ -50,6 +50,27 @@ def formalize_data(data, axis:Axis, row_sep="\\\\"):
 
     return data_str
 
+def treat_histnorm(histnorm: str, hist_options: dict):
+    """Handle the normalization option of the histogram
+
+    Parameters
+    ----------
+    histnorm : str
+        The normalization mode for the histogram.
+    hist_options : dict
+        Dictionary to store histogram options.
+    """
+    if histnorm in ("percent", "probability", "density"):
+        warn(
+            f"Sorry, I did not find an equivalent for histnorm='{histnorm}' in TikZ. "
+            "If you need this feature implemented, please open an issue, if possible with a MWE pgfplots code "
+            "that would plot this :).\nFor now, the histogram will be plotted without normalization "
+            "(as if histnorm='probability density')."
+        )
+        hist_options["density"] = None
+    elif histnorm in ("probability density", ):
+        hist_options["density"] = None
+
 def draw_histogram(trace, axis: Axis, colors_set, row_sep="\\\\"):
     """
     Draw a histogram and return the TikZ code.
@@ -79,7 +100,8 @@ def draw_histogram(trace, axis: Axis, colors_set, row_sep="\\\\"):
 
     code = ""
 
-    plot_options = {"hist": None}
+    plot_options = {}
+    plot_options["hist"] = None
     type_options = {"row sep": row_sep, "y index": 0}
     hist_options = {}
 
@@ -97,34 +119,10 @@ def draw_histogram(trace, axis: Axis, colors_set, row_sep="\\\\"):
         return ""
 
 
-
     if trace.nbinsx is not None:
         hist_options["bins"] = trace.nbinsx
 
-    if trace.histnorm == "percent":
-        warn(
-            f"Sorry, I did not find an equivalent for histnorm='{trace.histnorm}' in TikZ. "
-            "If you need this feature implemented, please open an issue, if possible with a MWE pgfplots code "
-            "that would plot this :).\nFor now, the histogram will be plotted without normalization "
-            "(as if histnorm='probability density')."
-        )
-        hist_options["density"] = None
-    elif trace.histnorm == "probability":
-        warn(
-            f"Sorry, I did not find an equivalent for histnorm='{trace.histnorm}' in TikZ. "
-            "If you need this feature implemented, please open an issue, if possible with a MWE pgfplots code that would plot this :).\n"
-            "For now, the histogram will be plotted without normalization (as if histnorm='probability density')."
-        )
-        hist_options["density"] = None
-    elif trace.histnorm == "density":
-        warn(
-            f"Sorry, I did not find an equivalent for histnorm='{trace.histnorm}' in TikZ. "
-            "If you need this feature implemented, please open an issue, if possible with a MWE pgfplots code that would plot this :).\n"
-            "For now, the histogram will be plotted without normalization (as if histnorm='probability density')."
-        )
-        hist_options["density"] = None
-    elif trace.histnorm == "probability density":
-        hist_options["density"] = None
+    treat_histnorm(trace.histnorm, hist_options)
 
     if trace.cumulative.enabled:
         hist_options["cumulative"] = None
@@ -154,6 +152,5 @@ def draw_histogram(trace, axis: Axis, colors_set, row_sep="\\\\"):
 
     code += tex_addplot(data_str, plot_type = "table",
                         options = option_dict_to_str(plot_options), type_options=option_dict_to_str(type_options))
-
 
     return code

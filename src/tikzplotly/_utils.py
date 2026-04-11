@@ -93,18 +93,10 @@ def sanitize_char(ch: str, keep_space: int = 0) -> str:
     if ch == "@":
         return "at"
     if ch == " ":
-        if keep_space == 1:
-            return " "
-        if keep_space == 0:
-            return "_"
-        return ""
+        return " " if keep_space == 1 else "_" if keep_space == 0 else ""
     if ch in "[]{}= ":
         return f"x{ord(ch):x}"
-    # if not ascii, return hex
-    if ord(ch) > 127:
-        return f"x{ord(ch):x}"
-    # if not printable, return hex
-    if not ch.isprintable():
+    if ord(ch) > 127 or not ch.isprintable():   # not ascii or not printable: return hex
         return f"x{ord(ch):x}"
     return ch
 

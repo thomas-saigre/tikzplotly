@@ -186,7 +186,7 @@ class DataContainer:
                     return data.name, data.z_name
         data_obj = Data3D(x, y, z, name)
         self.data.append(data_obj)
-        return data_obj.name, data_obj.z_name
+        return data_obj.name
 
     def export_data(self):
         """Generate LaTeX code to export the data from DataContainer.

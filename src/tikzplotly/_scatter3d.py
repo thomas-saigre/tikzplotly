@@ -1,11 +1,12 @@
 """
 Provides functionality to convert Plotly 3D scatter traces into TikZ/PGFPlots code for LaTeX documents.
 """
-from warnings import warn
+
 import numpy as np
 from ._color import convert_color
-from ._marker import marker_symbol_to_tex
+from ._trace_utils import configure_marker_options, finalize_marker_options
 from ._utils import px_to_pt, option_dict_to_str
+
 
 def draw_scatter3d(data_name, scatter, color_set):
     """
@@ -29,16 +30,7 @@ def draw_scatter3d(data_name, scatter, color_set):
     mark_option_dict = {}
 
     if "markers" in mode:
-        if marker.symbol is not None:
-            symbol, symbol_options = marker_symbol_to_tex(marker.symbol)
-            options_dict["mark"] = symbol
-            if "lines" not in mode:
-                options_dict["only marks"] = None
-            if symbol_options is not None:
-                mark_option_dict[symbol_options[0]] = symbol_options[1]
-        else:
-            if "lines" not in mode:
-                options_dict["only marks"] = None
+        configure_marker_options(mode, marker, options_dict, mark_option_dict, color_set)
 
         if marker.size is not None:
             size = marker.size
@@ -54,27 +46,12 @@ def draw_scatter3d(data_name, scatter, color_set):
             mark_option_dict["solid"] = None
             mark_option_dict["fill"] = convert_color(c)[0]
 
-        if (line := marker.line) is not None:
-            if line.color is not None:
-                color_set.add(convert_color(line.color)[:3])
-                mark_option_dict["draw"] = convert_color(line.color)[0]
-            if line.width is not None:
-                mark_option_dict["line width"] = px_to_pt(line.width)
-
         if (opacity := scatter.opacity) is not None:
             options_dict["opacity"] = opacity
         if (opacity := marker.opacity) is not None:
             mark_option_dict["opacity"] = opacity
 
-        if mark_option_dict:
-            mark_options = option_dict_to_str(mark_option_dict)
-            options_dict["mark options"] = f"{{{mark_options}}}"
-
-    elif mode == "lines":
-        options_dict["mark"] = "none"
-
-    else:
-        warn(f"Scatter3d : Mode {mode} is not supported yet.")
+    finalize_marker_options(mode, options_dict, mark_option_dict, "Scatter3d")
 
     if scatter.line is not None:
         if scatter.line.width is not None:

@@ -19,7 +19,7 @@ from ._polar import get_polar_coord, draw_scatterpolar
 from ._axis import Axis
 from ._color import convert_color
 from ._annotations import str_from_annotation
-from ._dataContainer import DataContainer
+from ._data_container import DataContainer
 from ._utils import sanitize_tex_text, sanitize_text
 
 
@@ -173,7 +173,7 @@ def get_tikz_code(
             if hasattr(figure_layout.scene, "title") and getattr(figure_layout.scene.title, "text", None):
                 axis.add_option("title", f"{{{sanitize_tex_text(figure_layout.scene.title.text)}}}")
 
-            data_name_macro, z_name = data_container.add_data3d(trace.x, trace.y, trace.z, trace.name)
+            data_name_macro = data_container.add_data3d(trace.x, trace.y, trace.z, trace.name)
             data_str.append(draw_scatter3d(data_name_macro, trace, colors_set))
 
             if trace.name and trace['showlegend'] is not False:
