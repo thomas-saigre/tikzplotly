@@ -4,6 +4,7 @@ In this file are present the test of some very specific usage case, that should 
 import os, pathlib
 import pytest
 import plotly.graph_objects as go
+import plotly.express as px
 from .helpers import assert_equality
 
 this_dir = pathlib.Path(__file__).resolve().parent
@@ -36,6 +37,12 @@ def plot_empty_figure():
     fig.show()
     return fig
 
+def plot_empty_histogram():
+    # Normally user shouldn't create this kind on figure, but we never know !
+    fig = px.histogram(x=[1])
+    fig.data[0].x = None
+    return fig
+
 
 def test_sanitized_text():
     with pytest.warns(UserWarning, match="Character .+ has been replaced by \"x[0-9a-f]+\" in output file"):
@@ -44,3 +51,7 @@ def test_sanitized_text():
 def test_empty_figure():
     with pytest.warns(UserWarning, match="No data in figure."):
         assert_equality(plot_empty_figure(), os.path.join(this_dir, "empty_plot.tex"))
+
+def test_empty_histogram():
+    with pytest.warns(UserWarning, match="Empty histogram.*"):
+        assert_equality(plot_empty_histogram(), os.path.join(this_dir, test_name, test_name + "_empty_histogram_reference.tex"))
