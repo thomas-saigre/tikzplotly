@@ -1,6 +1,7 @@
 import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
+import pytest
 import os
 from .helpers import assert_equality
 import pathlib
@@ -22,6 +23,7 @@ def plot_2():
     return fig
 
 def plot_3():
+    # A plot with no colorscale
     fig = go.Figure(data=go.Heatmap(
                    z=[[1, None, 30, 50, 1], [20, 1, 60, 80, 30], [30, 60, 1, -10, 20]],
                    x=['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
@@ -35,7 +37,7 @@ def plot_4():
     programmers = ['Alex','Nicole','Sara','Etienne','Chelsea','Jody','Marianne']
 
     base = datetime.datetime(2021, 7, 20, 19, 30, 0)
-    dates = base - np.arange(180) * datetime.timedelta(days=1)
+    dates = [base - datetime.timedelta(days=int(i)) for i in np.arange(180)]
     np.random.seed(43)
     z = np.random.poisson(size=(len(programmers), len(dates)))
 
@@ -51,7 +53,7 @@ def plot_4():
 
     return fig
 
-def plot_5():
+def plot_empty_trace():
     fig = px.imshow([[1, 20, 30],
                     [20, 1, 60],
                     [30, 60, 1]])
@@ -65,10 +67,12 @@ def test_2():
     assert_equality(plot_2(), os.path.join(this_dir, test_name, test_name + "_2_reference.tex"), img_name="/tmp/tikzplotly/fig2.png")
 
 def test_3():
-    assert_equality(plot_3(), os.path.join(this_dir, test_name, test_name + "_3_reference.tex"), img_name="/tmp/tikzplotly/fig3.png")
+    with pytest.warns(UserWarning, match="No colorscale found, using default"):
+        assert_equality(plot_3(), os.path.join(this_dir, test_name, test_name + "_3_reference.tex"), img_name="/tmp/tikzplotly/fig3.png")
 
 def test_4():
     assert_equality(plot_4(), os.path.join(this_dir, test_name, test_name + "_4_reference.tex"), img_name="/tmp/tikzplotly/fig4.png")
 
-def test_5():
-    assert_equality(plot_5(), os.path.join(this_dir, test_name, test_name + "_5_reference.tex"))
+def test_empty_trace():
+    with pytest.warns(UserWarning, match="Adding empty trace."):
+        assert_equality(plot_empty_trace(), os.path.join(this_dir, test_name, test_name + "_5_reference.tex"))

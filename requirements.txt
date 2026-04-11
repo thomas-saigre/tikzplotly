@@ -1,8 +1,11 @@
 numpy
 plotly
 pillow
-kaleido<1.0.0
+kaleido
 tox
 pandas
 mkdocs-material[recommended]
 mkdocs-git-revision-date-localized-plugin
+pytest
+pytest-cov
+pytest-codeblocks

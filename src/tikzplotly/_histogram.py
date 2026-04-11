@@ -92,6 +92,9 @@ def draw_histogram(trace, axis: Axis, colors_set, row_sep="\\\\"):
         axis.add_option("x filter/.expression", "rawy")
         axis.add_option("y filter/.expression", "rawx")
         hist_options["handler/.style"] = "{xbar interval}"
+    else:   # trace.x and trace.y are both empty
+        warn("Normally, we should reach this line")
+        data_str = ""
 
 
 

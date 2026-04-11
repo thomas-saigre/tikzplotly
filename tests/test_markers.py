@@ -3,6 +3,7 @@ import plotly.graph_objects as go
 import pytest
 import numpy as np
 import os
+from contextlib import nullcontext
 from .helpers import assert_equality
 import pathlib
 
@@ -96,7 +97,12 @@ def plot_with_angle():
 
 @pytest.mark.parametrize("symbol", ["circle", 0, "0", "circle-dot"])
 def test_1(symbol):
-    assert_equality(plot_1(symbol), os.path.join(this_dir, test_name, test_name + "_1_reference.tex"))
+    if symbol == "circle-dot":
+        context = pytest.warns(UserWarning, match=r"Dotted markers are not supported \(yet\), the symbol without dot will be used instead.")
+    else:
+        context = nullcontext()
+    with context:
+        assert_equality(plot_1(symbol), os.path.join(this_dir, test_name, test_name + "_1_reference.tex"))
 
 def test_2():
     assert_equality(plot_2(), os.path.join(this_dir, test_name, test_name + "_2_reference.tex"))

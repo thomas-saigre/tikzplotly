@@ -36,3 +36,10 @@ dev = ["pandas"]
 [project.urls]
 Code = "https://github.com/thomas-saigre/tikzplotly"
 Issues = "https://github.com/thomas-saigre/tikzplotly/issues"
+
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore:png image has not been reduced.*:UserWarning",
+    "ignore:Text template is not supported yet.:UserWarning",
+]

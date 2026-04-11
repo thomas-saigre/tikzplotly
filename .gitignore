@@ -18,7 +18,6 @@ src/tests/outputs/**
 # Doxygen output
 doxygen/*
 
-
 # Virtual environment
 .venv/
 *.egg-info/
@@ -30,3 +29,6 @@ dist/
 .tox/
 .coverage
 coverage.xml
+
+# Mkdocs site
+site/**
