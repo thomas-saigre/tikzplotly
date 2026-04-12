@@ -42,7 +42,7 @@ The code coverage is available in the directory `htmlcov`.
 
 !!! Tip "Note about coverage"
     The coverage CI is quite strict, so you need to cover all the modification to pass it.
-    I found that tedious at first, but actually making it pass make me realize that there were some bogs in the code!
+    I found that tedious at first, but actually making it pass make me realize that there were some bugs in the code!
 
 ??? Info "Pytest"
     Some warnings are ignored by `pytest`, as they are intended for the user in some specific cases, that are not relevant in general test cases.

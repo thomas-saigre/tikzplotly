@@ -27,7 +27,8 @@ keywords = ["plotly", "latex", "tikz", "figure", "conversion", "graphics"]
 dependencies = [
     "numpy",
     "plotly",
-    "pillow"
+    "pillow",
+    "kaleido"
 ]
 
 [project.optional-dependencies]

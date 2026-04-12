@@ -34,7 +34,6 @@ def plot_sanitized_text():
 
 def plot_empty_figure():
     fig = go.Figure()
-    fig.show()
     return fig
 
 def plot_empty_histogram():

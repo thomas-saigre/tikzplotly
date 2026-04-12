@@ -64,13 +64,6 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
             mark_option_dict["solid"] = None
             mark_option_dict["fill"] = convert_color(scatter.marker.color)[0]
 
-        if (line := scatter.marker.line) is not None:
-            if line.color is not None:
-                color_set.add(convert_color(line.color)[:3])
-                mark_option_dict["draw"] = convert_color(line.color)[0]
-            if line.width is not None:
-                mark_option_dict["line width"] = px_to_pt(line.width)
-
         if (angle := scatter.marker.angle) is not None:
             mark_option_dict["rotate"] = angle
 
