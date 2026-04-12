@@ -2,6 +2,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
 import os
+from contextlib import nullcontext
 from .helpers import assert_equality
 import pathlib
 import pytest
@@ -220,9 +221,6 @@ def test_2():
 def test_tranparent_color():
     assert_equality(plot_transparent_color(), os.path.join(this_dir, test_name, test_name + "_transparent_color_reference.tex"))
 
-# def test_tranparent_color_rgba():
-    # assert_equality(plot_transparent_color_rgba(), os.path.join(this_dir, test_name, test_name + "_transparent_color_rgba_reference.tex"))
-
 def test_3():
     assert_equality(plot_3(), os.path.join(this_dir, test_name, test_name + "_3_reference.tex"))
 
@@ -230,14 +228,18 @@ def test_4():
     assert_equality(plot_4(), os.path.join(this_dir, test_name, test_name + "_4_reference.tex"))
 
 def test_5():
-    assert_equality(plot_5(), os.path.join(this_dir, test_name, test_name + "_5_reference.tex"))
+    with pytest.warns(UserWarning, match="Assuming this is a date*"):
+        assert_equality(plot_5(), os.path.join(this_dir, test_name, test_name + "_5_reference.tex"))
 
 @pytest.mark.parametrize("x, y", [(True, True), (True, False), (False, True)])
 def test_6(x, y):
-    assert_equality(plot_6(x, y), os.path.join(this_dir, test_name, test_name + f"_6_{x}_{y}_reference.tex"))
+    context = pytest.warns(UserWarning, match="Adding empty trace.") if x and y else nullcontext()
+    with context:
+        assert_equality(plot_6(x, y), os.path.join(this_dir, test_name, test_name + f"_6_{x}_{y}_reference.tex"))
 
 def test_7():
-    assert_equality(plot_7(), os.path.join(this_dir, test_name, test_name + "_7_reference.tex"))
+    with pytest.warns(UserWarning, match="Assuming data January is a month*"):
+        assert_equality(plot_7(), os.path.join(this_dir, test_name, test_name + "_7_reference.tex"))
 
 def test_8():
     assert_equality(plot_8(), os.path.join(this_dir, test_name, test_name + "_8_reference.tex"))

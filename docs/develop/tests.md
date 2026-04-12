@@ -2,7 +2,7 @@
 
 ## Local tests
 
-These tests are for development purpose, to ensure that the features that are developped are working as expected.
+These tests are for development purpose, to ensure that the features that are developed are working as expected.
 They are present in the directory `src/tests` and can be run with the following command, from the `src` directory.
 
 ```bash

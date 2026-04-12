@@ -169,11 +169,11 @@ x virginica
 xlabel=sepal\_width,
 ylabel=sepal\_length
 ]
-\addplot+ [mark=diamond*, only marks, mark size=6, mark options={solid, fill=636efa, draw=darkslategrey, line width=1.5}] table[y=setosa] {\dataA};
+\addplot+ [mark=diamond*, only marks, mark size=6, mark options={draw=darkslategrey, line width=1.5, solid, fill=636efa}] table[y=setosa] {\dataA};
 \addlegendentry{setosa}
-\addplot+ [mark=diamond*, only marks, mark size=6, mark options={solid, fill=EF553B, draw=darkslategrey, line width=1.5}] table[y=versicolor] {\dataB};
+\addplot+ [mark=diamond*, only marks, mark size=6, mark options={draw=darkslategrey, line width=1.5, solid, fill=EF553B}] table[y=versicolor] {\dataB};
 \addlegendentry{versicolor}
-\addplot+ [mark=diamond*, only marks, mark size=6, mark options={solid, fill=00cc96, draw=darkslategrey, line width=1.5}] table[y=virginica] {\dataC};
+\addplot+ [mark=diamond*, only marks, mark size=6, mark options={draw=darkslategrey, line width=1.5, solid, fill=00cc96}] table[y=virginica] {\dataC};
 \addlegendentry{virginica}
 \end{axis}
 \end{tikzpicture}

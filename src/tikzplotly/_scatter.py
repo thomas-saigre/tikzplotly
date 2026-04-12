@@ -2,15 +2,15 @@
 Provides functionality to convert Plotly scatter traces into TikZ/PGFPlots code for LaTeX documents.
 """
 
-from warnings import warn
 import numpy as np
 from ._tex import tex_addplot, tex_add_text
 from ._color import convert_color
-from ._marker import marker_symbol_to_tex
 from ._dash import DASH_PATTERN
 from ._axis import Axis
 from ._data import data_type
+from ._trace_utils import configure_marker_options, finalize_marker_options
 from ._utils import px_to_pt, option_dict_to_str
+
 
 def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
     """Get code for a scatter trace.
@@ -53,15 +53,8 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
     options_dict = {}
     mark_option_dict = {}
 
-    if mode == "markers":
-        if marker.symbol is not None:
-            symbol, symbol_options = marker_symbol_to_tex(marker.symbol)
-            options_dict["mark"] = symbol
-            options_dict["only marks"] = None
-            if symbol_options is not None:
-                mark_option_dict[symbol_options[0]] = symbol_options[1]
-        else:
-            options_dict["only marks"] = None
+    if "markers" in mode:
+        configure_marker_options(mode, marker, options_dict, mark_option_dict, color_set)
 
         if scatter.marker.size is not None:
             options_dict["mark size"] = px_to_pt(marker.size)
@@ -71,14 +64,7 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
             mark_option_dict["solid"] = None
             mark_option_dict["fill"] = convert_color(scatter.marker.color)[0]
 
-        if (line:=scatter.marker.line) is not None:
-            if line.color is not None:
-                color_set.add(convert_color(line.color)[:3])
-                mark_option_dict["draw"] = convert_color(line.color)[0]
-            if line.width is not None:
-                mark_option_dict["line width"] = px_to_pt(line.width)
-
-        if (angle:=scatter.marker.angle) is not None:
+        if (angle := scatter.marker.angle) is not None:
             mark_option_dict["rotate"] = angle
 
         if (opacity := scatter.opacity) is not None:
@@ -86,22 +72,7 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
         if (opacity := scatter.marker.opacity) is not None:
             mark_option_dict["opacity"] = np.round(opacity, 2)
 
-        if mark_option_dict:
-            mark_options = option_dict_to_str(mark_option_dict)
-            options_dict["mark options"] = f"{{{mark_options}}}"
-
-    elif mode == "lines":
-        options_dict["mark"] = "none"
-
-    elif "lines" in mode and "markers" in mode:
-        if marker.symbol is not None:
-            symbol, symbol_options = marker_symbol_to_tex(marker.symbol)
-            options_dict["mark"] = symbol
-            if symbol_options is not None:
-                mark_option_dict[symbol_options[0]] = symbol_options[1]
-
-    else:
-        warn(f"Scatter : Mode {mode} is not supported yet.")
+    finalize_marker_options(mode, options_dict, mark_option_dict, "Scatter")
 
     if scatter.line.width is not None:
         options_dict["line width"] = px_to_pt(scatter.line.width)
@@ -109,7 +80,6 @@ def draw_scatter2d(data_name, scatter, y_name, axis: Axis, color_set):
         options_dict[DASH_PATTERN[scatter.line.dash]] = None
     if scatter.connectgaps in [False, None] and None in scatter.x:
         options_dict["unbounded coords"] = "jump"
-
 
     if scatter.line.color is not None:
         options_dict["color"] = convert_color(scatter.line.color)[0]

@@ -169,11 +169,11 @@ x virginica
 xlabel=sepal\_width,
 ylabel=sepal\_length
 ]
-\addplot+ [mark=triangle*, only marks, mark size=9, mark options={xscale=0.5, solid, fill=636efa, draw=darkslategrey, line width=1.5, rotate=45}] table[y=setosa] {\dataA};
+\addplot+ [mark=triangle*, only marks, mark size=9, mark options={xscale=0.5, draw=darkslategrey, line width=1.5, solid, fill=636efa, rotate=45}] table[y=setosa] {\dataA};
 \addlegendentry{setosa}
-\addplot+ [mark=triangle*, only marks, mark size=9, mark options={xscale=0.5, solid, fill=EF553B, draw=darkslategrey, line width=1.5, rotate=45}] table[y=versicolor] {\dataB};
+\addplot+ [mark=triangle*, only marks, mark size=9, mark options={xscale=0.5, draw=darkslategrey, line width=1.5, solid, fill=EF553B, rotate=45}] table[y=versicolor] {\dataB};
 \addlegendentry{versicolor}
-\addplot+ [mark=triangle*, only marks, mark size=9, mark options={xscale=0.5, solid, fill=00cc96, draw=darkslategrey, line width=1.5, rotate=45}] table[y=virginica] {\dataC};
+\addplot+ [mark=triangle*, only marks, mark size=9, mark options={xscale=0.5, draw=darkslategrey, line width=1.5, solid, fill=00cc96, rotate=45}] table[y=virginica] {\dataC};
 \addlegendentry{virginica}
 \end{axis}
 \end{tikzpicture}

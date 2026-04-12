@@ -2,6 +2,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
 import os
+from contextlib import nullcontext
 from .helpers import assert_equality
 import pathlib
 import pytest
@@ -77,7 +78,12 @@ def test_3():
 
 @pytest.mark.parametrize("histnorm", ["percent", "probability", "density", "probability density"])
 def test_4(histnorm):
-    assert_equality(plot_4(histnorm), os.path.join(this_dir, test_name, test_name + "_4_reference.tex"))
+    if histnorm in ["percent", "probability", "density"]:
+        context = pytest.warns(UserWarning, match=r"Sorry, I did not find an equivalent for histnorm='\w+' in TikZ*")
+    else:
+        context = nullcontext()
+    with context:
+        assert_equality(plot_4(histnorm), os.path.join(this_dir, test_name, test_name + "_4_reference.tex"))
 
 def test_5():
     assert_equality(plot_5(), os.path.join(this_dir, test_name, test_name + "_5_reference.tex"))
@@ -86,7 +92,8 @@ def test_6():
     assert_equality(plot_6(), os.path.join(this_dir, test_name, test_name + "_6_reference.tex"))
 
 def test_7():
-    assert_equality(plot_7(), os.path.join(this_dir, test_name, test_name + "_7_reference.tex"))
+    with pytest.warns(UserWarning, match="To the best of our knowledge, other aggregate function than 'count' are not supported in pgfplots.*"):
+        assert_equality(plot_7(), os.path.join(this_dir, test_name, test_name + "_7_reference.tex"))
 
 def test_8():
     assert_equality(plot_8(), os.path.join(this_dir, test_name, test_name + "_8_reference.tex"))

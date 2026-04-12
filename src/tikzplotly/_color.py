@@ -30,7 +30,7 @@ def convert_color(color):
         string from plotly color palette, can be one of the following:
         - hex string : "#______"
         - rgb string : "rgb(__, __, __)" with values between 0 and 255
-        - rgba string : "rgba(__, __, __, __)" with values between 0 and 255 and an opacity value between 0 and 1
+        - rgba string : "rgba(__, __, __[, __])" with values between 0 and 255 and an opacity value between 0 and 1 (optional)
         - color name : "red", "green", "blue", "yellow", "orange", "purple", "brown", "black", "gray", "white" or any other color name from
                         https://github.com/plotly/plotly.py/blob/main/templategen/utils/colors.py
 
@@ -45,20 +45,21 @@ def convert_color(color):
     if color is None:
         return None, None, None, 1
     if isinstance(color, numpy.ndarray):
-        warn("Color from data is not supported yet. Returning the default color: blue.")
-        return "blue", "HTML", "0000ff", 1
+        warn("Color from data is not supported yet. Returning no color.")
+        return None, None, None, 1
     if not isinstance(color, str):
-        warn(f"Color {color} type '{color.__class__.__name__}' is not supported yet. Returning the default color: blue.")
-        return "blue", "HTML", "0000ff", 1
+        warn(f"Color {color} type '{color.__class__.__name__}' is not supported yet. Returning no color.")
+        return None, None, None, 1
 
     if color.startswith("#"):
         return color[1:], "HTML", color[1:], 1
 
     if color.startswith("rgba"):
-        sp = color.split("(")[1].split(",")
-        rgb_color = sp[:-1]
-        rgb_color = convert_color(f"rgb({rgb_color[0]},{rgb_color[1]},{rgb_color[2]})")[:-1]
-        return rgb_color + (float(sp[-1][:-1]),)
+        sp = color.split("(")[1].replace(')', '').split(",")
+        rgb_color = [s.strip() for s in sp]
+        r, g, b = int(rgb_color[0]), int(rgb_color[1]), int(rgb_color[2])
+        opacity = float(rgb_color[3]) if len(rgb_color) == 4 else 1.0
+        return hashlib.sha1(f"{r}, {g}, {b}".encode('UTF-8')).hexdigest()[:10], "RGB", rgb_str(r, g, b), opacity
 
     if color.startswith("rgb"):
         color = color[4:-1].replace("[", "{").replace("]", "}")

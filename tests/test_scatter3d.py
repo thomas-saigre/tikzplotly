@@ -2,6 +2,7 @@
 Test of 3D scatter plots https://plotly.com/python/3d-scatter-plots/
 """
 import os, pathlib
+from contextlib import nullcontext
 import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
@@ -88,7 +89,13 @@ def test_scatter_3d_1():
 
 @pytest.mark.parametrize("mode", ["markers", "markers+lines", "lines"])
 def test_scatter_3d_2(mode):
-    assert_equality(plot_scatter_3d_2(mode), os.path.join(this_dir, test_name, test_name + f"_2_{mode}_reference.tex"))
+    if "markers" in mode:
+        context = pytest.warns(UserWarning, match="Color from data is not supported yet*")
+    #     context = nullcontext()
+    else:
+        context = nullcontext()
+    with context:
+        assert_equality(plot_scatter_3d_2(mode), os.path.join(this_dir, test_name, test_name + f"_2_{mode}_reference.tex"))
 
 def test_scatter_3d_3():
     assert_equality(plot_scatter_3d_3(), os.path.join(this_dir, test_name, test_name + "_3_reference.tex"))
@@ -97,4 +104,5 @@ def test_scatter_3d_view():
     assert_equality(plot_scatter_3d_view(), os.path.join(this_dir, test_name, test_name + "_view_reference.tex"))
 
 def test_scatter_3d_empty():
-    assert_equality(plot_scatter_3d_empty(), os.path.join(this_dir, test_name, test_name + "_empty_reference.tex"))
+    with pytest.warns(UserWarning, match="Adding empty 3D trace."):
+        assert_equality(plot_scatter_3d_empty(), os.path.join(this_dir, test_name, test_name + "_empty_reference.tex"))

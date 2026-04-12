@@ -513,7 +513,7 @@ x y0
 \definecolor{mediumpurple}{RGB}{147, 112, 219}
 
 \begin{axis}
-\addplot+ [only marks, mark size=15, mark options={solid, fill=lightskyblue, draw=mediumpurple, line width=1.5, opacity=0.5}, forget plot] table[y=y0] {\dataA};
-\addplot+ [only marks, mark size=60, mark options={solid, fill=lightskyblue, draw=mediumpurple, line width=6, opacity=0.5}, forget plot] table[y=y0] {\dataB};
+\addplot+ [only marks, mark size=15, mark options={draw=mediumpurple, line width=1.5, solid, fill=lightskyblue, opacity=0.5}, forget plot] table[y=y0] {\dataA};
+\addplot+ [only marks, mark size=60, mark options={draw=mediumpurple, line width=6, solid, fill=lightskyblue, opacity=0.5}, forget plot] table[y=y0] {\dataB};
 \end{axis}
 \end{tikzpicture}

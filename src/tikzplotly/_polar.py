@@ -7,7 +7,7 @@ from ._axis import Axis
 from ._utils import option_dict_to_str
 from ._tex import tex_addplot
 from ._color import convert_color
-from ._dataContainer import DataContainer
+from ._data_container import DataContainer
 
 def get_polar_coord(trace, axis: Axis, data_container: DataContainer):
     """Get polar coordinates from the trace

@@ -5,6 +5,7 @@ import os, pathlib
 import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
+import pytest
 from .helpers import assert_equality
 
 this_dir = pathlib.Path(__file__).resolve().parent
@@ -275,4 +276,5 @@ def test_polar_1():
     assert_equality(fig_polar_1(), os.path.join(this_dir, test_name, test_name + "_1_reference.tex"))
 
 def test_polar_matplotlib():
-    assert_equality(fig_polar_matplotlib(), os.path.join(this_dir, "empty_plot.tex"))
+    with pytest.warns(UserWarning, match="Trace type barpolar is not supported yet"):
+        assert_equality(fig_polar_matplotlib(), os.path.join(this_dir, "empty_plot.tex"))
