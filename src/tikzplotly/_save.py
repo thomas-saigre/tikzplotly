@@ -29,6 +29,7 @@ def get_tikz_code(
         axis_options = None,
         include_disclamer = True,
         img_name = "heatmap.png",
+        decimate = None,
     ):
     """Get the tikz code of a figure.
 
@@ -74,7 +75,7 @@ def get_tikz_code(
             if trace.y is None:
                 trace.y = list(range(len(trace.x)))
 
-            data_name_macro, y_name = data_container.add_data(trace.x, trace.y, trace.name)
+            data_name_macro, y_name = data_container.add_data(trace.x, trace.y, trace.name, decimate=decimate)
 
             # If x is textual => symbolic x coords
             if all(isinstance(v, str) for v in trace.x):
@@ -173,7 +174,7 @@ def get_tikz_code(
             if hasattr(figure_layout.scene, "title") and getattr(figure_layout.scene.title, "text", None):
                 axis.add_option("title", f"{{{sanitize_tex_text(figure_layout.scene.title.text)}}}")
 
-            data_name_macro = data_container.add_data3d(trace.x, trace.y, trace.z, trace.name)
+            data_name_macro = data_container.add_data3d(trace.x, trace.y, trace.z, trace.name, decimate=decimate)
             data_str.append(draw_scatter3d(data_name_macro, trace, colors_set))
 
             if trace.name and trace['showlegend'] is not False:
