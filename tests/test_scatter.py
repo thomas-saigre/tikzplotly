@@ -211,6 +211,11 @@ def plot_10():
     fig.update_yaxes(autorange="reversed")
     return fig
 
+def plot_decimate():
+    x = np.linspace(-6, 6, 103)
+    y = np.sin(x)
+    fig = px.scatter(x=x, y=y)
+    return fig
 
 def test_1():
     assert_equality(plot_1(), os.path.join(this_dir, test_name, test_name + "_1_reference.tex"))
@@ -249,3 +254,17 @@ def test_9():
 
 def test_10():
     assert_equality(plot_10(), os.path.join(this_dir, test_name, test_name + "_10_reference.tex"))
+
+@pytest.mark.parametrize("d", [10, 1, None])
+def test_decimate(d):
+    if not d:
+        d_path = 1
+    else:
+        d_path = d
+    assert_equality(plot_decimate(), os.path.join(this_dir, test_name, test_name + f"_decimate_{d_path}_reference.tex"), decimate=d)
+
+def test_failing_decimate():
+    try:
+        assert_equality(plot_decimate(), os.path.join(this_dir, test_name, test_name + f"_decimate_1_reference.tex"), decimate=-1)
+    except ValueError as e:
+        assert e.__str__() == "decimate must be None or an integer >= 1"

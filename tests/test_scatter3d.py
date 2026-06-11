@@ -76,13 +76,13 @@ def plot_scatter_3d_view():
     )
     return fig
 
-
 def plot_scatter_3d_empty():
     return go.Figure(data=[go.Scatter3d(
         x=None,
         y=None,
         z=None,
     )])
+
 
 def test_scatter_3d_1():
     assert_equality(plot_scatter_3d_1(), os.path.join(this_dir, test_name, test_name + "_1_reference.tex"))
@@ -106,3 +106,16 @@ def test_scatter_3d_view():
 def test_scatter_3d_empty():
     with pytest.warns(UserWarning, match="Adding empty 3D trace."):
         assert_equality(plot_scatter_3d_empty(), os.path.join(this_dir, test_name, test_name + "_empty_reference.tex"))
+
+@pytest.mark.parametrize("d", [6, 1, None])
+def test_failing_decimate(d):
+    suffix = "6_" if d == 6 else ""
+    assert_equality(plot_scatter_3d_3(), os.path.join(this_dir, test_name, test_name + f"_3_{suffix}reference.tex"), decimate=d)
+
+def test_scatter_3d_decimate():
+    try:
+        assert_equality(plot_scatter_3d_3(), os.path.join(this_dir, test_name, test_name + f"_3_reference.tex"), decimate=-1)
+    except ValueError as e:
+        assert e.__str__() == "decimate must be None or an integer >= 1"
+
+
