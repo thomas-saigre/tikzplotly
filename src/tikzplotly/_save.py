@@ -25,11 +25,11 @@ from ._utils import sanitize_tex_text, sanitize_text
 
 def get_tikz_code(
         fig,
-        tikz_options = None,
-        axis_options = None,
-        include_disclamer = True,
-        img_name = "heatmap.png",
-        decimate = None,
+        tikz_options: dict | None = None,
+        axis_options: dict | None = None,
+        include_disclamer: bool = True,
+        img_name: str = "heatmap.png",
+        decimate: int | None = None,
     ):
     """Get the tikz code of a figure.
 
@@ -229,7 +229,7 @@ def get_tikz_code(
     return code
 
 
-def save(filepath, *args, **kwargs):
+def save(filepath: str | Path, *args, **kwargs):
     """Save a figure to a file or a stream.
 
     Parameters
