@@ -6,7 +6,11 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 import pytest
+import warnings
+from urllib.error import URLError
 from .helpers import assert_equality
+
+from warnings import warn
 
 this_dir = pathlib.Path(__file__).resolve().parent
 test_name = "test_polar"
@@ -252,7 +256,13 @@ def test_radar_1():
     assert_equality(plot_radar_1(), os.path.join(this_dir, test_name, test_name + "_radar_1_reference.tex"))
 
 def test_radar_2():
-    assert_equality(plot_radar_2(), os.path.join(this_dir, test_name, test_name + "_radar_2_reference.tex"))
+    try:
+        fig = plot_radar_2()
+        assert_equality(fig, os.path.join(this_dir, test_name, test_name + "_radar_2_reference.tex"))
+    except URLError as e:
+        warnings.warn(f"Offline: {e}. Skipping test_radar_2.", UserWarning)
+        pytest.skip("Offline: Could not fetch data for radar plot.")
+
 
 def test_polar_categorial_angular():
     assert_equality(fig_polar_categorial_angular(), os.path.join(this_dir, test_name, test_name + "_categorical_angular_reference.tex"))
@@ -273,6 +283,12 @@ def test_polar_range_2():
     assert_equality(fig_polar_range_2(), os.path.join(this_dir, test_name, test_name + "_radar_range_2_reference.tex"))
 
 def test_polar_1():
+    try:
+        fig = fig_polar_1()
+        assert_equality(fig, os.path.join(this_dir, test_name, test_name + "_1_reference.tex"))
+    except URLError as e:
+        warnings.warn(f"Offline: {e}. Skipping test_polar_1.", UserWarning)
+        pytest.skip("Offline: Could not fetch data for radar plot.")
     assert_equality(fig_polar_1(), os.path.join(this_dir, test_name, test_name + "_1_reference.tex"))
 
 def test_polar_matplotlib():
