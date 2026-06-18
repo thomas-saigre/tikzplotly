@@ -46,7 +46,7 @@ class Data:
     """Class to handle data in TikZ plots.
     """
 
-    def __init__(self, name, x):
+    def __init__(self, name, x, decimate: int|None=None):
         """Initialize a Data object.
 
         Parameters
@@ -59,6 +59,8 @@ class Data:
         self.name = name
         self.macro_name = "\\" + replace_all_digits(name)
         self.x = x
+        # decimate: None means keep all points, otherwise integer >= 1
+        self.decimate = decimate
         self.y_label = []
         self.y_data = []
 
@@ -84,7 +86,7 @@ class Data:
 class Data3D:
     """Handle 3D data in Tikz plots
     """
-    def __init__(self, x, y, z, name):
+    def __init__(self, x, y, z, name, decimate: int|None=None):
         """Initialize the Data3D object
 
         Parameters
@@ -101,6 +103,8 @@ class Data3D:
         self.x = np.array(x)
         self.y = np.array(y)
         self.z = np.array(z)
+        # decimate: None means keep all points, otherwise integer >= 1
+        self.decimate = decimate
         if name:
             self.name = sanitize_text(name, keep_space=0)
         else:
@@ -128,7 +132,7 @@ class DataContainer:
     def __init__(self):
         self.data = []
 
-    def add_data(self, x, y, name=None, y_label=None):
+    def add_data(self, x, y, name=None, y_label=None, decimate: int|None=None):
         """Add data to the container.
 
         Parameters
@@ -141,11 +145,16 @@ class DataContainer:
             name of the y data, by default None
         name, optional
             name of the data, by default None
+        decimate, optional
+            number of data to keep, all of them if None, by default None.
 
         Returns
         -------
             tuple (macro_name, y_label), where macro_name is the name of the data in LaTeX and y_label the name of the y data in LaTeX
         """
+        if decimate is not None and (not isinstance(decimate, int) or decimate < 1):
+            raise ValueError("decimate must be None or an integer >= 1")
+
         for data in self.data:
             if len(data.x) != len(x):
                 continue
@@ -157,12 +166,12 @@ class DataContainer:
             elif hasattr(are_equals, "all") and are_equals.all():
                 y_label_val = data.add_y_data(y, y_label or name)
                 return data.macro_name, treat_data(y_label_val)
-        data_to_add = Data(f"data{index_to_letters(len(self.data))}", x)
+        data_to_add = Data(f"data{index_to_letters(len(self.data))}", x, decimate=decimate)
         y_label_val = data_to_add.add_y_data(y, y_label or name)
         self.data.append(data_to_add)
         return data_to_add.macro_name, treat_data(y_label_val)
 
-    def add_data3d(self, x, y, z, name=None):
+    def add_data3d(self, x, y, z, name=None, decimate: int|None=None):
         """Add data to the container.
 
         Parameters
@@ -175,16 +184,21 @@ class DataContainer:
             z values of the data
         name, optional
             name of the data, by default None
+        decimate, optional
+            number of data to keep, all of them if None, by default None.
 
         Returns
         -------
             tuple (macro_name, z_name), where macro_name is the name of the data in LaTeX and z_name the name of the z data in LaTeX
         """
+        if decimate is not None and (not isinstance(decimate, int) or decimate < 1):
+            raise ValueError("decimate must be None or an integer >= 1")
+
         for data in self.data:
             if hasattr(data, "x") and hasattr(data, "y") and hasattr(data, "z"):
                 if np.array_equal(data.x, x) and np.array_equal(data.y, y) and np.array_equal(data.z, z):
                     return data.name, data.z_name
-        data_obj = Data3D(x, y, z, name)
+        data_obj = Data3D(x, y, z, name, decimate=decimate)
         self.data.append(data_obj)
         return data_obj.name
 
@@ -202,8 +216,20 @@ class DataContainer:
             if hasattr(data, "z"):
                 export_string += "\\pgfplotstableread{\n"
                 export_string += "x y z\n"
-                for x, y, z in zip(data.x, data.y, data.z):
-                    export_string += f"{treat_data(x)} {treat_data(y)} {treat_data(z)}\n"
+                n = len(data.x)
+                if getattr(data, 'decimate', None) is None:
+                    indices = range(n)
+                else:
+                    d = data.decimate
+                    if d <= 1:
+                        indices = range(n)
+                    else:
+                        # always include first and last
+                        indices = list(range(0, n, d))
+                        if indices[-1] != n-1:
+                            indices.append(n-1)
+                for i in indices:
+                    export_string += f"{treat_data(data.x[i])} {treat_data(data.y[i])} {treat_data(data.z[i])}\n"
                 export_string += f"}}{{\\{data.name}}}\n"
 
             # 2D
@@ -216,8 +242,19 @@ class DataContainer:
                 else:
                     header += " y"
                 export_string += header + "\n"
-                for i, x in enumerate(data.x):
-                    row = [treat_data(x)]
+                n = len(data.x)
+                if getattr(data, 'decimate', None) is None:
+                    indices = range(n)
+                else:
+                    d = data.decimate
+                    if d <= 1:
+                        indices = range(n)
+                    else:
+                        indices = list(range(0, n, d))
+                        if indices[-1] != n-1:
+                            indices.append(n-1)
+                for i in indices:
+                    row = [treat_data(data.x[i])]
                     for y_col in data.y_data:
                         row.append(treat_data(y_col[i]))
                     export_string += " ".join(row) + "\n"

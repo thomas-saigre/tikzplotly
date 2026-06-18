@@ -13,7 +13,7 @@ The plots type supported by tikzplotly are presented in this page.
 
 The code has been constructed to export (almost all) the figures of the page [Line Charts in Python](https://plotly.com/python/line-charts/) of Plotly documentation.
 
-??? example "Scatter plot Example"
+??? Example "Scatter plot Example"
 
     ```python
     import plotly.express as px
@@ -31,7 +31,8 @@ The code has been constructed to export (almost all) the figures of the page [Li
 
 The code has been constructed to export (almost all) the figures of the page [Heatmaps in Python](https://plotly.com/python/heatmaps/) of Plotly documentation.
 
-??? example "Heatmap Example"
+??? Example "Heatmap Example"
+
     ```python
     import plotly.express as px
     import tikzplotly
@@ -44,14 +45,15 @@ The code has been constructed to export (almost all) the figures of the page [He
     ![Heatmap Example](../assets/examples/heatmap.png)
 
 !!! Note
-    - If possible, TikzPlotly try to save the heatmap as a png of the smallest size possible, namely 1 pixel for each value of the heatmap. But in some case, such export does not work. In this case, the image is saved in the original size of the Plotly figure.
+    - If possible, TikzPlotly try to save the heatmap as a PNG of the smallest size possible, namely 1 pixel for each value of the heatmap. But in some case, such export does not work. In this case, the image is saved in the original size of the Plotly figure.
 
 
 ## Histograms
 
 The examples of the page [Histograms in Python](https://plotly.com/python/histograms/) of Plotly documentation are supported.
 
-??? example "Histogram Example"
+??? Example "Histogram Example"
+
     ```python
     df = px.data.tips()
     fig = px.histogram(df, x="total_bill")
@@ -68,7 +70,8 @@ The examples of the page [Histograms in Python](https://plotly.com/python/histog
 
 Some examples of the page [Bar Charts in Python](https://plotly.com/python/bar-charts/) of Plotly documentation are supported (not stacked and aggregated bars).
 
-??? example "Bar plot"
+??? Example "Bar plot"
+
     ```python
     wide_df = px.data.medals_wide()
     fig = px.bar(
@@ -88,7 +91,8 @@ Some examples of the page [Bar Charts in Python](https://plotly.com/python/bar-c
 The examples from the pages [Polar Charts in Python](https://plotly.com/python/polar-chart/) and [Radar Charts in Python](https://plotly.com/python/radar-chart/) are supported.
 
 
-??? example "Polar plot"
+??? Example "Polar plot"
+
     ```python
     df = px.data.wind()
     fig = px.line_polar(df, r="frequency", theta="direction", color="strength", line_close=True,
@@ -99,7 +103,8 @@ The examples from the pages [Polar Charts in Python](https://plotly.com/python/p
     ![Polar plot Example](../assets/examples/polar.png)
 
 
-??? example "Radar plot"
+??? Example "Radar plot"
+
     ```python
     df = pd.DataFrame(dict(
         r=[1, 5, 2, 2, 3],
@@ -116,7 +121,8 @@ The examples from the pages [Polar Charts in Python](https://plotly.com/python/p
 Examples from [3D Scatter Plots in Python ](https://plotly.com/python/3d-scatter-plots/) can be exported with tikzplotly.
 
 
-??? example "3D scatter plot"
+??? Example "3D scatter plot"
+
     ```python
     df = px.data.iris()
     fig = px.scatter_3d(df, x='sepal_length', y='sepal_width', z='petal_width', color='species')

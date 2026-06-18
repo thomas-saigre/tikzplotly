@@ -15,7 +15,7 @@
 
 # Tikzplotly
 
-Convert [plotly](https://plotly.com/python/) figures to TikZ code for inclusion into [PGFPlots](https://www.ctan.org/pkg/pgfplots) ([PGF/TikZ](https://www.ctan.org/pkg/pgf)) figures.
+Convert [Plotly](https://plotly.com/python/) figures to TikZ code for inclusion into [PGFPlots](https://www.ctan.org/pkg/pgfplots) ([PGF/TikZ](https://www.ctan.org/pkg/pgf)) figures.
 
 This results in a ti*k*z code, that can be easily included into your LaTeX document.
 This also allows to easily edit the content of the figure.
@@ -101,9 +101,9 @@ To correctly compile the document, you will need to add the following packages t
 
 ## Note
 
-* This module is in development and new features are added bit by bit, when needed. If you have a feature request, please open an issue with the plotly figure you want to convert and the desired output.
+* This module is in development and new features are added bit by bit, when needed. If you have a feature request, please open an issue with the Plotly figure you want to convert and the desired output.
 You can also submit a pull request with the desired feature !
-* Some feature can result in different output between the plotly figure and the TikZ figure, for instance the size of markers, more details can be found in [the documentation](https://thomas-saigre.github.io/tikzplotly/).
+* Some feature can result in different output between the Plotly figure and the TikZ figure, for instance the size of markers, more details can be found in [the documentation](https://thomas-saigre.github.io/tikzplotly/).
 
 
 ## References

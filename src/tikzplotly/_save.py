@@ -25,10 +25,11 @@ from ._utils import sanitize_tex_text, sanitize_text
 
 def get_tikz_code(
         fig,
-        tikz_options = None,
-        axis_options = None,
-        include_disclamer = True,
-        img_name = "heatmap.png",
+        tikz_options: dict | None = None,
+        axis_options: dict | None = None,
+        include_disclamer: bool = True,
+        img_name: str = "heatmap.png",
+        decimate: int | None = None,
     ):
     """Get the tikz code of a figure.
 
@@ -74,7 +75,7 @@ def get_tikz_code(
             if trace.y is None:
                 trace.y = list(range(len(trace.x)))
 
-            data_name_macro, y_name = data_container.add_data(trace.x, trace.y, trace.name)
+            data_name_macro, y_name = data_container.add_data(trace.x, trace.y, trace.name, decimate=decimate)
 
             # If x is textual => symbolic x coords
             if all(isinstance(v, str) for v in trace.x):
@@ -173,7 +174,7 @@ def get_tikz_code(
             if hasattr(figure_layout.scene, "title") and getattr(figure_layout.scene.title, "text", None):
                 axis.add_option("title", f"{{{sanitize_tex_text(figure_layout.scene.title.text)}}}")
 
-            data_name_macro = data_container.add_data3d(trace.x, trace.y, trace.z, trace.name)
+            data_name_macro = data_container.add_data3d(trace.x, trace.y, trace.z, trace.name, decimate=decimate)
             data_str.append(draw_scatter3d(data_name_macro, trace, colors_set))
 
             if trace.name and trace['showlegend'] is not False:
@@ -228,7 +229,7 @@ def get_tikz_code(
     return code
 
 
-def save(filepath, *args, **kwargs):
+def save(filepath: str | Path, *args, **kwargs):
     """Save a figure to a file or a stream.
 
     Parameters

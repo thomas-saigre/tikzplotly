@@ -1,10 +1,7 @@
 name: Build GitHub Pages
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'docs/**'
+  release:
+    types: [published]
   workflow_dispatch:
 permissions:
   contents: write
@@ -22,7 +19,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
-          python-version: 3.9
+          python-version: 3.14
       - run: pip install \
             mkdocs-material[recommended] mkdocs-git-revision-date-localized-plugin
       - run: mkdocs gh-deploy --config-file mkdocs.yml --force
