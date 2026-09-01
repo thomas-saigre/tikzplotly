@@ -1,0 +1,4 @@
+[FORMAT]
+max-line-length=140
+
+ignore-long-lines=^\s*#.*(http|https)://.*

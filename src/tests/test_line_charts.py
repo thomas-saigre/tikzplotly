@@ -371,6 +371,51 @@ def fig15():
     # fig.show()
     return fig, "Filled Lines"
 
+# https://plotly.com/python/log-plot/
+
+def fig16():
+    df = px.data.gapminder().query("year == 2007")
+    fig = px.scatter(df, x="gdpPercap", y="lifeExp", hover_name="country", log_x=True)
+    return fig, "Log Scale"
+
+def fig17():
+    df = px.data.gapminder().query("year == 2007")
+
+    fig = px.scatter(df, x="gdpPercap", y="lifeExp", hover_name="country",
+                    log_x=True, range_x=[1,100000], range_y=[0,100])
+    return fig, "Log scale with range"
+
+def fig18():
+    df = px.data.gapminder().query("year == 2007")
+
+    fig = px.scatter(df, x="gdpPercap", y="lifeExp", hover_name="country",
+                    log_x=True, range_x=[1,100000], range_y=[0,100])
+
+    fig.update_xaxes(minor=dict(ticks="inside", ticklen=6, showgrid=True))
+    return fig, "Log scale with range and minor ticks"
+
+def fig19():
+    df = pd.DataFrame(dict(
+        x = ["A et B", "B", "C", "D"],
+        y = [1, 2, 3, 4],
+    ))
+    fig = px.line(df, x="x", y="y", title="symbolic x coords")
+    return fig, "Line Charts with symbolic x coords"
+
+def fig20():
+    df = pd.DataFrame(dict(
+        x = [1, 2, 3, 4],
+        y = ["A", "B", "C", "D"],
+    ))
+    fig = px.line(df, x="x", y="y", title="symbolic y coords")
+    return fig, "Line Charts with symbolic y coords"
+
+
+def fig21(x=True, y=False):
+    fig = px.scatter(x=[0, 1, 2, 3, 4], y=[0, 1, 4, 9, 16])
+    if x: fig.data[0].x = None
+    if y: fig.data[0].y = None
+    return fig, "empty fig"
 
 if __name__ == "__main__":
 
@@ -392,9 +437,15 @@ if __name__ == "__main__":
         ("9", fig9),
         ("10", fig10),
         ("11", fig11),
-        # ("12", fig12),
+        ("12", fig12),
         ("14", fig14),
-        ("15", fig15)
+        ("15", fig15),
+        ("16", fig16),
+        ("17", fig17),
+        ("18", fig18),
+        ("19", fig19),
+        ("20", fig20),
+        ("21", fig21),
     ]
 
     main_tex_content = tex_create_document(options="twocolumn", compatibility="newest")
