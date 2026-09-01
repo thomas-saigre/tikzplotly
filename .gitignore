@@ -10,13 +10,25 @@
 *.synctex.gz
 *.toc
 
-# Tests outputs
-tests/outputs/**
+**.DS_Store
 
+# Tests outputs
+src/tests/outputs/**
+
+# Doxygen output
+doxygen/*
 
 # Virtual environment
-venv/
+.venv/
 *.egg-info/
 
 # Distribution / packaging
 dist/
+
+# Tox
+.tox/
+.coverage
+coverage.xml
+
+# Mkdocs site
+site/**

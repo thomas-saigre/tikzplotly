@@ -1,0 +1,16 @@
+\pgfplotstableread{
+x y0
+0 3
+45 3
+90 4
+270 3
+}\dataA
+
+\begin{tikzpicture}
+\begin{polaraxis}[
+ymin=0,
+ymax=6
+]
+\addplot+ [no markers, fill=.!50, opacity=0.6] table[x=x, y=y0] {\dataA};
+\end{polaraxis}
+\end{tikzpicture}

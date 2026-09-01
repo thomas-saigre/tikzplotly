@@ -1,0 +1,19 @@
+\pgfplotstableread{
+x y z
+1 4 7
+2 5 8
+3 6 9
+}{\dataMJPPLKDJHBCHLGPPMBABHNCKCPHFLJMO}
+
+\begin{tikzpicture}
+
+
+\begin{axis}[
+view={45.0}{13.3},
+xmajorgrids=false,
+ymajorgrids=false,
+zmajorgrids=false
+]
+\addplot3+ [only marks, mark size=4.5, mark options={solid, fill=red}] table[x=x, y=y, z=z] {\dataMJPPLKDJHBCHLGPPMBABHNCKCPHFLJMO};
+\end{axis}
+\end{tikzpicture}
