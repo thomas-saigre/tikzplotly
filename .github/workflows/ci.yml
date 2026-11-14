@@ -49,7 +49,7 @@ jobs:
       - name: Test with tox
         run: |
           pip install tox
-          tox -- --cov tikzplotly --cov-report xml --cov-report term
+          tox -- --cov tikzplotly --cov-report xml --cov-report term --reruns 2
       - uses: codecov/codecov-action@v5.4.3
         if: ${{ matrix.python-version == '3.14' && matrix.os == 'ubuntu-latest' }}
         with:

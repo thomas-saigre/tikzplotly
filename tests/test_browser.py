@@ -1,5 +1,6 @@
 """Tests of the "Export to TikZ" button: the local server is exercised directly, without a browser."""
 import http.client
+import io
 import json
 import re
 
@@ -7,6 +8,7 @@ import numpy as np
 import plotly.graph_objects as go
 import plotly.io as pio
 import pytest
+from PIL import Image
 
 import tikzplotly
 from tikzplotly import _browser
@@ -116,7 +118,18 @@ def test_figure_dict_with_binary_arrays(tmp_path):
     assert path.read_text(encoding="utf-8") == tikzplotly.get_tikz_code(make_figure(), img_name=str(tmp_path / "fig.png"))
 
 
-def test_heatmap_image_next_to_tex(tmp_path):
+def fake_png(*args, **kwargs):  # pylint: disable=unused-argument
+    """Stands for ``Figure.to_image``: a coloured block on a white background, like a heatmap."""
+    image = Image.new("RGBA", (60, 40), "white")  # kaleido makes RGBA images
+    image.paste((68, 1, 84, 255), (10, 10, 40, 30))
+    buffer = io.BytesIO()
+    image.save(buffer, format="png")
+    return buffer.getvalue()
+
+
+def test_heatmap_image_next_to_tex(tmp_path, monkeypatch):
+    # The image itself is tested in test_heatmap.py: kaleido is not needed to check file names.
+    monkeypatch.setattr(go.Figure, "to_image", fake_png)
     renderer = tikzplotly.TikzBrowserRenderer(tmp_path / "map.tex")
     fig = go.Figure(go.Heatmap(z=np.arange(6.0).reshape(2, 3), colorscale="Viridis"))
     renderer.export(fig.to_dict())

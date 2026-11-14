@@ -11,6 +11,7 @@ renderer API when tikzplotly is imported, and :func:`show` is a shortcut to it.
 import base64
 import json
 import secrets
+import socketserver
 import threading
 import time
 import webbrowser
@@ -143,6 +144,18 @@ def _decode_arrays(obj):
     return obj
 
 
+class _LocalServer(ThreadingHTTPServer):
+    """HTTP server that does not look up its host name.
+
+    ``HTTPServer.server_bind`` calls ``socket.getfqdn``, a reverse DNS lookup that can take
+    several seconds, notably on macOS. The name is not used here.
+    """
+
+    def server_bind(self):
+        socketserver.TCPServer.server_bind(self)
+        self.server_name, self.server_port = self.server_address[:2]    # type: ignore
+
+
 def _free_path(path: Path) -> Path:
     """Return ``path``, or ``stem_1.ext``, ``stem_2.ext``, ... if it already exists."""
     candidate, n = path, 0
@@ -193,9 +206,8 @@ class TikzBrowserRenderer(ExternalRenderer):    # type: ignore
         for name, axis_range in (view.get("axes") or {}).items():
             fig.layout[name].range = axis_range
         states = view.get("visible") or []
-        traces = tuple(fig.data)
-        if len(states) == len(traces):  # get_tikz_code exports hidden traces too
-            fig.data = [trace for trace, state in zip(traces, states) if state in (None, True)]
+        if len(states) == len(fig.data):  # get_tikz_code exports hidden traces too
+            fig.data = [trace for trace, state in zip(fig.data, states) if state in (None, True)]
 
         with self._lock:  # two quick clicks must not pick the same file name
             path = _free_path(self.output)
@@ -222,12 +234,12 @@ class TikzBrowserRenderer(ExternalRenderer):    # type: ignore
                   .replace("__ICON_PATH__", TIKZ_ICON_PATH))
         html = pio.to_html(
             fig_dict, config=self.config, include_plotlyjs=True,
-            include_mathjax="cdn", post_script=script, full_html=True,      # type: ignore
+            include_mathjax="cdn", post_script=script, full_html=True,      # type: ignore[reportArgumentType]
             default_width="100%", default_height="100%", validate=False,
         ).encode("utf-8")
 
         renderer = self
-        state = {"deadline": time.monotonic() + IDLE_TIMEOUT}
+        state = {}
 
         class Handler(BaseHTTPRequestHandler):
             """Serves the page, and answers the requests sent by its script."""
@@ -281,8 +293,9 @@ class TikzBrowserRenderer(ExternalRenderer):    # type: ignore
             def log_message(self, format, *args):  # pylint: disable=redefined-builtin
                 pass
 
-        server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+        server = _LocalServer(("127.0.0.1", 0), Handler)
         server.timeout = 0.5
+        state["deadline"] = time.monotonic() + IDLE_TIMEOUT  # counted from when the server is ready
 
         def serve():
             while time.monotonic() < state["deadline"]:

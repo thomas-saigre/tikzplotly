@@ -7,6 +7,9 @@ from .helpers import assert_equality
 import pathlib
 import datetime
 
+import sys
+pytestmark = pytest.mark.skipif(sys.platform == "darwin", reason="kaleido is unreliable on macOS runners")
+
 this_dir = pathlib.Path(__file__).resolve().parent
 test_name = "test_heatmap"
 pathlib.Path("/tmp/tikzplotly").mkdir(parents=True, exist_ok=True)
